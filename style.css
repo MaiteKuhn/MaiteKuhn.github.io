@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #43299E, #6c45c7, #FCA8FF);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.contenedor {
+    width: 100%;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.card {
+    width: 600px;
+    max-width: 100%;
+    padding: 55px 50px;
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 28px;
+
+    backdrop-filter: blur(12px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.materia {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 18px;
+    opacity: 0.85;
+}
+
+h1 {
+    font-size: 34px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 25px;
+}
+
+.linea {
+    width: 70px;
+    height: 4px;
+    background: #FCA8FF;
+    border-radius: 10px;
+    margin: 0 auto 30px;
+}
+
+.grupo {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.integrantes {
+    font-size: 16px;
+    line-height: 1.8;
+    opacity: 0.9;
+    margin-bottom: 35px;
+}
+
+.botones {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.boton {
+    display: block;
+    padding: 17px 25px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    transition: 0.25s ease;
+}
+
+.editor {
+    background: white;
+    color: #43299E;
+}
+
+.presentacion {
+    background: #FCA8FF;
+    color: #43299E;
+}
+
+.boton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 600px) {
+
+    .card {
+        padding: 40px 25px;
+    }
+
+    h1 {
+        font-size: 27px;
+    }
+
+} 
