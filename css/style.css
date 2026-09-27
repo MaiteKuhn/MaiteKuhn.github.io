@@ -93,8 +93,9 @@ h1, h2, h3 {
     justify-content: space-between;
     padding: 0 35px;
 }
-/*Menu hamb*/
 
+/*Menu hamb*/
+/* Botón hamburguesa */
 .menu-btn {
     background: none;
     border: none;
@@ -103,21 +104,26 @@ h1, h2, h3 {
     cursor: pointer;
 }
 
+/* Menú principal */
 .menu {
     position: absolute;
     top: 80px;
     left: 0;
     width: 220px;
-    height: 400px;
-    padding: 20px;
+    padding: 25px 20px;
     background-color: #291765;
-    border-radius: 11px;
-    display: flex;
+    border-radius: 5px; 
     flex-direction: column;
     gap: 15px;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
     z-index: 100;
+    box-sizing: border-box;
+}
+
+/* Abrir menú */
+.menu.menu-abierto {
+    transform: translateX(0);
 }
 
 /* Links principales del menú */
@@ -127,20 +133,18 @@ h1, h2, h3 {
     font-family: "Roboto", sans-serif;
 }
 
-.menu > a, .btn-categorias {
+/* Alineación de íconos y texto */
+.menu > a, .btn-categorias, .menu-inf a {
     display: flex;
     align-items: center;
+    gap: 10px;
     min-height: 17px;
     transition: color 0.2s ease;
+    font-weight: 500;
 }
 
 .menu a:hover {
     color: #f3a1ff;
-}
-
-/* Abrir menú */
-.menu.menu-abierto {
-    transform: translateX(0);
 }
 
 /* Categorías */
@@ -148,46 +152,39 @@ h1, h2, h3 {
     width: 100%;
 }
 
-.menu-inf {
-  margin-top: auto;
-  padding-top: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.menu-inf a {
-    display: block;
-    width: 100%;
-}
-
 .btn-categorias {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 10px;
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
     width: 100%;
+    color: white;
+    font-family: "Roboto", sans-serif;
+    text-decoration: none;
 }
 
-.btn-categorias span {
-    font-size: 11px;
-    color: #f3a1ff;
-}
-
-/* Submenú */
+/* Submenú con indentación idéntica a la imagen */
 .submenu {
     display: none;
     flex-direction: column;
-    gap: 10px;
-    padding-left: 15px;
-    padding-top: 10px;
+    gap: 12px;
+    padding-left: 28px; /* Sangría a la derecha */
+    padding-top: 12px;
+}
+
+/* Mostrar submenú */
+.submenu.submenu-abierto {
+    display: flex;
 }
 
 /* Links de las categorías */
 .menu .submenu a.cat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     color: #9d8bd8;
     font-size: 15px;
 }
@@ -196,9 +193,19 @@ h1, h2, h3 {
     color: #f0a1ff;
 }
 
-/* Mostrar submenú */
-.submenu.submenu-abierto {
+/* Sección inferior con la línea divisora */
+.menu-inf {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15); /* Línea divisora */
     display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.menu-inf a {
+    display: flex;
+    width: 100%;
 }
 /*Logo*/
 .logo {
