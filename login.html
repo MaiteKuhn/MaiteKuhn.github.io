@@ -7,9 +7,24 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="login">
-<header class="header">
+ <div class="loader">
+        <div class="loading-bar">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="barra-carga-container">
+            <div class="barra-carga"></div>
+            <span class="porcentaje">0%</span>
+        </div>
+    </div>
+
+    <header class="header">
         <button class="menu-btn"> <img src="assets/img/menu.png" alt="menu"> </button>
-        <div class ="logo"> <img src="assets/img/LogoGamingNav 2.png" alt="logo"></div>
+        <a href="index.html" class="logo">
+            <img src="assets/img/LogoGamingNav 2.png" alt="logo">
+        </a>
         <div class="buscador"> <input type="text" placeholder="Buscar"> <button>⌕</button> </div>
         <div class="acciones">
                 <button><img src="assets/img/fav.png" alt="Favoritos"></button>
@@ -18,28 +33,27 @@
         </div>
     </header>
     <nav class="menu">
-        <a href="#">Inicio</a>
+        <a href="#"> <img src="assets/img/inicio.png" alt=""> Inicio </a>
         <div class="menu-categorias">
-            <button class="btn-categorias">
-                Categorias
-                <span>›</span>
-            </button>
-
+            <a href="#" class="btn-categorias"> <img src="assets/img/inicio.png" alt="">
+            Categorias
+            <span>›</span>
+        </a>
             <div class="submenu">
-                <a href="#">Deporte</a>
-                <a href="#">Aventura</a>
-                <a href="#">Acción</a>
-                <a href="#">Cocina</a>
-                <a href="#">Puzzle</a>
-                <a href="#">En pareja</a>
+                <a class="cat" href="#"> <img src="assets/img/inicio.png" alt="">Deporte</a>
+                <a class="cat" href="#"> <img src="assets/img/inicio.png" alt="">Aventura</a>
+                <a class="cat" href="#"> <img src="assets/img/inicio.png" alt="">Acción</a>
+                <a class="cat" href="#"> <img src="assets/img/inicio.png" alt="">Cocina</a>
+                <a class="cat" href="#"> <img src="assets/img/inicio.png" alt="">Puzzle</a>
+                <a class="cat" href="#"> <img src="assets/img/inicio.png" alt="">En pareja</a>
             </div>
         </div>
-
-        <a href="#">Recientes</a>
+        <a href="#"> <img src="assets/img/inicio.png" alt="">Recientes</a>
         <a href="#">Clasificación</a>
-        <a href="#">Contactanos</a>
-        <a href="#">Compartir</a>
-
+        <div class="menu-inf"> 
+        <a href="#"> <img src="assets/img/inicio.png" alt="">Contactanos</a>
+        <a href="#"> <img src="assets/img/inicio.png" alt="">Compartir</a>
+        </div>
     </nav>
     <div class="login-box">
         <h1>Iniciar sesión</h1>
@@ -50,7 +64,9 @@
             <label for="password">Contraseña:</label>
             <input type="password" placeholder="">
 
-            <a href="index.html" class="boton">Iniciar sesión</a>
+            <a href="index.html" class="boton">
+                <span>Iniciar sesión</span>
+            </a>
         </form>
     </div>
 </body>

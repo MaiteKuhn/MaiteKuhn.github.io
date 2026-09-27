@@ -12,6 +12,78 @@ h1, h2, h3 {
     font-family: overpass, monospace;
     color: #fca8ff; 
 }
+
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+   background-color: #24145c;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+    align-items: center;
+    z-index: 9999;
+    animation: ocultar-loader 0.6s ease 5s forwards;
+}
+.loading-bar {
+   display: flex;
+   gap: 10px;
+}
+.loading-bar > div {
+    width: 15px;
+    height: 15px;
+    background-color: #fca8ff;
+    border-radius: 50%;
+    animation: bounce 0.6s infinite alternate;
+}
+.loading-bar > div:nth-child(1) {
+    animation-delay: 0s;
+}
+.loading-bar > div:nth-child(2) {
+    animation-delay: 0.15s;
+}
+.loading-bar > div:nth-child(3) {
+    animation-delay: 0.30s;
+}
+.loading-bar > div:nth-child(4) {
+    animation-delay: 0.45s;
+}
+.barra-carga-container {
+    width: 600px;
+    height: 30px;
+    background-color: #43299e;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.barra-carga {
+    width: 0%;
+    height: 100%;
+    background-color: #fca8ff;
+    border-radius: 10px;
+    /*animation: cargar 5s linear forwards;*/
+}
+
+.porcentaje {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+    font-family: 'Overpass', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+
+    z-index: 2;
+}
+.loader.oculto {
+    opacity: 0;
+    pointer-events: none;
+}
 /*Header*/
 .header {
     height: 80px;
@@ -271,7 +343,6 @@ border: 1px solid rgba(255, 255, 255, 0.3);
 transition: all 0.2s ease;
 }
 
-
 .game-info-grid {
    display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -406,11 +477,6 @@ transition: all 0.2s ease;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.btn-submit:hover {
-  background-color: #d946ef;
-  transform: scale(1.02);
 }
 
 /* Lista de Comentarios Publicados */
@@ -559,6 +625,42 @@ transition: all 0.2s ease;
     height: auto; 
     margin-bottom: 10px;
  } 
+ /* Estilos para el bloque de Newsletter */
+.newsletter {
+    margin-top: 25px;
+    max-width: 280px; /* Ajusta según el ancho de la columna */
+}
+
+.newsletter p {
+    font-size: 13px;
+    color: #d1d1d1;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+/* Contenedor del input y botón */
+.newsletter-form {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ffffff; /* Línea blanca inferior */
+    padding-bottom: 5px;
+    gap: 10px;
+}
+
+/* Campo de correo */
+.newsletter-form input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-size: 13px;
+    flex: 1; /* Ocupa el espacio disponible a la izquierda */
+}
+
+.newsletter-form input::placeholder {
+    color: #a090c0; /* Color suave para el placeholder */
+}
+
 .copyright { 
     text-align: center;
     margin-top: 40px; 
@@ -714,32 +816,23 @@ transition: all 0.2s ease;
 /*HOVER DE LAS CARD*/
 /*transicion para que el efecto sea fluido al entrar y salir*/
 .juego {
-  transition: transform 0.3 ease, box shadow 0.3 ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .juego img {
   transition: transform 0.3s ease;
 }
-.btn-jugar, .btn-carrito {
-  transition: transform 0.2s ease, filter 0.2s ease;
-}
+
 /*efecto al pasar el cursor sobre la card*/
 
 /*tajeta sube ligeramente y gana un sombra*/
 .juego:hover {
-  transform: translate(-6px);
+  transform: translateY(-6px) skew(3deg, 0);
   box-shadow: 0 20px 30px rgba(67, 41, 158, 0.5);
 }
 /* La imagen de fondo hace un zoom sutil sin salirse de los bordes */
 .juego:hover img {
   transform: scale(1.08);
 }
-/* El botón activo (ya sea Jugar o Carrito) resalta sutilmente */
-.juego:hover .btn-jugar,
-.juego:hover .btn-carrito {
-  transform: scale(1.05);
-  filter: brightness(1.15); /* Le da más brillo al color del botón */
-}
-
 /*BANNER*//* BANNER PRINCIPAL (100% Ancho y más Alto) */
 .banner-principal {
   position: relative;
@@ -751,18 +844,41 @@ transition: all 0.2s ease;
   height: 480px;                /* Bastante más alto para que impacte */
   overflow: hidden;
   border-radius: 0 0 24px 24px; /* Curvatura opcional abajo */
+  perspective: 1200px;
 }
 
-/* Imagen de Fondo */
+.banner-3d {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    perspective: 1200px;
+}
+
 .banner-fondo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;            /* Cubre todo el área sin deformarse */
-  object-position: center;      /* Centra los personajes de la imagen */
-  display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
 }
 
-/* Flechas Laterales */
+.banner-frente,
+.banner-atras {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.banner-frente {
+    transform: rotateY(0deg);
+}
+
+.banner-atras {
+    transform: rotateY(180deg);
+}
 .flecha {
   position: absolute;
   top: 50%;
@@ -815,11 +931,6 @@ transition: all 0.2s ease;
   cursor: pointer;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
   transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-.boton:hover {
-  transform: scale(1.08);
-  background-color: #a88ff0;
 }
 
 /* Dots / Puntos del slider */
@@ -875,4 +986,198 @@ transition: all 0.2s ease;
   font-size: 9px;
   text-decoration: line-through;
   opacity: 0.7;
+}
+
+
+.juego.rebotando {
+  animation: rebote-cards 0.9s ease;
+}
+
+/*Animacion hover*/
+.btn-jugar,
+.boton {
+    position: relative;
+    overflow: hidden;
+    border: none;
+    transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+.btn-jugar::before,
+.boton::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 3px solid #FCA8FF;
+    border-radius: inherit;
+    clip-path: inset(0 100% 0 0);
+}
+
+.btn-jugar:hover,
+.boton:hover {
+    transform: scale(1.08);
+    background-color: #8c71d6;
+    color: #FCA8FF;
+}
+
+.btn-jugar:hover::before,
+.boton:hover::before {
+    animation: recorrer-borde 3s linear forwards;
+}
+
+.btn-jugar span,
+.boton span {
+    display: inline-block;
+}
+
+.btn-jugar:hover span,
+.boton:hover span {
+    animation: mover-texto 1.0s ease;
+}
+
+/*Girar el banner*/
+.banner-3d.girar-derecha .banner-frente {
+    animation: frente-derecha 1.0s ease-in-out forwards;
+}
+
+.banner-3d.girar-derecha .banner-atras {
+    animation: atras-derecha 1.0s ease-in-out forwards;
+}
+
+.banner-3d.girar-izquierda .banner-frente {
+    animation: frente-izquierda 1.0s ease-in-out forwards;
+}
+
+.banner-3d.girar-izquierda .banner-atras {
+    animation: atras-izquierda 1.0s ease-in-out forwards;
+}
+
+/*Girar el banner*/
+@keyframes frente-derecha {
+    from {
+        transform: rotateY(0deg);
+    }
+
+    to {
+        transform: rotateY(-180deg);
+    }
+}
+
+@keyframes atras-derecha {
+    from {
+        transform: rotateY(180deg);
+    }
+
+    to {
+        transform: rotateY(0deg);
+    }
+}
+
+
+@keyframes frente-izquierda {
+    from {
+        transform: rotateY(0deg);
+    }
+
+    to {
+        transform: rotateY(180deg);
+    }
+}
+
+@keyframes atras-izquierda {
+    from {
+        transform: rotateY(-180deg);
+    }
+
+    to {
+        transform: rotateY(0deg);
+    }
+}
+
+/*Mover texto del boton*/
+@keyframes mover-texto {
+     0% {
+        transform: scaleX(1);
+    }
+
+    35% {
+        transform: scaleX(1.25);
+    }
+
+    60% {
+        transform: scaleX(0.9);
+    }
+
+    80% {
+        transform: scaleX(1.1);
+    }
+
+    100% {
+        transform: scaleX(1);
+    }
+}
+
+/*Recorrer borde del boton*/
+@keyframes recorrer-borde {
+    0% {
+        clip-path: inset(0 100% 0 0);
+    }
+    25% {
+        clip-path: inset(0 0 100% 0);
+    }
+    50% {
+        clip-path: inset(0 0 0 100%);
+    }
+    75% {
+        clip-path: inset(100% 0 0 0);
+    }
+    100% {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+/*Animacion de rebote para las cards*/
+@keyframes rebote-cards {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+
+  30% {
+    transform: translateY(-12px) scale(1.03);
+  }
+
+  55% {
+    transform: translateY(5px) scale(0.98);
+  }
+
+  75% {
+    transform: translateY(-5px) scale(1.01);
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+/*Loader*/
+@keyframes bounce {
+  0%, 100% {transform: translateY(0) scale(1.6, 0.5);}
+  15% { transform: translateY(-8px) scale(0.85, 1.2); }
+  50% { transform: translateY(-24px) scale(1, 1); }
+  85% { transform: translateY(-8px) scale(0.85, 1.2); }
+}
+
+@keyframes cargar {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes ocultar-loader {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
 }

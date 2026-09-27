@@ -1,3 +1,21 @@
+const barra = document.querySelector(".barra-carga");
+const porcentaje = document.querySelector(".porcentaje");
+
+let progreso = 0;
+
+const carga = setInterval(() => {
+
+    progreso++;
+
+    barra.style.width = progreso + "%";
+    porcentaje.textContent = progreso + "%";
+
+    if (progreso >= 100) {
+        clearInterval(carga);
+    }
+
+}, 50);
+
 const carruseles = document.querySelectorAll(".carrusel");
 
 carruseles.forEach(carrusel => {
@@ -11,6 +29,16 @@ carruseles.forEach(carrusel => {
             left: 300,
             behavior: "smooth"
         });
+        const cards = juegos.querySelectorAll(".juego");
+
+        cards.forEach(card => {
+        card.classList.remove("rebotando");
+
+        void card.offsetWidth;
+
+        card.classList.add("rebotando");
+    });
+
     });
 
     izquierda.addEventListener("click", () => {
@@ -18,6 +46,15 @@ carruseles.forEach(carrusel => {
             left: -300,
             behavior: "smooth"
         });
+        const cards = juegos.querySelectorAll(".juego");
+
+        cards.forEach(card => {
+        card.classList.remove("rebotando");
+
+        void card.offsetWidth;
+
+        card.classList.add("rebotando");
+    });
     });
 
 });
@@ -109,37 +146,77 @@ fetch('https://vj.interfaces.jima.com.ar/api/v2')
 
   return tarjeta;
 }
-  //banner
-const imagenes = [
-  'assets/img/pegsolitaire (2).jpg',
-  'assets/img/images (10).jpg',
-  'assets/img/banner-robox.jpeg' // Reemplaza por el nombre de tu 3ra imagen
-];
-let i =0;
 
-const imgBanner = document.getElementById('banner-img');
+const imagenes = [
+    'assets/img/pegsolitaire (2).jpg',
+    'assets/img/images (10).jpg',
+    'assets/img/banner-robox.jpeg'
+];
+
+let i = 0;
+
+const banner3d = document.querySelector('.banner-3d');
+const frente = document.getElementById('banner-frente');
+const atras = document.getElementById('banner-atras');
 const dots = document.querySelectorAll('.dot');
 
-// 2. Función básica que cambia la foto y pinta el punto activo
-function cambiarFoto(nuevoIndice) {
-  i = nuevoIndice;
-  imgBanner.src = imagenes[i];
+function cambiarFoto(nuevoIndice, direccion) {
 
-  // Despintamos todos los puntos y pintamos solo el actual
-  dots.forEach(dot => dot.classList.remove('activo'));
-  dots[i].classList.add('activo');
+    i = nuevoIndice;
+
+    // La imagen que viene se pone atrás
+    atras.src = imagenes[i];
+
+    // Sacamos cualquier animación anterior
+    banner3d.classList.remove('girar-derecha', 'girar-izquierda');
+
+    // Forzamos que el navegador reinicie la animación
+    void banner3d.offsetWidth;
+
+    // Giramos según la dirección
+    if (direccion === 'derecha') {
+        banner3d.classList.add('girar-derecha');
+    } else {
+        banner3d.classList.add('girar-izquierda');
+    }
+
+    // Cambiamos el punto
+    dots.forEach(dot => dot.classList.remove('activo'));
+    dots[i].classList.add('activo');
+
+    // Cuando termina el giro, dejamos la nueva imagen adelante
+    setTimeout(() => {
+        frente.src = imagenes[i];
+
+        banner3d.classList.remove('girar-derecha', 'girar-izquierda');
+
+        frente.style.transform = 'rotateY(0deg)';
+        atras.style.transform = 'rotateY(180deg)';
+    }, 800);
 }
 
-// 3. Botón Siguiente
+
+// SIGUIENTE
 document.getElementById('banner-next').addEventListener('click', () => {
-  i++;
-  if (i >= imagenes.length) i = 0; // Si pasa de la última, vuelve a la primera
-  cambiarFoto(i);
+
+    i++;
+
+    if (i >= imagenes.length) {
+        i = 0;
+    }
+
+    cambiarFoto(i, 'derecha');
 });
 
-// 4. Botón Anterior
+
+// ANTERIOR
 document.getElementById('banner-prev').addEventListener('click', () => {
-  i--;
-  if (i < 0) i = imagenes.length - 1; // Si baja de 0, va a la última
-  cambiarFoto(i);
+
+    i--;
+
+    if (i < 0) {
+        i = imagenes.length - 1;
+    }
+
+    cambiarFoto(i, 'izquierda');
 });

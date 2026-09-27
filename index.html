@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div class="loader">
+        <div class="loading-bar">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="barra-carga-container">
+            <div class="barra-carga"></div>
+            <span class="porcentaje">0%</span>
+        </div>
+    </div>
+
     <header class="header">
         <button class="menu-btn"> <img src="assets/img/menu.png" alt="menu"> </button>
         <a href="index.html" class="logo">
@@ -43,24 +56,36 @@
         </div>
     </nav>
     <main>
-        <section class="banner-principal">
-  <img id="banner-img" src="assets/img/pegsolitaire (2).jpg" alt="Juego Destacado" class="banner-fondo">
+    <section class="banner-principal">
+        <div class="banner-3d">
+            <img id="banner-frente"
+                src="assets/img/pegsolitaire (2).jpg"
+                alt="Juego Destacado"
+                class="banner-fondo banner-frente">
 
-  <button class="flecha izquierda" id="banner-prev">‹</button>
-  <button class="flecha derecha" id="banner-next">›</button>
+            <img id="banner-atras"
+                src="assets/img/images (10).jpg"
+                alt="Juego Destacado"
+                class="banner-fondo banner-atras">
+        </div>
 
-  <!-- Contenido flotante -->
-  <div class="banner-contenido">
-    <a href="juego.html" class="boton">Jugar ahora</a>
-    
-    <!-- Dots / Indicadores -->
-    <div class="banner-dots">
-      <span class="dot activo" data-index="0"></span>
-      <span class="dot" data-index="1"></span>
-      <span class="dot" data-index="2"></span>
-    </div>
-  </div>
-</section>
+        <button class="flecha izquierda" id="banner-prev">‹</button>
+        <button class="flecha derecha" id="banner-next">›</button>
+
+        <!-- Contenido flotante -->
+        <div class="banner-contenido">
+            <a href="juego.html" class="boton">
+                <span>Jugar ahora</span>
+            </a>
+            
+            <!-- Dots / Indicadores -->
+            <div class="banner-dots">
+            <span class="dot activo" data-index="0"></span>
+            <span class="dot" data-index="1"></span>
+            <span class="dot" data-index="2"></span>
+            </div>
+        </div>
+    </section>
             <section class="carruseles">
                 <div class="carrusel">
                     <h2> Recomendados segun tus favoritos</h2>
@@ -101,29 +126,29 @@
 
 <div class="carrusel">                    
     <h2>Cocina</h2>
-                    <button class="flecha izquierda" id="banner-prev">‹</button>
+                    <button class="flecha izquierda">‹</button>
                         <div class="juegos" id="juegos-api">
                         <!-- Los juegos de la API se ponen aca -->
                        </div>
-                    <button class="flecha derecha" id="banner-next">›</button>
+                    <button class="flecha derecha">›</button>
                 </div> 
 
                  <div class="carrusel">
                     <h2>Puzzle</h2>
-                    <button class="flecha izquierda" id="banner-prev">‹</button>
+                    <button class="flecha izquierda">‹</button>
                         <div class="juegos" id="juegos-api">
                         <!-- Los juegos de la API se ponen aca -->
                        </div>
-                    <button class="flecha derecha" id="banner-next">›</button>
+                    <button class="flecha derecha">›</button>
                 </div> 
 
                 <div class="carrusel">
                     <h2>Accion</h2>
-                    <button class="flecha izquierda" id="banner-prev">‹</button>
+                    <button class="flecha izquierda">‹</button>
                         <div class="juegos" id="juegos-api">
                         <!-- Los juegos de la API se ponen aca -->
                        </div>
-                    <button class="flecha derecha" id="banner-next">›</button>
+                    <button class="flecha derecha">›</button>
                 </div> 
             </section>
     </main>
@@ -216,8 +241,11 @@
                 </div>
 
                 <div class="newsletter">
-                    <p>Suscribite a nuestros newsletters, obtené todas las novedados y un 5% off para tu primera compra! </p>
-                     <button class="btn">Enviar</button>
+                    <p>Suscribite a nuestros newsletters, obtené todas las novedades y un 5% off para tu primera compra!</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="maikuhn@live.com" required>
+                        <button type="submit" class="btn">Enviar</button>
+                    </form>
                 </div>
             </div>
         </div>

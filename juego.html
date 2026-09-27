@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div class="loader">
+        <div class="loading-bar">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="barra-carga-container">
+            <div class="barra-carga"></div>
+            <span class="porcentaje">0%</span>
+        </div>
+    </div>
+
     <header class="header">
         <button class="menu-btn"> <img src="assets/img/menu.png" alt="menu"> </button>
         <a href="index.html" class="logo">
@@ -20,25 +33,27 @@
         </div>
     </header>
     <nav class="menu">
-        <a href="#">Inicio</a>
+        <a href="#"> <img src="assets/img/inicio.png" alt=""> Inicio </a>
         <div class="menu-categorias">
-            <button class="btn-categorias">
-                Categorias
-                <span>›</span>
-            </button>
+            <a href="#" class="btn-categorias"> <img src="assets/img/inicio.png" alt="">
+            Categorias
+            <span>›</span>
+        </a>
             <div class="submenu">
-                <a href="#">Deporte</a>
-                <a href="#">Aventura</a>
-                <a href="#">Acción</a>
-                <a href="#">Cocina</a>
-                <a href="#">Puzzle</a>
-                <a href="#">En pareja</a>
+                <a class="cat" href="#"> <img src="assets/img/inicio.png" alt="">Deporte</a>
+                <a class="cat" href="#"> <img src="assets/img/inicio.png" alt="">Aventura</a>
+                <a class="cat" href="#"> <img src="assets/img/inicio.png" alt="">Acción</a>
+                <a class="cat" href="#"> <img src="assets/img/inicio.png" alt="">Cocina</a>
+                <a class="cat" href="#"> <img src="assets/img/inicio.png" alt="">Puzzle</a>
+                <a class="cat" href="#"> <img src="assets/img/inicio.png" alt="">En pareja</a>
             </div>
         </div>
-        <a href="#">Recientes</a>
+        <a href="#"> <img src="assets/img/inicio.png" alt="">Recientes</a>
         <a href="#">Clasificación</a>
-        <a href="#">Contactanos</a>
-        <a href="#">Compartir</a>
+        <div class="menu-inf"> 
+        <a href="#"> <img src="assets/img/inicio.png" alt="">Contactanos</a>
+        <a href="#"> <img src="assets/img/inicio.png" alt="">Compartir</a>
+        </div>
     </nav>
 <main class="game-page-container">
     <div class="main-content">
@@ -177,7 +192,7 @@
   </aside>
 
 </main>
-<footer class="footer">
+ <footer class="footer">
         <div class="footer-columnas">
             <div class="footer-columna">
                 <h3>Compañia</h3>
@@ -263,6 +278,14 @@
                     <img src="assets/img/whatsapp.png" alt="WhatsApp">
                     <img src="assets/img/instagram.png" alt="Instagram">
                     <img src="assets/img/youtube.png" alt="YouTube">
+                </div>
+
+                <div class="newsletter">
+                    <p>Suscribite a nuestros newsletters, obtené todas las novedades y un 5% off para tu primera compra!</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="maikuhn@live.com" required>
+                        <button type="submit" class="btn">Enviar</button>
+                    </form>
                 </div>
             </div>
         </div>
