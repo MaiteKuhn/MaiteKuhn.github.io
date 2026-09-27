@@ -251,18 +251,17 @@ h1, h2, h3 {
 }
 
 
-/*Iconos*/.acciones {
+/*Iconos*/
+.acciones {
   display: flex;
   align-items: center;
   gap: 20px;
 }
-
 .acciones button {
   background: none;
   border: none;
   cursor: pointer;
 }
-
 .acciones button img {
   width: 24px;
   height: 24px;
@@ -280,7 +279,6 @@ h1, h2, h3 {
 }
 
 /*pagina peg*/
-
 .game-page-container {
   display: grid;
   grid-template-columns: 1fr 320px; /* Columna principal adaptable + Sidebar fija */
@@ -297,32 +295,28 @@ h1, h2, h3 {
     font-size: 0.9rem;
     color: #a288d4;}
 .breadcrumb a {
-color: #a288d4;
+  color: #a288d4;
   text-decoration: none;
 }
 .breadcrumb span {
   color: #d946ef;
   font-weight: 600;
 }
-
 /*marco del juego*/
 .game-portada {
-  background-color: #1a0b36;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid #5b21b6;
-  box-shadow: 0 0 15px rgba(91, 33, 182, 0.4);
+  width: 1080px;
 }
 .game-img img{
-    width: 1000px;
-    max-height: 480px;
+    width: 1080px;
+    height: 480px;
     object-fit: cover;
     object-position: top center;
     display: block;
-    padding: 16px;
-    margin: 0 auto;
 }
 .game-bar {
+    width: 1080px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -344,7 +338,8 @@ transition: all 0.2s ease;
 }
 
 .game-info-grid {
-   display: grid;
+  display: grid;
+  width: 1080px;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
@@ -367,8 +362,8 @@ transition: all 0.2s ease;
 
 /*galeria de imagenes*/
 .gallery-section {
+  width: 1080px;
   border-radius: 8px;
-  padding: 16px;
 }
 
 .gallery-section h3 {
@@ -390,7 +385,7 @@ transition: all 0.2s ease;
   transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
   cursor: pointer;
 }
-/*hover de img*/
+/*hover de galeria*/
 .carousel-container img:hover {
   opacity: 1;
   transform: scale(1.03);
@@ -581,7 +576,7 @@ transition: all 0.2s ease;
     margin-bottom: 40px;
 }
 
-.juegos {
+.carruseles .juegos {
     display: flex;
     gap: 20px;
     overflow: hidden;
