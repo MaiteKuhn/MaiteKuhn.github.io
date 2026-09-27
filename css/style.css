@@ -519,7 +519,8 @@ transition: all 0.2s ease;
     display: flex;
     gap: 20px;
     overflow: hidden;
-    width: 100%;
+    margin-left: 70px;
+    margin-right: 70px;
 }
 
 .juego {
@@ -529,29 +530,6 @@ transition: all 0.2s ease;
 .juego img {
     width: 100%;
     display: block;
-}
-
-.flecha-carrusel {
-    position: absolute;
-    top: 65px;
-    transform: translateY(-50%);
-    width: 45px;
-    height: 45px;
-    border: none;
-    border-radius: 50%;
-    background-color: white;
-    color: black;
-    font-size: 30px;
-    cursor: pointer;
-    z-index: 10;
-}
-
-.flecha-carrusel.izquierda {
-    left: 10px;
-}
-
-.flecha-carrusel.derecha {
-    right: 10px;
 }
 .footer { 
     padding: 40px; 
@@ -590,14 +568,10 @@ transition: all 0.2s ease;
     margin: 20px auto 0 auto;
 }
 .login {
-     min-height: calc(100vh - 80px);
+    min-height: 100vh;
     background-image: url("../assets/img/fondo-form.png");
     background-size: cover;
     background-repeat: no-repeat;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .login-box {
@@ -606,6 +580,7 @@ transition: all 0.2s ease;
     background-color: #291765;
     border-radius: 15px;
     text-align: center;
+    margin: 50px auto 50px;
 }
 
 .login-box h1 {
@@ -629,19 +604,6 @@ transition: all 0.2s ease;
     font-size: 16px;
     outline: none;
 }
-
-.login-box button {
-    height: 45px;
-    border: none;
-    border-radius: 7px;
-    background-color: #9d8bd8;
-    color: #24145c;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-
 
 /*Cards*/
 .juego {
@@ -691,7 +653,7 @@ transition: all 0.2s ease;
   font-size: 11px;
   color: #ffffff;
 }
-.btn-jugar {
+.btn {
   background-color: #9B8AD5;
   color: #ffffff;
   border: none;
@@ -801,12 +763,15 @@ transition: all 0.2s ease;
 }
 
 /* Flechas Laterales */
-.banner-flecha {
+.flecha {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   background-color: rgba(67, 41, 158, 0.75);
-  color: #ffffff;
+  color: #9B8AD5;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  height: 140px;
   border: none;
   font-size: 28px;
   padding: 20px 14px;
@@ -817,13 +782,13 @@ transition: all 0.2s ease;
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.banner-flecha:hover {
+.flecha:hover {
   background-color: #5c38d6;
   transform: translateY(-50%) scale(1.08);
 }
 
-.banner-flecha.izquierda { left: 20px; }
-.banner-flecha.derecha   { right: 20px; }
+.flecha.izquierda { left: 20px; }
+.flecha.derecha   { right: 20px; }
 
 /* Capa de Contenido Central (Jugar ahora + Dots) */
 .banner-contenido {
@@ -838,11 +803,12 @@ transition: all 0.2s ease;
   z-index: 10;
 }
 
-.btn-jugar-banner {
+.boton {
   background-color: #8c71d6;
-  color: #ffffff;
+  color: #43299e;
   border: none;
   padding: 12px 32px;           /* Botón más grande y llamativo */
+  text-decoration: none;
   border-radius: 12px;
   font-weight: bold;
   font-size: 16px;
@@ -851,7 +817,7 @@ transition: all 0.2s ease;
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-.btn-jugar-banner:hover {
+.boton:hover {
   transform: scale(1.08);
   background-color: #a88ff0;
 }

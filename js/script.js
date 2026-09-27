@@ -102,7 +102,7 @@ fetch('https://vj.interfaces.jima.com.ar/api/v2')
             <p>${game.name}</p>
             <span class="likes">🤍 ${game.rating}k</span>
           </div>
-          <button class="btn-jugar">Jugar</button>
+          <button class="btn">Jugar</button>
       </div>
     `;
   }
