@@ -19,7 +19,7 @@ h1, h2, h3 {
     left: 0;
     width: 100%;
     height: 100%;
-   background-color: #24145c;
+    background-color: #24145c;
     display: flex;
     flex-direction: column;
     justify-content: center;
