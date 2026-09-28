@@ -195,28 +195,20 @@ function cambiarFoto(nuevoIndice, direccion) {
     }, 800);
 }
 
-
 // SIGUIENTE
 document.getElementById('banner-next').addEventListener('click', () => {
-
     i++;
-
     if (i >= imagenes.length) {
         i = 0;
     }
-
     cambiarFoto(i, 'derecha');
 });
 
-
 // ANTERIOR
 document.getElementById('banner-prev').addEventListener('click', () => {
-
     i--;
-
     if (i < 0) {
         i = imagenes.length - 1;
     }
-
     cambiarFoto(i, 'izquierda');
 });
