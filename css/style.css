@@ -85,7 +85,7 @@ h1, h2, h3 {
     pointer-events: none;
 }
 /*Header*/
-/* Header Base */
+
 .header {
   display: flex;
   align-items: center;
@@ -98,9 +98,6 @@ h1, h2, h3 {
 
 /* Buscador */
 .buscador {
-  display: flex;
-  align-items: center;
-  width: 45%;
   height: 40px;
   background-color: #43299e;
   border-radius: 7px;
@@ -115,6 +112,7 @@ h1, h2, h3 {
   padding: 0 15px;
   color: #ffffff;
   font-size: 15px;
+  
 }
 
 .buscador input::placeholder {
@@ -138,7 +136,7 @@ h1, h2, h3 {
   gap: 12px;
 }
 
-.dropdown-item {
+.desplegable-item {
   position: relative;
 }
 
@@ -165,8 +163,8 @@ h1, h2, h3 {
   transform: translateY(-2px);
 }
 
-/* Dropdown Menus */
-.dropdown-menu {
+/* desplegable Menus */
+.desplegable-menu {
   position: absolute;
   top: 100%;
   right: 0;
@@ -183,13 +181,13 @@ h1, h2, h3 {
   transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
 }
 
-.dropdown-item:hover .dropdown-menu {
+.desplegable-item:hover .desplegable-menu {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
 }
 
-.dropdown-menu h2 {
+.desplegable-menu h2 {
   color: #ff88ff;
   font-family: monospace;
   font-size: 1.3rem;
@@ -230,13 +228,13 @@ h1, h2, h3 {
   color: #bbb;
 }
 
-.dropdown-menu ul {
+.desplegable-menu ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.dropdown-menu ul li a {
+.desplegable-menu ul li a {
   color: #ffffff;
   text-decoration: none;
   display: block;
@@ -245,7 +243,7 @@ h1, h2, h3 {
   transition: color 0.2s ease;
 }
 
-.dropdown-menu ul li a:hover {
+.desplegable-menu ul li a:hover {
   color: #ff88ff;
 }
 
@@ -839,8 +837,7 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
     display: flex;
     gap: 20px;
     overflow: hidden;
-    margin-left: 70px;
-    margin-right: 70px;
+
 }
 
 .juego {
@@ -910,11 +907,9 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
     font-size: 13px;
     flex: 1; /* Ocupa el espacio disponible a la izquierda */
 }
-
 .newsletter-form input::placeholder {
     color: #a090c0; /* Color suave para el placeholder */
 }
-
 .copyright { 
     text-align: center;
     margin-top: 40px; 
@@ -929,7 +924,6 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
     background-size: cover;
     background-repeat: no-repeat;
 }
-
 .login-box {
     width: 400px;
     padding: 40px;
@@ -938,15 +932,11 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
     text-align: center;
     margin: 50px auto 50px;
 }
-
-
-
 .login-box form {
     display: flex;
     flex-direction: column;
     gap: 18px;
 }
-
 .login-box input {
     height: 45px;
     padding: 0 15px;
@@ -1009,8 +999,8 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
 
 
 /* CARDS EN OFERTA*/
-/* Badge de oferta (arriba a la izquierda) */
-.badge-oferta {
+/* Insignia de oferta (arriba a la izquierda) */
+.Insignia-oferta {
   position: absolute;
   background-color: #ff8c00; /* Naranja oferta */
   color: #ffffff;
@@ -1312,13 +1302,13 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
 .btn-card.activo { background: #10b981; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4); }
 .btn-card.activo .texto-jugar { opacity: 0; transform: translateY(-20px); }
 .btn-card.activo .contenido-play { opacity: 1; transform: scale(1) translateY(0); }
-/* Dots / Puntos del slider */
-.banner-dots {
+/* punto / Puntos del slider */
+.banner-punto {
   display: flex;
   gap: 10px;
 }
 
-.dot {
+.punto {
   width: 12px;
   height: 12px;
   background-color: rgba(255, 255, 255, 0.4);
@@ -1327,7 +1317,7 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
   transition: all 0.3s ease;
 }
 
-.dot.activo {
+.punto.activo {
   background-color: #FCA8FF;
   transform: scale(1.3);
   box-shadow: 0 0 10px #FCA8FF;
@@ -1558,4 +1548,267 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
         opacity: 0;
         visibility: hidden;
     }
+}
+ .titulo-mobile {
+  display: none;
+}
+  /* ESTILOS RESPONSIVE PARA MOBILE*/
+@media (max-width: 768px) {
+   .header {
+    padding: 10px 15px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  .logo img {
+    max-height: 25px;
+  }
+  /* Buscador desplegable compacto */
+  .buscador {
+    justify-content: flex-end;
+    margin: 0 10px;
+    width: 45px;
+  }
+  .buscador input {
+    position: absolute;
+    transition: 0.3s;
+    z-index: 10;
+  }
+  .buscador:hover input,
+   .buscador input:focus {
+    width: 160px;
+    opacity: 1;
+    background-color: #43299E;
+    padding: 6px 32px 6px 10px;
+    pointer-events: auto;
+  }
+  /* Acciones: Ocultar Favoritos (1º) y Carrito (2º) */
+  .acciones .desplegable-item:not(:last-child) {
+     display: none;
+    }
+  /* desplegable Menus en Mobile */
+  .desplegable-menu {
+     position: fixed;
+     top: 60px;
+     left: 10px;
+     right: 10px;
+     width: auto;
+     max-height: 80vh;
+     overflow-y: auto;
+    }
+  /* Mostrar desplegable activo al hacer tap en el botón */
+  .desplegable-item.active .desplegable-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  /* Menú Hamburguesa Off-Canvas */
+  .menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    padding: 20px 15px;
+    z-index: 1100;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  .menu.active, .menu.menu-abierto {
+    transform: translateX(0);
+  }
+  /* Submenú Categorías */
+  .submenu.submenu-abierto {
+    display: flex;
+  }
+  /* Fondo oscuro (superposicion) */
+  .superposicion {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1050;
+   }
+  .superposicion.active { 
+    display: block; 
+  }
+
+
+  /*Banner*/
+  .banner-principal {
+    width: 100%;
+    max-width: 100%;
+    left: 0;
+    right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    height: 300px; /* Altura ideal para smartphones */
+    border-radius: 0 0 18px 18px;
+  }
+
+  /* Aceleración por Hardware para la animación 3D */
+  .banner-3d, .banner-fondo {
+    will-change: transform;
+    transform-style: preserve-3d;
+  }
+
+  /* Flechas compactas de fácil acceso táctil */
+  .flecha {
+    height: 44px;
+    width: 44px;
+    padding: 0;
+    font-size: 22px;
+    border-radius: 50%; /* Botones circulares flotantes */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(67, 41, 158, 0.85);
+    margin: 0;
+  }
+
+  .flecha.izquierda { left: 10px; }
+  .flecha.derecha   { right: 10px; }
+
+  /* Desactivar hover en móviles para evitar estados pegados */
+  .flecha:hover {
+    transform: translateY(-50%);
+  }
+
+  /* Contenido flotante y Botón "Jugar ahora" */
+  .banner-contenido {
+    bottom: 16px;
+    gap: 12px;
+    width: 90%;
+  }
+
+  .boton {
+    padding: 10px 24px;
+    font-size: 15px;
+    border-radius: 10px;
+    width: auto;
+    text-align: center;
+  }
+
+  /* Indicadores / punto */
+  .banner-punto {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .punto {
+    width: 8px;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+
+  .punto.activo {
+    background-color: #8c71d6;
+    transform: scale(1.3);
+  }
+
+  /*CARRUSEL Y CARDS RESPONSIVE*/
+  .carrusel h2 {
+    font-size: 20px;
+  }
+  .carrusel .juegos {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 10px 5px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .carrusel .flecha,
+  .Insignia-oferta,
+  .info-card {
+    display: none !important;
+  }
+  .juego {
+    flex: 0 0 calc((100% - 20px) / 3);
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    padding-bottom: 5px;
+  }
+  .icon-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: #1a1a2e;
+  }
+  .icon-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .Insignia-oferta {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 28px;
+    height: 28px;
+    background: #ffffff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  .Insignia-pago svg {
+    width: 15px;
+    height: 15px;
+    fill: #fca8ff;
+  }
+  .titulo-mobile {
+    padding-left: 10px;
+    display: block;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+  }
+
+/*FOOTER*/
+  .footer-columnas {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .footer-columna {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+  }
+  .footer-columna summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+  }
+  .footer-columna h3 {
+    margin-bottom: 0;
+  }
+  .columna-contenido {
+    padding-top: 10px;
+    padding-left: 5px;
+  }
+  .columna-extra {
+    border-bottom: none;
+    margin-top: 15px;
+  }
+  .newsletter {
+    max-width: 100%;
+  }
 }
