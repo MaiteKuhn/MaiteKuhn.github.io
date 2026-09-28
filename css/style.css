@@ -84,134 +84,264 @@ h1, h2, h3 {
     pointer-events: none;
 }
 /*Header*/
+/* Header Base */
 .header {
-    height: 80px;
-    background-color: #291765;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #291765;
+  padding: 10px 20px;
 }
 
-/*Menu hamb*/
-/* Botón hamburguesa */
+
+
+/* Buscador */
+.buscador {
+  display: flex;
+  align-items: center;
+  width: 45%;
+  height: 40px;
+  background-color: #43299e;
+  border-radius: 7px;
+}
+
+.buscador input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0 15px;
+  color: #ffffff;
+  font-size: 15px;
+}
+
+.buscador input::placeholder {
+  color: #f0a1ff;
+  font-weight: 600;
+}
+
+.buscador button {
+  background: none;
+  border: none;
+  color: #f0a1ff;
+  font-size: 24px;
+  padding: 0 15px;
+  cursor: pointer;
+}
+
+/* Acciones (Íconos superior derecha) */
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dropdown-item {
+  position: relative;
+}
+
+.nav-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-btn img {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Dropdown Menus */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 280px;
+  background-color: #211059;
+  border-radius: 12px;
+  padding: 16px;
+  color: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+}
+
+.dropdown-item:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-menu h2 {
+  color: #ff88ff;
+  font-family: monospace;
+  font-size: 1.3rem;
+  margin: 0 0 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 6px;
+}
+
+.item-juego,
+.item-carrito {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+}
+
+.item-juego img,
+.item-carrito img {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.perfil-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.perfil-header .usuario {
+  font-weight: bold;
+  margin: 0;
+}
+
+.perfil-header .email {
+  font-size: 0.75rem;
+  color: #bbb;
+}
+
+.dropdown-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-menu ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  display: block;
+  padding: 5px 0;
+  font-size: 0.88rem;
+  transition: color 0.2s ease;
+}
+
+.dropdown-menu ul li a:hover {
+  color: #ff88ff;
+}
+
+/* Menú Hamburguesa Lateral */
 .menu-btn {
-    background: none;
-    border: none;
-    color: #f3a1ff;
-    font-size: 35px;
-    cursor: pointer;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
 }
 
-/* Menú principal */
+.menu-btn img {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
 .menu {
-    position: absolute;
-    top: 80px;
-    left: 0;
-    width: 220px;
-    padding: 25px 20px;
-    background-color: #291765;
-    border-radius: 5px; 
-    flex-direction: column;
-    gap: 15px;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    z-index: 100;
-    box-sizing: border-box;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 220px;
+  padding: 20px;
+  background-color: #291765;
+  border-radius: 0 0 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: 100;
+  box-shadow: 4px 10px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* Abrir menú */
 .menu.menu-abierto {
-    transform: translateX(0);
+  transform: translateX(0);
 }
 
-/* Links principales del menú */
-.menu a {
-    color: white;
-    text-decoration: none;
-    font-family: "Roboto", sans-serif;
-}
-
-/* Alineación de íconos y texto */
-.menu > a, .btn-categorias, .menu-inf a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-height: 17px;
-    transition: color 0.2s ease;
-    font-weight: 500;
-}
-
-.menu a:hover {
-    color: #f3a1ff;
-}
-
-/* Categorías */
-.menu-categorias {
-    width: 100%;
-}
-
+.menu a,
 .btn-categorias {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    width: 100%;
-    color: white;
-    font-family: "Roboto", sans-serif;
-    text-decoration: none;
+  color: #ffffff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: system-ui, sans-serif;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
 }
 
-/* Submenú con indentación idéntica a la imagen */
+.menu a img,
+.btn-categorias img {
+  width: 20px;
+  height: 20px;
+}
+
+.menu a:hover,
+.btn-categorias:hover {
+  color: #f3a1ff;
+}
+
 .submenu {
-    display: none;
-    flex-direction: column;
-    gap: 12px;
-    padding-left: 28px; /* Sangría a la derecha */
-    padding-top: 12px;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 30px;
+  padding-top: 8px;
 }
 
-/* Mostrar submenú */
 .submenu.submenu-abierto {
-    display: flex;
+  display: flex;
 }
 
-/* Links de las categorías */
-.menu .submenu a.cat {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #9d8bd8;
-    font-size: 15px;
+.submenu a.cat {
+  color: #9d8bd8;
+  font-size: 0.88rem;
 }
 
-.menu .submenu a.cat:hover {
-    color: #f0a1ff;
+.submenu a.cat:hover {
+  color: #f0a1ff;
 }
 
-/* Sección inferior con la línea divisora */
 .menu-inf {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.15); /* Línea divisora */
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.menu-inf a {
-    display: flex;
-    width: 100%;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 /*Logo*/
 .logo {
-    color: #e99aff;
-    font-size: 32px;
-    font-weight: bold;
-    letter-spacing: 3px;
+display: flex;
+}
+.logo img {
+  width: auto;
+  display: block;
 }
 /*Barra buscador*/
 .buscador {
@@ -258,7 +388,6 @@ h1, h2, h3 {
   gap: 20px;
 }
 .acciones button {
-  background: none;
   border: none;
   cursor: pointer;
 }
@@ -343,21 +472,144 @@ gap: 10px;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
+/*animacion como jugar*/
+/* Contenedor exterior */
 .info-block {
-  border: 5px solid #2D1766;
-  border-radius: 8px;
+  border: 4px solid #2d1766;
+  border-radius: 12px;
   padding: 16px;
+  display: inline-block;
+  background-color: #12072b;
 }
 .info-block h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #2D1766;
+  color: #fca8ff;
+  margin: 0 0 16px 0;
+  font-size: 1.2rem;
+  text-align: left;
+  border-bottom: 1px solid #321973;
   padding-bottom: 6px;
 }
-.info-block p {
+
+
+/* Tarjeta principal */
+.tarjeta-controles {
+  background-color: #1a0b40;
+  border: 1px solid #321973;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
   color: #ffffff;
-  line-height: 1.4;
-  margin: 0;
+}
+
+
+
+/* Alineación de íconos */
+.bloque-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.mouse-contenedor {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70%;
+}
+.icono-mouse{
+  width: 45px;
+  height: auto;
+  display: block;
+}
+
+/* Animaciones simples con Transition en Hover */
+.icono-flechas-v{
+  position: absolute;
+  font-size: 1.5rem;
+  left: 32px;
+  color: ff88ff;
+  animation: moverVertical 1.2s ease-in-out infinite alternate;
+}
+@keyframes moverVertical {
+  0% {
+    transform: translateY(4px);  /* Posición abajo */
+  }
+  100% {
+    transform: translateY(-4px); /* Posición arriba */
+  }
+}
+
+.icono-flechas-h{
+  font-size: 1.5rem;
+  color: ff88ff;
+  display: block;
+  margin-top: 12px;
+animation: moverHorizontal 1.2s ease-in-out infinite alternate;
+}
+@keyframes moverHorizontal {
+  0% {
+    transform: translateX(-5px); /* Posición izquierda */
+  }
+  100% {
+    transform: translateX(5px);  /* Posición derecha */
+  }
+}
+
+.btn-mouse-click {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  transition: transform 0.15s ease; /* Transición al interactuar */
+}
+
+.btn-mouse-click img {
+  width: 45px;
+  height: auto;
+  display: block;
+}
+
+.btn-mouse-click:hover {
+  transform: scale(1.1);
+}
+
+.btn-mouse-click:active {
+  transform: scale(0.9);
+}
+
+.etiqueta {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 6px 0 0 0;
+  color: #ffffff;
+}
+
+
+
+/* Botón de Click */
+.btn-mouse-click {
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.15s ease;
+}
+
+.btn-mouse-click:hover {
+  transform: scale(1.15);
+}
+
+.btn-mouse-click:active {
+  transform: scale(0.85);
+}
+
+.etiqueta {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 6px 0 6px 0;
+  color: #ffffff;
 }
 
 /*galeria de imagenes*/
@@ -680,10 +932,7 @@ gap: 10px;
     margin: 50px auto 50px;
 }
 
-.login-box h1 {
-    margin-bottom: 30px;
-    color: #fca8ff;
-}
+
 
 .login-box form {
     display: flex;
@@ -750,19 +999,7 @@ gap: 10px;
   font-size: 11px;
   color: #ffffff;
 }
-.btn {
-  background-color: #9B8AD5;
-  color: #ffffff;
-  border: none;
-  padding: 5px 12px;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: bold;
-  cursor:pointer;
-  white-space: nowrap;
-  box-shadow: 0 16px 26px rgba(28, 10, 57, 0.4);
-  box-shadow: inset 2px 2px 8px rgba(0, 0, 0, 0.4);
-}
+
 
 /* CARDS EN OFERTA*/
 /* Badge de oferta (arriba a la izquierda) */
@@ -785,18 +1022,59 @@ gap: 10px;
   gap: 2px;
 }
 
+/* Botón Base Carrito */
+/* Botón Carrito */
 .btn-carrito {
-  background-color: #FCA8FF; 
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  font: bold 10px sans-serif;
   color: #2e0854;
-  border: none;
-  padding: 4px 10px;
+  background: #FCA8FF;
+  border: 0;
   border-radius: 8px;
-  font-size: 10px;
-  font-weight: bold;
   cursor: pointer;
   white-space: nowrap;
+  overflow: hidden;
+  box-shadow: 0 3px 8px #fca8ff66;
+  transition: background .3s ease, color .3s ease;
 }
 
+.btn-carrito:hover {
+  background: #f886fc;
+  transform: translateY(-1px);
+}
+
+/* Transición ultra nítida */
+.texto-carrito, .contenido-agregado {
+  transition: transform .3s ease, opacity .2s ease;
+}
+
+.contenido-agregado {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.icono-carrito { width: 14px; height: 14px; fill: currentColor; }
+
+/* Estado Activo (Sin desenfoque) */
+.btn-carrito.activo { background: #10b981; color: #fff; }
+
+.btn-carrito.activo .texto-carrito {
+  opacity: 0;
+  transform: translateY(-15px);
+}
+
+.btn-carrito.activo .contenido-agregado {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
 .precio-actual {
   color: #ffaa00;
   font-size: 11px;
@@ -817,28 +1095,47 @@ gap: 10px;
   transition: transform 0.3s ease;
 }
 
-/*efecto al pasar el cursor sobre la card*/
-
 /*tajeta sube ligeramente y gana un sombra*/
 .juego:hover {
   transform: translateY(-6px) skew(3deg, 0);
   box-shadow: 0 20px 30px rgba(67, 41, 158, 0.5);
 }
-/* La imagen de fondo hace un zoom sutil sin salirse de los bordes */
 .juego:hover img {
   transform: scale(1.08);
+}
+.descripcion-hover {
+  display: -webkit-box;
+ -webkit-line-clamp: 2;
+ -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  overflow: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease;
+  font-size: 0.85rem;
+  color: #ccc;
+  margin: 0;
+}
+.juego:hover .descripcion-hover {
+  max-height: 3rem; 
+  opacity: 1;
+  transform: translateY(0);
+  margin-top: 6px;
 }
 /*BANNER*//* BANNER PRINCIPAL (100% Ancho y más Alto) */
 .banner-principal {
   position: relative;
-  width: 100vw;                 /* Ocupa el 100% del ancho de la pantalla */
-  left: 50%;                    /* Truco para romper contenedores con padding */
+  width: 100vw;                
+  left: 50%;                    
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-  height: 480px;                /* Bastante más alto para que impacte */
+  height: 480px;               
   overflow: hidden;
-  border-radius: 0 0 24px 24px; /* Curvatura opcional abajo */
+  border-radius: 0 0 24px 24px; 
   perspective: 1200px;
 }
 
@@ -889,7 +1186,7 @@ gap: 10px;
   border-radius: 10px;
   cursor: pointer;
   z-index: 10;
-  backdrop-filter: blur(4px);   /* Efecto moderno de desenfoque */
+  backdrop-filter: blur(4px);   
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
@@ -901,7 +1198,6 @@ gap: 10px;
 .flecha.izquierda { left: 20px; }
 .flecha.derecha   { right: 20px; }
 
-/* Capa de Contenido Central (Jugar ahora + Dots) */
 .banner-contenido {
   position: absolute;
   bottom: 30px;                 
@@ -918,7 +1214,7 @@ gap: 10px;
   background-color: #8c71d6;
   color: #43299e;
   border: none;
-  padding: 12px 32px;           /* Botón más grande y llamativo */
+  padding: 12px 32px;          
   text-decoration: none;
   border-radius: 12px;
   font-weight: bold;
@@ -927,7 +1223,88 @@ gap: 10px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
+/* Contenedor principal de la barra de total */
+.total-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0 0 0;
+  margin-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
 
+/* Texto del Total */
+.total-bar span {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+/* Botón Comprar */
+.boton-comprar {
+  background-color: #a288d4;
+  color: #1a0b40;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+/* Efectos al pasar el cursor y hacer clic */
+.boton-comprar:hover {
+  background-color: #f0a1ff;
+}
+
+.boton-comprar:active {
+  transform: scale(0.95);
+}
+/*boton jugar */
+.btn-card {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #fff;
+  background: #8c71d6;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(140, 113, 214, 0.3);
+  transition: all 0.4s ease;
+}
+
+.btn-card:hover {
+  background: #7952e4;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(140, 113, 214, 0.45);
+}
+
+/* Textos y Animación */
+.texto-jugar, .contenido-play {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+}
+
+.contenido-play {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  transform: scale(0.3) translateY(15px);
+}
+
+.icono-play { width: 18px; height: 18px; fill: currentColor; }
+
+/* Estado Activo (Clic) */
+.btn-card.activo { background: #10b981; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4); }
+.btn-card.activo .texto-jugar { opacity: 0; transform: translateY(-20px); }
+.btn-card.activo .contenido-play { opacity: 1; transform: scale(1) translateY(0); }
 /* Dots / Puntos del slider */
 .banner-dots {
   display: flex;
@@ -949,7 +1326,6 @@ gap: 10px;
   box-shadow: 0 0 10px #FCA8FF;
 }
 /*card de la pagina juegos*/
-/* Sobrescritura exclusiva para la columna de Recomendados */
 .juegos-recomendados .juegos {
   display: flex;
   flex-direction: column;
@@ -958,7 +1334,7 @@ gap: 10px;
 
 .juegos-recomendados .juego {
   width: 100%;        
-  height: 140px;        /* Mantiene la altura proporcional del diseño deseado */
+  height: 140px;       
   margin-top: 0;
   margin-bottom: 0;
 }
@@ -974,7 +1350,7 @@ gap: 10px;
 .juegos-recomendados .precio-actual {
   font-size: 11px;
   font-weight: bold;
-  color: #ffcc00; /* Color destacado para el precio */
+  color: #ffcc00; 
 }
 
 .juegos-recomendados .precio-viejo {

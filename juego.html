@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-     <div class="loader">
+    <div class="loader">
         <div class="loading-bar">
             <div></div>
             <div></div>
@@ -21,17 +21,83 @@
     </div>
 
     <header class="header">
-        <button class="menu-btn"> <img src="assets/img/menu.png" alt="menu"> </button>
-        <a href="index.html" class="logo">
-            <img src="assets/img/LogoGamingNav 2.png" alt="logo">
-        </a>
-        <div class="buscador"> <input type="text" placeholder="Buscar"> <button>⌕</button> </div>
-        <div class="acciones">
-                <button><img src="assets/img/fav.png" alt="Favoritos"></button>
-                <button><img src="assets/img/carrito.png" alt="Carrito"></button>
-                <button><img src="assets/img/user.png" alt="Usuario"></button>
+  <button class="menu-btn"><img src="assets/img/menu.png" alt="menu"></button>
+  <a href="index.html" class="logo">
+    <img src="assets/img/LogoGamingNav 2.png" alt="logo">
+  </a>
+  <div class="buscador">
+    <input type="text" placeholder="Buscar">
+    <button>⌕</button>
+  </div>
+
+  <div class="acciones">
+    <!-- FAVORITOS -->
+    <div class="dropdown-item">
+      <button class="nav-btn"><img src="assets/img/fav.png" alt="Favoritos"></button>
+      <div class="dropdown-menu">
+        <h2>Mis favoritos</h2>
+        <div class="dropdown-contenido">
+          <div class="item-juego">
+            <img src="assets/img/images (10).jpg" alt="Game">
+            <p>Lucky Brainrot Blocks Online</p>
+          </div>
+          <div class="item-juego">
+            <img src="assets/img/images (6).jpg" alt="Game">
+            <p>Peg Solitaire : Aventura en el norte Argentino</p>
+          </div>
         </div>
-    </header>
+      </div>
+    </div>
+
+    <!-- CARRITO -->
+    <div class="dropdown-item">
+      <button class="nav-btn"><img src="assets/img/carrito.png" alt="Carrito"></button>
+      <div class="dropdown-menu">
+        <h2>Carrito</h2>
+        <div class="dropdown-contenido">
+          <div class="item-carrito">
+            <img src="assets/img/images (1).jpg" alt="Game">
+            <span>SkillWarz</span>
+            <b>$10.000</b>
+            <button class="btn-borrar">🗑</button>
+          </div>
+          <div class="item-carrito">
+            <img src="assets/img/images (2).jpg" alt="Game">
+            <span>Knights & Brides</span>
+            <b>$12.400</b>
+            <button class="btn-borrar">🗑</button>
+          </div>
+        </div>
+        <div class="total-bar">
+          <span>Total $32.400</span>
+          <button class="boton-comprar">Comprar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- USUARIO -->
+    <div class="dropdown-item">
+      <button class="nav-btn"><img src="assets/img/image-removebg-preview.png" alt="Usuario"></button>
+      <div class="dropdown-menu menu-perfil">
+        <div class="perfil-header">
+          <p class="usuario">@maikuhn09</p>
+          <span class="email">kmaite648@gmail.com</span>
+        </div>
+        <ul>
+          <li><a href="#">Mis juegos</a></li>
+          <li><a href="#">Mis favoritos</a></li>
+          <hr>
+          <li><a href="#">Preferencias de notificaciones</a></li>
+          <li><a href="#">Preferencias de privacidad</a></li>
+          <li><a href="#">Configuración de cuenta</a></li>
+          <li><a href="#">Cerrar sesión</a></li>
+          <br>
+          <li><a href="#">Soporte</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
     <nav class="menu">
         <a href="#"> <img src="assets/img/inicio.png" alt=""> Inicio </a>
         <div class="menu-categorias">
@@ -97,12 +163,29 @@
 
             ¡Pensá cada movimiento con cuidado y encontrá la combinación perfecta!</p>
     </div>
-    <div class="info-block">
-        <h3>Controles</h3>
-        <div class="controls-detail">
-            <img src="assets/img/Component 23@2x.png" alt="">        
-        </div>
+    <!--controles-->
+ <div class="info-block">
+        <h3 class="titulo-controles">Controles</h3>
+  <div class="tarjeta-controles">
+<p class="etiqueta"> Mover</p>
+    <div class="bloque-control">
+        <div class="mouse-contenedor">
+            <span class="icono-flechas-v">↕</span>
+        <img class="icono-mouse"  src="assets/img/mousee.png" alt="" srcset="">
+      </div>
+      <span class="icono-flechas-h">↔</span>
+      <p class="etiqueta">Seleccionar</p>
     </div>
+
+    <!-- Sección Click -->
+   <div class="bloque-control">
+      <button class="btn-mouse-click" aria-label="Click">
+        <img src="assets/img/mousee2.png" alt="Click Mouse">
+      </button>
+      <p class="etiqueta">Click</p>
+    </div>
+  </div>
+</div>
 </div>
 <!--imagenes-->
 <section class="gallery-section">
