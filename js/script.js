@@ -1,14 +1,15 @@
+//Loader inicio
 const barra = document.querySelector(".barra-carga");
 const porcentaje = document.querySelector(".porcentaje");
 
 let progreso = 0;
 
-const carga = setInterval(() => {
+const carga = setInterval(() => { //para saber qué intervalo cancelar
 
     progreso++;
 
-    barra.style.width = progreso + "%";
-    porcentaje.textContent = progreso + "%";
+    barra.style.width = progreso + "%"; //la barra se va llenando visualmente.
+    porcentaje.textContent = progreso + "%"; //Actualiza el texto para mostrar el número actual del porc
 
     if (progreso >= 100) {
         clearInterval(carga);
@@ -16,60 +17,43 @@ const carga = setInterval(() => {
 
 }, 50);
 
+//Movimiento carruseles
 const carruseles = document.querySelectorAll(".carrusel");
 
-carruseles.forEach(carrusel => {
-
+    carruseles.forEach(carrusel => {
     const juegos = carrusel.querySelector(".juegos");
     const izquierda = carrusel.querySelector(".izquierda");
     const derecha = carrusel.querySelector(".derecha");
 
-    derecha.addEventListener("click", () => {
-        juegos.scrollBy({
-            left: 300,
-            behavior: "smooth"
+    function mover(distancia) {
+        juegos.scrollBy({ left: distancia, 
+                          behavior: "smooth" //no movimiento brusco 
         });
-        const cards = juegos.querySelectorAll(".juego");
 
-        cards.forEach(card => {
-        card.classList.remove("rebotando");
-
-        void card.offsetWidth;
-
-        card.classList.add("rebotando");
-    });
-
-    });
-
-    izquierda.addEventListener("click", () => {
-        juegos.scrollBy({
-            left: -300,
-            behavior: "smooth"
+        juegos.querySelectorAll(".juego").forEach(card => {
+            card.classList.remove("rebotando");
+            void card.offsetWidth;
+            card.classList.add("rebotando");
         });
-        const cards = juegos.querySelectorAll(".juego");
-
-        cards.forEach(card => {
-        card.classList.remove("rebotando");
-
-        void card.offsetWidth;
-
-        card.classList.add("rebotando");
-    });
-    });
-
+    }
+    derecha.addEventListener("click", () => mover(300));
+    izquierda.addEventListener("click", () => mover(-300));
 });
+
+//Menu
 const menuBtn = document.querySelector(".menu-btn");
 const menu = document.querySelector(".menu");
 
 menuBtn.addEventListener("click", () => {
-    menu.classList.toggle("menu-abierto");
+    menu.classList.toggle("menu-abierto"); // Si el menú no tiene la clase menu-abierto, se la agrega. Si ya la tiene, se la quita.
 });
 
+//Subcategorias
 const btnCategorias = document.querySelector(".btn-categorias");
 const submenu = document.querySelector(".submenu");
 
 btnCategorias.addEventListener("click", (event) => {
-    event.preventDefault();
+    event.preventDefault(); //Cancela el comportamiento por defecto del elemento, asi solo cierra y abre
     submenu.classList.toggle("submenu-abierto");
 });
 
@@ -79,8 +63,8 @@ btnCategorias.addEventListener("click", (event) => {
 const contenedores = document.querySelectorAll('.carrusel .juegos');
 const contenedorRecomendados = document.querySelector('.juegos-recomendados .juegos');
 
-fetch('https://vj.interfaces.jima.com.ar/api/v2')
-  .then(response => response.json())
+fetch('https://vj.interfaces.jima.com.ar/api/v2') //hace una petición a la URL y devuelve una promesa
+  .then(response => response.json())              // convierte a JSON, obtiene array objetos
   .then(games => {
     if(contenedores.length > 0){
     contenedores.forEach((contenedor,index) => {
@@ -95,7 +79,7 @@ fetch('https://vj.interfaces.jima.com.ar/api/v2')
         });
       });
     }
-    if (contenedorRecomendados) {
+    if (contenedorRecomendados) { //evita errores en páginas que no tienen esta sección
       const juegosRecomendados = games.slice(0, 7);
 
       juegosRecomendados.forEach(game => {
@@ -107,8 +91,7 @@ fetch('https://vj.interfaces.jima.com.ar/api/v2')
   })
   .catch(error => {
     console.error('Error al obtener los juegos:', error);
-  });
-  function crearTarjetaJuego(game) {
+  });function crearTarjetaJuego(game) {
   const tarjeta = document.createElement('article');
   tarjeta.classList.add('juego');
 
@@ -196,7 +179,6 @@ fetch('https://vj.interfaces.jima.com.ar/api/v2')
 
   return tarjeta;
 }
-
 const imagenes = [
     'assets/img/pegsolitaire (2).jpg',
     'assets/img/images (10).jpg',
@@ -205,6 +187,8 @@ const imagenes = [
 
 let i = 0;
 
+
+//Banner home
 const banner3d = document.querySelector('.banner-3d');
 const frente = document.getElementById('banner-frente');
 const atras = document.getElementById('banner-atras');
@@ -213,17 +197,10 @@ const puntos = document.querySelectorAll('.punto');
 function cambiarFoto(nuevoIndice, direccion) {
 
     i = nuevoIndice;
+    atras.src = imagenes[i]; // La imagen que viene se pone atrás
+    banner3d.classList.remove('girar-derecha', 'girar-izquierda');   // Sacamos cualquier animación anterior
+    void banner3d.offsetWidth;  // Forzamos que reinicie la animación
 
-    // La imagen que viene se pone atrás
-    atras.src = imagenes[i];
-
-    // Sacamos cualquier animación anterior
-    banner3d.classList.remove('girar-derecha', 'girar-izquierda');
-
-    // Forzamos que el navegador reinicie la animación
-    void banner3d.offsetWidth;
-
-    // Giramos según la dirección
     if (direccion === 'derecha') {
         banner3d.classList.add('girar-derecha');
     } else {
@@ -234,40 +211,27 @@ function cambiarFoto(nuevoIndice, direccion) {
     puntos.forEach(punto => punto.classList.remove('activo'));
     puntos[i].classList.add('activo');
 
-    // Cuando termina el giro, dejamos la nueva imagen adelante
-    setTimeout(() => {
-        frente.src = imagenes[i];
-
+    setTimeout(() => {    //ejecuta el código una sola vez
+        frente.src = imagenes[i];  //img nueva a la cara de adelante
         banner3d.classList.remove('girar-derecha', 'girar-izquierda');
-
-        frente.style.transform = 'rotateY(0deg)';
+        frente.style.transform = 'rotateY(0deg)';  //reinician las rotaciones de ambas caras
         atras.style.transform = 'rotateY(180deg)';
     }, 800);
 }
 
-
-// SIGUIENTE
 document.getElementById('banner-next').addEventListener('click', () => {
-
     i++;
-
     if (i >= imagenes.length) {
         i = 0;
     }
-
     cambiarFoto(i, 'derecha');
 });
 
-
-// ANTERIOR
 document.getElementById('banner-prev').addEventListener('click', () => {
-
     i--;
-
     if (i < 0) {
         i = imagenes.length - 1;
     }
-
     cambiarFoto(i, 'izquierda');
 });
 document.addEventListener('DOMContentLoaded', () => {
