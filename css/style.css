@@ -1543,7 +1543,7 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
     }
 }
 
-  /* ESTILOS RESPONSIVE PARA MOBILE*/
+/*HOME MOBILE*/
 @media (max-width: 768px) {
    .header {
     padding: 10px 15px;

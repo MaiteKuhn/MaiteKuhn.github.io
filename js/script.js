@@ -176,14 +176,7 @@ fetch('https://vj.interfaces.jima.com.ar/api/v2') //hace una petición a la URL 
   }
 
   return tarjeta;
-<<<<<<< HEAD
-  }
-
- 
-//Banner home
-=======
 }
->>>>>>> 1160ba5ce9ec978af1231b23ca23ca1b7f56d214
 const imagenes = [
     'assets/img/pegsolitaire (2).jpg',
     'assets/img/images (10).jpg',
@@ -236,34 +229,8 @@ document.getElementById('banner-prev').addEventListener('click', () => {
     }
     cambiarFoto(i, 'izquierda');
 });
+
 document.addEventListener('DOMContentLoaded', () => {
-  const menuBtn = document.querySelector('.menu-btn');
-  const menu = document.querySelector('.menu');
-  const superposicion = document.querySelector('.superposicion');
-  const submenu = document.querySelector('.submenu');
-  // Función para cerrar el menú lateral y superposicion
-  const cerrarMenu = () => {
-    menu?.classList.remove('active', 'menu-abierto');
-    superposicion?.classList.remove('active');
-    document.querySelectorAll('.desplegable-item').forEach(item => item.classList.remove('active'));
-  };
-  // Abrir / Cerrar Menú Hamburguesa
-  menuBtn?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const activo = menu.classList.toggle('active');
-    menu.classList.toggle('menu-abierto', activo);
-    superposicion?.classList.toggle('active', activo);
-  });
-  // Cerrar al hacer click en el superposicion
-  superposicion?.addEventListener('click', cerrarMenu);
-  // Escuchador global para categorías, enlaces y desplegable
-  document.addEventListener('click', (e) => {
-    // 1. Alternar Submenú Categorías
-    if (e.target.closest('.btn-categorias')) {
-      e.preventDefault();
-      submenu?.classList.toggle('submenu-abierto');
-      return;
-    }
     // 2. Clic en botones de acción / Perfil de usuario (Mobile)
     const navBtn = e.target.closest('.nav-btn');
     if (navBtn) {
@@ -286,4 +253,3 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.desplegable-item').forEach(item => item.classList.remove('active'));
     }
   });
-});
