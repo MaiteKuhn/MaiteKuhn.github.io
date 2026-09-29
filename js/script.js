@@ -45,7 +45,7 @@ const menuBtn = document.querySelector(".menu-btn");
 const menu = document.querySelector(".menu");
 
 menuBtn.addEventListener("click", () => {
-    menu.classList.toggle("menu-abierto"); // Si el menú no tiene la clase menu-abierto, se la agrega. Si ya la tiene, se la quita.
+    menu.classList.toggle("menu-abierto"); 
 });
 
 //Subcategorias
