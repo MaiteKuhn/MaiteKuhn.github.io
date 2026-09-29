@@ -5,9 +5,7 @@ const porcentaje = document.querySelector(".porcentaje");
 let progreso = 0;
 
 const carga = setInterval(() => { //para saber qué intervalo cancelar
-
     progreso++;
-
     barra.style.width = progreso + "%"; //la barra se va llenando visualmente.
     porcentaje.textContent = progreso + "%"; //Actualiza el texto para mostrar el número actual del porc
 
@@ -170,17 +168,14 @@ function crearTarjetaJuego(game) {
   }
 
  
-
+//Banner home
 const imagenes = [
     'assets/img/pegsolitaire (2).jpg',
     'assets/img/images (10).jpg',
     'assets/img/banner-robox.jpeg'
 ];
-
 let i = 0;
 
-
-//Banner home
 const banner3d = document.querySelector('.banner-3d');
 const frente = document.getElementById('banner-frente');
 const atras = document.getElementById('banner-atras');
