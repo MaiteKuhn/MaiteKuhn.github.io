@@ -525,7 +525,7 @@ gap: 10px;
   position: absolute;
   font-size: 1.5rem;
   left: 32px;
-  color: ff88ff;
+  color:#ff88ff;
   animation: moverVertical 1.2s ease-in-out infinite alternate;
 }
 @keyframes moverVertical {
@@ -539,7 +539,7 @@ gap: 10px;
 
 .icono-flechas-h{
   font-size: 1.5rem;
-  color: ff88ff;
+  color:#ff88ff;
   display: block;
   margin-top: 12px;
 animation: moverHorizontal 1.2s ease-in-out infinite alternate;
@@ -732,7 +732,7 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
 }
 
 .comentario-item {
-  background-color: 1B103F;
+  background-color:#1B103F;
   border: 1px solid #2D1766;
   border-radius: 8px;
   padding: 12px;
@@ -1397,19 +1397,19 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
 
 /*Girar el banner*/
 .banner-3d.girar-derecha .banner-frente {
-    animation: frente-derecha 1.0s ease-in-out forwards;
+    animation: frente-derecha 0.8s ease-in-out forwards;
 }
 
 .banner-3d.girar-derecha .banner-atras {
-    animation: atras-derecha 1.0s ease-in-out forwards;
+    animation: atras-derecha 0.8s ease-in-out forwards;
 }
 
 .banner-3d.girar-izquierda .banner-frente {
-    animation: frente-izquierda 1.0s ease-in-out forwards;
+    animation: frente-izquierda 0.8s ease-in-out forwards;
 }
 
 .banner-3d.girar-izquierda .banner-atras {
-    animation: atras-izquierda 1.0s ease-in-out forwards;
+    animation: atras-izquierda 0.8s ease-in-out forwards;
 }
 
 /*Girar el banner*/
@@ -1543,7 +1543,7 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
     }
 }
 
-  /* ESTILOS RESPONSIVE PARA MOBILE*/
+/*HOME MOBILE*/
 @media (max-width: 768px) {
    .header {
     padding: 10px 15px;

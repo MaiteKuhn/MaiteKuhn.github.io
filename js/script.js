@@ -5,9 +5,7 @@ const porcentaje = document.querySelector(".porcentaje");
 let progreso = 0;
 
 const carga = setInterval(() => { //para saber qué intervalo cancelar
-
     progreso++;
-
     barra.style.width = progreso + "%"; //la barra se va llenando visualmente.
     porcentaje.textContent = progreso + "%"; //Actualiza el texto para mostrar el número actual del porc
 
@@ -184,11 +182,8 @@ const imagenes = [
     'assets/img/images (10).jpg',
     'assets/img/banner-robox.jpeg'
 ];
-
 let i = 0;
 
-
-//Banner home
 const banner3d = document.querySelector('.banner-3d');
 const frente = document.getElementById('banner-frente');
 const atras = document.getElementById('banner-atras');
@@ -234,34 +229,8 @@ document.getElementById('banner-prev').addEventListener('click', () => {
     }
     cambiarFoto(i, 'izquierda');
 });
+
 document.addEventListener('DOMContentLoaded', () => {
-  const menuBtn = document.querySelector('.menu-btn');
-  const menu = document.querySelector('.menu');
-  const superposicion = document.querySelector('.superposicion');
-  const submenu = document.querySelector('.submenu');
-  // Función para cerrar el menú lateral y superposicion
-  const cerrarMenu = () => {
-    menu?.classList.remove('active', 'menu-abierto');
-    superposicion?.classList.remove('active');
-    document.querySelectorAll('.desplegable-item').forEach(item => item.classList.remove('active'));
-  };
-  // Abrir / Cerrar Menú Hamburguesa
-  menuBtn?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const activo = menu.classList.toggle('active');
-    menu.classList.toggle('menu-abierto', activo);
-    superposicion?.classList.toggle('active', activo);
-  });
-  // Cerrar al hacer click en el superposicion
-  superposicion?.addEventListener('click', cerrarMenu);
-  // Escuchador global para categorías, enlaces y desplegable
-  document.addEventListener('click', (e) => {
-    // 1. Alternar Submenú Categorías
-    if (e.target.closest('.btn-categorias')) {
-      e.preventDefault();
-      submenu?.classList.toggle('submenu-abierto');
-      return;
-    }
     // 2. Clic en botones de acción / Perfil de usuario (Mobile)
     const navBtn = e.target.closest('.nav-btn');
     if (navBtn) {
@@ -284,4 +253,3 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.desplegable-item').forEach(item => item.classList.remove('active'));
     }
   });
-});
