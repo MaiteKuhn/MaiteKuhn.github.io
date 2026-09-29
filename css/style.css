@@ -1702,15 +1702,19 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
   }
 
   /*CARRUSEL Y CARDS RESPONSIVE*/
+  .carrusel{
+    margin-bottom: 20px;
+  }
   .carrusel h2 {
+  margin-top: 15px;
     font-size: 20px;
   }
   .carrusel .juegos {
     display: flex;
     gap: 10px;
-    overflow-x: hidden;
+    overflow-x: auto;
     scroll-snap-type: x mandatory;
-    padding: 10px 5px;
+    padding: 5px 5px;
   }
   
   /*Oculta elementos de desktop en mobile*/
@@ -1768,6 +1772,19 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
     margin: 0;
     line-height: 1.2;
   }
+  .carrusel .juegos::-webkit-scrollbar {
+  height: 6px;
+}
+
+.carrusel .juegos::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.carrusel .juegos::-webkit-scrollbar-thumb {
+  background: #f886fc;
+  border-radius: 10px;
+}
 
 /*FOOTER*/
   .footer-columnas {

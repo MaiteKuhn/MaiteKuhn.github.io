@@ -46,6 +46,7 @@ menuBtn.addEventListener("click", () => {
     menu.classList.toggle("menu-abierto"); 
 });
 
+
 //Subcategorias
 const btnCategorias = document.querySelector(".btn-categorias");
 const submenu = document.querySelector(".submenu");
@@ -89,7 +90,8 @@ fetch('https://vj.interfaces.jima.com.ar/api/v2') //hace una petición a la URL 
   })
   .catch(error => {
     console.error('Error al obtener los juegos:', error);
-  });function crearTarjetaJuego(game) {
+  });
+  function crearTarjetaJuego(game) {
   const tarjeta = document.createElement('article');
   tarjeta.classList.add('juego');
 
@@ -231,7 +233,8 @@ document.getElementById('banner-prev').addEventListener('click', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 2. Clic en botones de acción / Perfil de usuario (Mobile)
+    document.addEventListener('click', (e) => {
+  //. Clic en botones de acción / Perfil de usuario (Mobile)
     const navBtn = e.target.closest('.nav-btn');
     if (navBtn) {
       e.stopPropagation();
@@ -245,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // 3. Cerrar el menú si se toca un enlace navegación estándar
     if (e.target.closest('.menu a:not(.btn-categorias)')) {
-      cerrarMenu();
+menu.classList.remove('menu-abierto');
       return;
     }
     // 4. Clic fuera de los desplegable para cerrarlos
@@ -253,3 +256,4 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.desplegable-item').forEach(item => item.classList.remove('active'));
     }
   });
+});
