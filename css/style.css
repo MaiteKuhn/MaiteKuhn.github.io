@@ -828,6 +828,8 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
 
 .carruseles .juegos {
     display: flex;
+    margin-left: 60px;
+    margin-right: 60px;
     gap: 20px;
     overflow: hidden;
 
@@ -1184,9 +1186,12 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
   background-color: #5c38d6;
   transform: translateY(-50%) scale(1.08);
 }
-
-.flecha.izquierda { left: 20px; }
-.flecha.derecha   { right: 20px; }
+.flecha.izquierda { 
+  left: 10px; 
+}
+.flecha.derecha   { 
+  right: 10px; 
+}
 
 .banner-contenido {
   position: absolute;
@@ -1778,14 +1783,18 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 10px;
   }
+  .footer-columna h3 {
+    margin-bottom: 10px;
+  }
+  .footer-columna a {
+        display: block;
+        margin-bottom: 8px;
+  }
   .footer-columna summary {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 8px 0;
-  }
-  .footer-columna h3 {
-    margin-bottom: 0;
   }
   .columna-contenido {
     padding-top: 10px;
@@ -1797,5 +1806,14 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
   }
   .newsletter {
     max-width: 100%;
+  }
+  
+  .logo-footer {
+        width: 150px;
+  }
+
+  .copyright {
+        text-align: center;
+        font-size: 12px;
   }
 }
