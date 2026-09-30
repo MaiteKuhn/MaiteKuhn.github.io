@@ -835,6 +835,8 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
     display: flex;
     gap: 20px;
     overflow: hidden;
+    margin-left: 70px;
+    margin-right: 70px;
 
 }
 
