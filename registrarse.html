@@ -79,7 +79,7 @@
     </nav>
     <div class="login-box">
         <h1>Registrate</h1>
-        <form>
+        <form class="form-reg">
             <label for="username">Nombre * : </label>
             <input type="text" id="username" required>
             
@@ -101,14 +101,21 @@
             <label for="email">Repetir contraseña * :</label>
             <input type="password" id="password" required>
 
-            <a href="login.html" class="boton">
+            <a href="" class="boton" id="btn-registrarse">
                 <span>Registrate</span>
             </a>
-             <span>¿Ya tenes cuenta?<a href="login.html">Iniciar sesión</a></span>
+            <span>¿Ya tenes cuenta?<a href="login.html">Iniciar sesión</a></span>
         
    
         </form>
+        <div class="registro-exitoso">
+                <h2>Registro correcto</h2>
+                <a href="login.html" class="boton">
+                <span>Iniciar sesión</span>
+                </a>
+        </div>
              
     </div>
+    <script src="js/script.js"></script>
 </body>
 </html>

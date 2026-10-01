@@ -287,6 +287,42 @@ h1, h2, h3 {
   transform: translateX(0);
 }
 
+.registro-exitoso {
+  display: none; 
+}
+
+.login-box.registro-correcto{
+  background-color: #10b981;
+  animation: mover 2s ease-in-out infinite; 
+}
+
+.login-box.registro-correcto .registro-exitoso{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; 
+}
+
+@keyframes mover {
+  0% {
+    transform: translateX(-5px) scale(1.5,1.5); 
+  }
+  50% {
+    transform: translateX(5px) scale(1.2,1.2);  
+  }
+  100% {
+    transform: translateX(5px) scale(1.5,1.5);  
+  }
+}
+
+.login-box.registro-correcto .form-reg{
+display: none;
+}
+
+.login-box.registro-correcto h1{
+display: none;
+}
+
 .menu a,
 .btn-categorias {
   color: #ffffff;
@@ -957,19 +993,19 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
 /*transicion login correcto*/
 .login-box {
   transition: opacity 0.5s ease, transform 0.5s ease;
-animation: entradaSuave 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: entradaSuave 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 .login-box:has(.boton:active){
   opacity: 0;
   transform: translateY(20px) scale(0.98);
   
 }
-.login-box .boton:active {
+/*.login-box .boton:active {
   background-color: #10b981;
   color: #ffffff;
   transform: scale(1.02);
   transition: background-color 0.15s ease, transform 0.15s ease;
-}
+}*/
 @keyframes entradaSuave {
   from {
     opacity: 0;
@@ -1118,19 +1154,24 @@ animation: entradaSuave 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   transform: scale(0.5);
 }
 
-.icono-carrito { width: 14px; height: 14px; fill: currentColor; }
+.icono-carrito { 
+  width: 14px; 
+  height: 14px; 
+  fill: currentColor; }
 
-/* Estado Activo */
-.btn-carrito.activo { background: #10b981; color: #fff; }
+/* Estado Activo (Sin desenfoque) */
+.btn-carrito.activo { 
+  background: #e58910; 
+  color: #fff; }
 
 .btn-carrito.activo .texto-carrito {
   opacity: 0;
-  transform: translateY(-15px);
+  transform: translateY(15px);
 }
 
 .btn-carrito.activo .contenido-agregado {
   opacity: 1;
-  transform: scale(1) translateY(0);
+  transform: scale(1.5) translateY(0);
 }
 .precio-actual {
   color: #ffaa00;
@@ -1784,8 +1825,9 @@ animation: entradaSuave 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   .carrusel{
     margin-bottom: 20px;
   }
-  .carrusel h2 {
-  margin-top: 15px;
+  .carrusel.banner-3d.girar-derecha {
+    margin-top: 15px;
+    margin-left: 50px; 
     font-size: 20px;
   }
   .carrusel .juegos {
