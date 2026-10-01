@@ -91,6 +91,18 @@ fetch('https://vj.interfaces.jima.com.ar/api/v2') //hace una petición a la URL 
   .catch(error => {
     console.error('Error al obtener los juegos:', error);
   });
+
+  function regCorrecto(){
+    const login = document.querySelector('.login-box');
+    const btnReg = document.querySelector('#btn-registrarse');
+        btnReg.addEventListener("click", (event) => {
+          event.preventDefault();
+          login.classList.add("registro-correcto");
+      });
+  }
+
+  regCorrecto(); 
+
   function crearTarjetaJuego(game) {
   const tarjeta = document.createElement('article');
   tarjeta.classList.add('juego');
@@ -172,7 +184,7 @@ fetch('https://vj.interfaces.jima.com.ar/api/v2') //hace una petición a la URL 
       </div>
     `;
 
-    tarjeta.querySelector('.btn-card')?.addEventListener('click', (e) => {
+      tarjeta.querySelector('.btn-card')?.addEventListener('click', (e) => {
       e.currentTarget.classList.toggle('activo');
     });
   }
