@@ -95,12 +95,12 @@ fetch('https://vj.interfaces.jima.com.ar/api/v2') //hace una petición a la URL 
   function regCorrecto(){
     const login = document.querySelector('.login-box');
     const btnReg = document.querySelector('#btn-registrarse');
-        btnReg.addEventListener("click", (event) => {
+    if (!btnReg || !login) return    
+    btnReg.addEventListener("click", (event) => {
           event.preventDefault();
           login.classList.add("registro-correcto");
       });
   }
-
   regCorrecto(); 
 
   function crearTarjetaJuego(game) {

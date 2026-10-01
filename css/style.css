@@ -305,13 +305,13 @@ h1, h2, h3 {
 
 @keyframes mover {
   0% {
-    transform: translateX(-5px) scale(1.5,1.5); 
+    transform:  scale(1.5,1.5); 
   }
   50% {
-    transform: translateX(5px) scale(1.2,1.2);  
+    transform: scale(1.2,1.2);  
   }
   100% {
-    transform: translateX(5px) scale(1.5,1.5);  
+    transform: scale(1.5,1.5);  
   }
 }
 
@@ -865,10 +865,10 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
 }
 .carrusel {
   position: relative;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 .carrusel h2 {
-  margin-left: 70px;
+  margin-left: 40px;
 
 }
 
@@ -1676,13 +1676,18 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
   }
   /* Buscador desplegable compacto */
   .buscador {
-    justify-content: flex-end;
-    margin: 0 10px;
-    width: 45px;
+   position: relative;
+   justify-content: flex-end;
+   margin: 0 10px;
+   width: 45px;
   }
   .buscador input {
     position: absolute;
-    transition: 0.3s;
+    right: 0;
+    width: 0px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
     z-index: 10;
   }
   .buscador:hover input,
@@ -1692,6 +1697,10 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
     background-color: #43299E;
     padding: 6px 32px 6px 10px;
     pointer-events: auto;
+  }
+  .menu-btn {
+    position: relative;
+    z-index: 1200;
   }
   /* Acciones: Ocultar Favoritos (1º) y Carrito (2º) */
   .acciones .desplegable-item:not(:last-child) {
@@ -1726,6 +1735,7 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
   }
+  
   .menu.active, .menu.menu-abierto {
     transform: translateX(0);
   }
@@ -1754,6 +1764,7 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
     right: 0;
     margin-left: 0;
     margin-right: 0;
+    margin-bottom: 20px;
     height: 300px; /* Altura ideal para smartphones */
     border-radius: 0 0 18px 18px;
   }
@@ -1825,6 +1836,10 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
   .carrusel{
     margin-bottom: 20px;
   }
+  .carrusel h2 {
+    font-size: 20px;
+    margin-left: 20px;
+  }
   .carrusel.banner-3d.girar-derecha {
     margin-top: 15px;
     margin-left: 50px; 
@@ -1836,6 +1851,8 @@ animation: moverHorizontal 1.2s ease-in-out infinite alternate;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     padding: 5px 5px;
+    margin-left: 20px;
+    margin-right: 20px;
   }
   
   /*Oculta elementos de desktop en mobile*/
