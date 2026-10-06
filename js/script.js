@@ -17,7 +17,6 @@ const carga = setInterval(() => { //para saber qué intervalo cancelar
 
 //Movimiento carruseles
 const carruseles = document.querySelectorAll(".carrusel");
-
     carruseles.forEach(carrusel => {
     const juegos = carrusel.querySelector(".juegos");
     const izquierda = carrusel.querySelector(".izquierda");

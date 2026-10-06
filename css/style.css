@@ -11,9 +11,7 @@ body {
 h1, h2, h3 {
     font-family: overpass, monospace;
     color: #fca8ff; 
-
 }
-
 .loader {
     position: fixed;
     top: 0;
