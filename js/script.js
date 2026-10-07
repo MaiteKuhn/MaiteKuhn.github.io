@@ -22,6 +22,8 @@ const carruseles = document.querySelectorAll(".carrusel");
     const izquierda = carrusel.querySelector(".izquierda");
     const derecha = carrusel.querySelector(".derecha");
 
+       if (!juegos) return;
+
     function mover(distancia) {
         juegos.scrollBy({ left: distancia, 
                           behavior: "smooth" //no movimiento brusco 
@@ -41,8 +43,8 @@ const carruseles = document.querySelectorAll(".carrusel");
 const menuBtn = document.querySelector(".menu-btn");
 const menu = document.querySelector(".menu");
 
-menuBtn.addEventListener("click", () => {
-    menu.classList.toggle("menu-abierto"); 
+menuBtn?.addEventListener("click", () => {
+    menu?.classList.toggle("menu-abierto"); 
 });
 
 
@@ -50,9 +52,9 @@ menuBtn.addEventListener("click", () => {
 const btnCategorias = document.querySelector(".btn-categorias");
 const submenu = document.querySelector(".submenu");
 
-btnCategorias.addEventListener("click", (event) => {
+btnCategorias?.addEventListener("click", (event) => {
     event.preventDefault(); //Cancela el comportamiento por defecto del elemento, asi solo cierra y abre
-    submenu.classList.toggle("submenu-abierto");
+    submenu?.classList.toggle("submenu-abierto");
 });
 
 
@@ -64,7 +66,7 @@ const contenedorRecomendados = document.querySelector('.juegos-recomendados .jue
 fetch('https://vj.interfaces.jima.com.ar/api/v2') //hace una petición a la URL y devuelve una promesa
   .then(response => response.json())              // convierte a JSON, obtiene array objetos
   .then(games => {
-    if(contenedores.length > 0){
+    if(contenedores.length > 0 ){
     contenedores.forEach((contenedor,index) => {
         const inicio = index * 8;
         const fin = inicio + 8;
@@ -227,7 +229,7 @@ function cambiarFoto(nuevoIndice, direccion) {
     }, 800);
 }
 
-document.getElementById('banner-next').addEventListener('click', () => {
+document.getElementById('banner-next')?.addEventListener('click', () => {
     i++;
     if (i >= imagenes.length) {
         i = 0;
@@ -235,7 +237,7 @@ document.getElementById('banner-next').addEventListener('click', () => {
     cambiarFoto(i, 'derecha');
 });
 
-document.getElementById('banner-prev').addEventListener('click', () => {
+document.getElementById('banner-prev')?.addEventListener('click', () => {
     i--;
     if (i < 0) {
         i = imagenes.length - 1;
