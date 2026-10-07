@@ -81,7 +81,7 @@
   transform: scale(1.05);
 }
 .game-img {
-  background: url("../img/fondo-blocka.png") no-repeat center center;
+  background: url("../assets/img-blocka/blockaportada.jpg") no-repeat center center;
   background-size: cover;
   width: 65%;
   max-height: 70vh;
@@ -259,7 +259,7 @@
   animation: pulseWin 0.6s ease-in-out 2;
 }
 /* Animación de derrota*/
-.lost-effect {
+.lose-effect {
   animation: shake 0.5s;
 }
 
