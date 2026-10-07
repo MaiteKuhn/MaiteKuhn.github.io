@@ -9,19 +9,6 @@
 
 </head>
 <body>
-    <div class="loader">
-        <div class="loading-bar">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <div class="barra-carga-container">
-            <div class="barra-carga"></div>
-            <span class="porcentaje">0%</span>
-        </div>
-    </div>
-
     <header class="header">
   <button class="menu-btn"><img src="assets/img/menu.png" alt="menu"></button>
   <a href="index.html" class="logo">
@@ -122,34 +109,41 @@
         <a href="#"> <img src="assets/img/compartir.png" alt="">Compartir</a>
         </div>
     </nav>
-<main class="game-page-container">
+    <main class="game-page-container">
     <div class="main-content">
         <nav class ="breadcrumb">
             <a href="index.html"> Inicio </a>
             <span>></span>
             <a href = "#">Mis juegos</a>
             <span>></span>
-            <span> Peg Solitaire</span>
+            <span> Blocka </span>
         </nav>
 
         <!--Blocka-->
-          <div class="game-img">
-      <div class="game-container">
+        <div class="game-img">
+        <div class="game-container">
         <!-- Overlay inicial (menú) -->
         <div id="startScreen" class="start-screen">
           <div class="overlay-content">
+
+              <!-- Timer -->
+            <div class="controls">
+            <div id="timer">00:00</div>
+            <div id="level-info">Nivel - | Tu récord: --</div>
+            </div>
+
             <h1>¡Bienvenido a BLOCKA!</h1>
             <p>Selecciona dificultad y haz clic en "Comenzar"</p>
 
             <div id="pieceButtons" class="piece-buttons">
               <span>Piezas:</span>
-              <button data-size="2">2 x 2</button>
-              <button data-size="3">3 x 3</button>
-              <button data-size="4">4 x 4</button>
+              <button data-size="2">4</button>
+              <button data-size="3">6</button>
+              <button data-size="4">8</button>
             </div>
 
 
-            <!-- Aca va el contenedor de thumbnails -->
+            <!-- contenedor de thumbnails -->
             <div id="previewContainer" class="preview-container"></div>
 
             <button id="startGameBtn">Comenzar</button>
@@ -158,65 +152,51 @@
 
         <!-- Canvas del juego -->
         <canvas id="gameCanvas" width="400" height="400"></canvas>
-
-        <!-- Botón de ayudita -->
         
 
         <!-- Botones volver al menu y reinciar juego-->
         <div class="game-actions">
-          <button id="ayuditaBtn">🧩 Ayudita</button>
-          <button id="menuBtn">🏠 Menú</button>
-          <button id="restartBtn">🔄 Reiniciar</button>
+          <button class="btn-juego-blocka" id="ayuditaBtn">Necesito ayuda</button>
+          <button class="btn-juego-blocka" id="menuBtn">Menú</button>
+          <button class="btn-juego-blocka" id="restartBtn">Reiniciar</button>
         </div>
 
-
-        <!-- Controles informativos -->
-        <div class="controls">
-          <div id="timer">00:00</div>
-          <div id="level-info">Nivel - | Récord: --</div>
-        </div>
 
         <!-- Mensaje de récord -->
       <div class="record-message" id="recordMessage">
-        <span>¡Nuevo récord!</span>
+        <span>¡Alcanzaste un nuevo récord!</span>
       </div>
 
 
         <!-- Mensaje de victoria -->
         <div class="success-message" id="successMessage">
-          <span>¡Completado!</span>
+          <span>¡Excelente, lo completaste! Vamos por el siguiente nivel</span>
           <button id="nextLevelBtn">Siguiente</button>
           <button class="goToMenuBtn">Menú</button>
         </div>
 
         <!-- Mensaje de derrota -->
         <div class="defeat-message" id="defeatMessage">
-          <span>¡Se acabó el tiempo!</span>
+          <span>¡Se terminó el tiempo, volvé a intentarlo!</span>
           <button id="retryBtn">Reintentar</button>
           <button class="goToMenuBtn">Menú</button>
         </div>
       </div>
     </div>
     
-
-
         <!--Informacion del juego-->
         <div class = "game-info-grid">
             <div class="info-block">
                 <h3>Descripcion</h3>
-                <p>Recorre los paisajes del norte argentino mientras ponés a prueba tu capacidad para planificar cada movimiento y resolver el tablero.
-                    En este desafío, las llamas serán tus protagonistas. A medida que avances, tendrás que pensar cuidadosamente cada jugada para ir eliminándolas y acercarte al objetivo final. Cada movimiento cuenta y una mala decisión puede dejarte sin opciones.
-                    Superá los diferentes desafíos, encontrá la combinación perfecta de movimientos y descubrí hasta dónde podés llegar. ¿Lograrás resolver el tablero y quedarte con una sola llama?</p>
+                <p>Recorré los paisajes del norte argentino a través de BLOCKA, un juego de rompecabezas en el que cada imagen está dividida
+                y sus partes han sido rotadas. Tu desafío será volver a ordenarlas hasta reconstruir la imagen original.</p>
             </div>
             <div class="info-block">
                 <h3>¿Cómo jugar?</h3>
-                <p>El tablero comienza con todas las casillas ocupadas por llamas, excepto una.
-                    Para eliminar una llama, mové una llama saltando sobre otra llama hacia una casilla vacía. La llama que fue saltada desaparece y la casilla de destino queda ocupada.
-                    Continuá realizando movimientos hasta que no puedas eliminar más llamas.
-
-                    Objetivo: conseguir que quede una sola llama en el tablero.
-
-                    ¡Pensá cada movimiento con cuidado y encontrá la combinación perfecta!</p>
+                <p>En cada nivel encontrarás una imagen de un paisaje del norte argentino dividida en diferentes bloques. 
+                    Tu objetivo es rotar cada pieza hasta lograr reconstruir la imagen original. Para girar una pieza hacia la izquierda, 
+                    hacé clic con el botón izquierdo del ratón, y para girarla hacia la derecha, hacé clic con el botón derecho. 
+                    ¡Completá la imagen y avanzá al siguiente desafío!</p>
             </div>
             <!--controles-->
         <div class="info-block">
@@ -279,7 +259,7 @@
                                 <span class="usuario">@username0711</span>
                                 <span class="fecha">hace 14 minutos</span>
                             </div>
-                            <p class="comentario-texto">Está bueno para jugar un rato y tratar de superar tu propia marca. Algunas partidas se vuelven bastante difíciles</p>
+                            <p class="comentario-texto">Me encantó! Las imágenes del norte son hermosas y el juego está buenísimo. Me entretuvo un montón.</p>
                             <div class="comentario-actions">
                                 <button class="btn-action"><img src="assets/img/dislike.png" alt=""></button>
                                 <button class="btn-action"><img src="assets/img/like.png" alt=""></button>
@@ -294,7 +274,7 @@
                             <span class="usuario">@jsGamer</span>
                             <span class="fecha">hace 4 días</span>
                         </div>
-                        <p class="comentario-texto">Un juego clásico que sigue siendo divertido. La interfaz es linda y las partidas son rápidas</p>
+                        <p class="comentario-texto">Está muy bueno y es bastante entretenido. Algunos niveles me costaron, pero estuvo divertido</p>
                         <div class="comentario-actions">
                             <button class="btn-action"><img src="assets/img/dislike.png" alt=""></button>
                             <button class="btn-action"><img src="assets/img/like.png" alt=""></button>
@@ -309,7 +289,7 @@
                         <span class="usuario">@maijuegos</span>
                         <span class="fecha">hace 3 semanas</span>
                     </div>
-                    <p class="comentario-texto">Está bueno, aunque después de varias partidas puede volverse un poco repetitivo</p>
+                    <p class="comentario-texto">Algunos niveles se me hicieron un poco repetitivos</p>
                     <div class="comentario-actions">
                     <button class="btn-action"><img src="assets/img/dislike.png" alt=""></button>
                     <button class="btn-action"><img src="assets/img/like.png" alt=""></button>
@@ -324,7 +304,7 @@
                         <span class="usuario">@lol78</span>
                         <span class="fecha">hace 1 semana</span>
                     </div>
-                    <p class="comentario-texto">Normal</p>
+                    <p class="comentario-texto">Un juego sencillo para entretenerse un rato. Las imágenes están lindas y se entiende rápido cómo jugar</p>
                     <div class="comentario-actions">
                     <button class="btn-action"><img src="assets/img/dislike.png" alt=""></button>
                     <button class="btn-action"><img src="assets/img/like.png" alt=""></button>
@@ -339,7 +319,7 @@
                         <span class="usuario">@JoaquinA07</span>
                         <span class="fecha">hace 2 meses</span>
                     </div>
-                    <p class="comentario-texto">No me terminó de convencer. A veces los movimientos son difíciles de entender y cuesta disfrutar la partida</p>
+                    <p class="comentario-texto">No me terminó de convencer. Algunos niveles son difíciles de entender y me costó acostumbrarme a los controles</p>
                     <div class="comentario-actions">
                     <button class="btn-action"><img src="assets/img/dislike.png" alt=""></button>
                     <button class="btn-action"><img src="assets/img/like.png" alt=""></button>
