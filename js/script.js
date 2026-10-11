@@ -193,58 +193,70 @@ fetch('https://vj.interfaces.jima.com.ar/api/v2') //hace una petición a la URL 
   return tarjeta;
 }
 const imagenes = [
-    'assets/img/pegsolitaire (2).jpg',
-    'assets/img/images (10).jpg',
-    'assets/img/banner-robox.jpeg'
+  { imagen: 'assets/img/pegsolitaire (2).jpg',        link: 'juego-pegsolitaire.html' },
+  { imagen: 'assets/img-blocka/blockaportada.jpg',    link: 'blocka.html' },
+  { imagen: 'assets/img/banner-robox.jpeg',           link: 'juego-robox.html' } // <- link real
 ];
+
 let i = 0;
+let animando = false;
 
 const banner3d = document.querySelector('.banner-3d');
 const frente = document.getElementById('banner-frente');
 const atras = document.getElementById('banner-atras');
 const puntos = document.querySelectorAll('.punto');
+const btnJugarBanner = document.querySelector('.banner-contenido .boton');
+
+// Precarga para que no parpadee al girar
+imagenes.forEach(({ imagen }) => { new Image().src = imagen; });
+
+// Estado inicial
+if (frente) frente.src = imagenes[0].imagen;
+if (btnJugarBanner) btnJugarBanner.href = imagenes[0].link;
 
 function cambiarFoto(nuevoIndice, direccion) {
+  if (animando || nuevoIndice === i || !banner3d || !frente || !atras) return;
+  animando = true;
+  i = nuevoIndice;
 
-    i = nuevoIndice;
-    atras.src = imagenes[i]; // La imagen que viene se pone atrás
-    banner3d.classList.remove('girar-derecha', 'girar-izquierda');   // Sacamos cualquier animación anterior
-    void banner3d.offsetWidth;  // Forzamos que reinicie la animación
+  const juego = imagenes[i];
 
-    if (direccion === 'derecha') {
-        banner3d.classList.add('girar-derecha');
-    } else {
-        banner3d.classList.add('girar-izquierda');
-    }
+  atras.src = juego.imagen;                        // entra por atrás
+  if (btnJugarBanner) btnJugarBanner.href = juego.link;
 
-    // Cambiamos el punto
-    puntos.forEach(punto => punto.classList.remove('activo'));
-    puntos[i].classList.add('activo');
+  puntos.forEach(p => p.classList.remove('activo'));
+  puntos[i]?.classList.add('activo');
 
-    setTimeout(() => {    //ejecuta el código una sola vez
-        frente.src = imagenes[i];  //img nueva a la cara de adelante
-        banner3d.classList.remove('girar-derecha', 'girar-izquierda');
-        frente.style.transform = 'rotateY(0deg)';  //reinician las rotaciones de ambas caras
-        atras.style.transform = 'rotateY(180deg)';
-    }, 800);
+  banner3d.classList.remove('girar-derecha', 'girar-izquierda');
+  void banner3d.offsetWidth;                       // reinicia la animación
+  banner3d.classList.add(direccion === 'derecha' ? 'girar-derecha' : 'girar-izquierda');
+
+  let terminado = false;
+  const terminar = () => {
+    if (terminado) return;
+    terminado = true;
+    frente.src = juego.imagen;                     // la nueva pasa al frente
+    banner3d.classList.remove('girar-derecha', 'girar-izquierda');
+    animando = false;
+  };
+
+  atras.addEventListener('animationend', terminar, { once: true });
+  setTimeout(terminar, 1000);                      // por si animationend no dispara
 }
 
 document.getElementById('banner-next')?.addEventListener('click', () => {
-    i++;
-    if (i >= imagenes.length) {
-        i = 0;
-    }
-    cambiarFoto(i, 'derecha');
+  cambiarFoto((i + 1) % imagenes.length, 'derecha');
 });
 
 document.getElementById('banner-prev')?.addEventListener('click', () => {
-    i--;
-    if (i < 0) {
-        i = imagenes.length - 1;
-    }
-    cambiarFoto(i, 'izquierda');
+  cambiarFoto((i - 1 + imagenes.length) % imagenes.length, 'izquierda');
 });
 
+puntos.forEach((punto, index) => {
+  punto.addEventListener('click', () => {
+    cambiarFoto(index, index > i ? 'derecha' : 'izquierda');
+  });
+});
 document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', (e) => {
   //. Clic en botones de acción / Perfil de usuario (Mobile)

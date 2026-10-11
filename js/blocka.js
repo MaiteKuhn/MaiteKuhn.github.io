@@ -1,23 +1,47 @@
-// === Configuración ===
+//  Configuración 
 const FILTERS = ['grayscale', 'brightness', 'invert'];
-const FILTER_COMBOS = [
-  'grayscale brightness',
-  'invert brightness',
-  'grayscale invert'
-];
+
+//preguntar si se pone -0.3 (muy oscura) o el 1.3(aumenta el brillo)
+const BRIGHTNESS_FACTOR = 0.3;
 
 const TOTAL_IMAGES = 8;
 const imgPath = (i) => `assets/img-blocka/blocka/img${i}.jpeg`;
 
-// === Clase principal del juego ===
+//piwzas
+const LAYOUTS = {
+  4: { cols: 2, rows: 2 },
+  6: { cols: 3, rows: 2 },
+  8: { cols: 4, rows: 2 }
+};
+const PIECE_PX = 160;
+
+const timeForLevel = (level) => (level === 1 ? 120 : level === 2 ? 90 : 60);
+
+// Devuelve una imagen al azar di
+function pickImageIndex(exclude = null) {
+  let i;
+  do {
+    i = Math.floor(Math.random() * TOTAL_IMAGES) + 1;
+  } while (i === exclude && TOTAL_IMAGES > 1);
+  return i;
+}
+
 class PuzzleGame {
-  constructor(gridSize = 2, level = 1) {
+  constructor(pieceCount = 4, level = 1) {
     this.canvas = document.getElementById('gameCanvas');
     this.ctx = this.canvas.getContext('2d');
-    this.image = null;
-    this.pieces = [];
-    this.gridSize = gridSize;
+
+    this.pieceCount = LAYOUTS[pieceCount] ? pieceCount : 4;
+    const { cols, rows } = LAYOUTS[this.pieceCount];
+    this.cols = cols;
+    this.rows = rows;
+    this.canvas.width = cols * PIECE_PX;
+    this.canvas.height = rows * PIECE_PX;
+
     this.level = level;
+    this.image = null;
+    this.imageIndex = null;
+    this.pieces = [];
     this.isPlaying = false;
     this.startTime = 0;
     this.timerInterval = null;
@@ -29,7 +53,6 @@ class PuzzleGame {
     this.initEvents();
   }
 
-  // Quita los listeners del canvas (evita que se acumulen al crear juegos nuevos)
   destroy() {
     clearInterval(this.timerInterval);
     this.isPlaying = false;
@@ -37,8 +60,8 @@ class PuzzleGame {
     this.canvas.removeEventListener('contextmenu', this.onContextMenu);
   }
 
-  loadImage(index = null) {
-    const i = index || Math.floor(Math.random() * TOTAL_IMAGES) + 1;
+  loadImage(index) {
+    this.imageIndex = index;
     this.image = new Image();
     this.image.onload = () => {
       this.createPieces();
@@ -48,19 +71,39 @@ class PuzzleGame {
     this.image.onerror = () => {
       console.error(`No se pudo cargar la imagen: ${this.image.src}`);
     };
-    this.image.src = imgPath(i);
+    this.image.src = imgPath(index);
+  }
+
+  getSourceRect() {
+    const targetRatio = this.cols / this.rows;
+    const imgRatio = this.image.width / this.image.height;
+    let sw = this.image.width;
+    let sh = this.image.height;
+    if (imgRatio > targetRatio) sw = sh * targetRatio;
+    else sh = sw / targetRatio;
+    return {
+      sx: (this.image.width - sw) / 2,
+      sy: (this.image.height - sh) / 2,
+      sw,
+      sh
+    };
   }
 
   createPieces() {
     this.pieces = [];
-    for (let row = 0; row < this.gridSize; row++) {
-      for (let col = 0; col < this.gridSize; col++) {
-        let filter = 'grayscale';
-        if (this.level === 2) {
+
+    // Nivel 1: grises | Nivel 2: un solo filtro (brillo o negativo) para toda la imagen
+    // Nivel 3: un filtro distinto al azar en cada pieza
+    const levelFilter =
+      this.level === 2
+        ? ['brightness', 'invert'][Math.floor(Math.random() * 2)]
+        : 'grayscale';
+
+    for (let row = 0; row < this.rows; row++) {
+      for (let col = 0; col < this.cols; col++) {
+        let filter = levelFilter;
+        if (this.level >= 3) {
           filter = FILTERS[Math.floor(Math.random() * FILTERS.length)];
-        } else if (this.level >= 3) {
-          const all = [...FILTERS, ...FILTER_COMBOS];
-          filter = all[Math.floor(Math.random() * all.length)];
         }
         this.pieces.push({
           row,
@@ -68,52 +111,65 @@ class PuzzleGame {
           rotation: [0, 90, 180, 270][Math.floor(Math.random() * 4)],
           filter,
           fija: false,
+          isAnimating: false,
           tile: null,
           tileFilter: null
         });
       }
     }
+
+    if (this.pieces.every((p) => p.rotation === 0)) {
+      const p = this.pieces[Math.floor(Math.random() * this.pieces.length)];
+      p.rotation = [90, 180, 270][Math.floor(Math.random() * 3)];
+    }
   }
 
-  // Genera (una sola vez) la imagen de la pieza con su filtro aplicado
   buildTile(p, size) {
     const tile = document.createElement('canvas');
     tile.width = size;
     tile.height = size;
     const tctx = tile.getContext('2d');
 
+    const { sx, sy, sw, sh } = this.getSourceRect();
+    const pw = sw / this.cols;
+    const ph = sh / this.rows;
+
     tctx.drawImage(
       this.image,
-      p.col * (this.image.width / this.gridSize),
-      p.row * (this.image.height / this.gridSize),
-      this.image.width / this.gridSize,
-      this.image.height / this.gridSize,
-      0, 0, size, size
+      sx + p.col * pw,
+      sy + p.row * ph,
+      pw,
+      ph,
+      0,
+      0,
+      size,
+      size
     );
 
-    const imageData = tctx.getImageData(0, 0, size, size);
-    this.applyFilter(imageData, p.filter);
-    tctx.putImageData(imageData, 0, 0);
+    if (p.filter && p.filter !== 'none') {
+      const imageData = tctx.getImageData(0, 0, size, size);
+      this.applyFilter(imageData, p.filter);
+      tctx.putImageData(imageData, 0, 0);
+    }
     return tile;
   }
 
   drawPieces() {
-    const pieceSize = this.canvas.width / this.gridSize;
     const gap = this.gapActivo ? 4 : 0;
-    const inner = pieceSize - gap;
+    const inner = PIECE_PX - gap;
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.pieces.forEach((p) => {
       if (!p.tile || p.tileFilter !== p.filter) {
-        p.tile = this.buildTile(p, Math.floor(pieceSize));
+        p.tile = this.buildTile(p, PIECE_PX);
         p.tileFilter = p.filter;
       }
 
       this.ctx.save();
       this.ctx.translate(
-        p.col * pieceSize + pieceSize / 2,
-        p.row * pieceSize + pieceSize / 2
+        p.col * PIECE_PX + PIECE_PX / 2,
+        p.row * PIECE_PX + PIECE_PX / 2
       );
       this.ctx.rotate((p.rotation * Math.PI) / 180);
       this.ctx.drawImage(p.tile, -inner / 2, -inner / 2, inner, inner);
@@ -123,9 +179,8 @@ class PuzzleGame {
 
   applyFilter(imageData, filter) {
     const data = imageData.data;
-    const filters = filter.split(' '); // permite combos
 
-    filters.forEach((f) => {
+    filter.split(' ').forEach((f) => {
       switch (f) {
         case 'grayscale':
           for (let i = 0; i < data.length; i += 4) {
@@ -144,9 +199,9 @@ class PuzzleGame {
 
         case 'brightness':
           for (let i = 0; i < data.length; i += 4) {
-            data[i] *= 0.3;
-            data[i + 1] *= 0.3;
-            data[i + 2] *= 0.3;
+            data[i] = Math.min(255, data[i] * BRIGHTNESS_FACTOR);
+            data[i + 1] = Math.min(255, data[i + 1] * BRIGHTNESS_FACTOR);
+            data[i + 2] = Math.min(255, data[i + 2] * BRIGHTNESS_FACTOR);
           }
           break;
 
@@ -167,24 +222,24 @@ class PuzzleGame {
     if (!this.isPlaying) return;
 
     const rect = this.canvas.getBoundingClientRect();
-    // Corrige la posición si el canvas está escalado por CSS
     const x = (e.clientX - rect.left) * (this.canvas.width / rect.width);
     const y = (e.clientY - rect.top) * (this.canvas.height / rect.height);
-    const pieceSize = this.canvas.width / this.gridSize;
-    const col = Math.floor(x / pieceSize);
-    const row = Math.floor(y / pieceSize);
+    const col = Math.floor(x / PIECE_PX);
+    const row = Math.floor(y / PIECE_PX);
 
     const piece = this.pieces.find((p) => p.row === row && p.col === col);
     if (!piece || piece.fija) return;
 
-    if (e.button === 0) this.animateRotation(piece, -90);
-    if (e.button === 2) this.animateRotation(piece, 90);
+    if (e.button === 0) this.animateRotation(piece, -90); // izquierdo -> izquierda
+    if (e.button === 2) this.animateRotation(piece, 90); // derecho -> derecha
   }
 
   usarAyudita() {
     if (!this.isPlaying || this.ayuditaUsada) return;
 
-    const candidatas = this.pieces.filter((p) => !p.fija && p.rotation % 360 !== 0);
+    const candidatas = this.pieces.filter(
+      (p) => !p.fija && !p.isAnimating && p.rotation % 360 !== 0
+    );
     if (candidatas.length === 0) return;
 
     const pieza = candidatas[Math.floor(Math.random() * candidatas.length)];
@@ -198,28 +253,6 @@ class PuzzleGame {
 
     this.drawPieces();
     this.checkWin();
-  }
-
-  volverAlMenu() {
-    this.destroy();
-    document.getElementById('successMessage').style.display = 'none';
-    document.getElementById('defeatMessage').style.display = 'none';
-    document.getElementById('recordMessage').style.display = 'none';
-    document.getElementById('ayuditaBtn').style.display = 'none';
-    document.getElementById('menuBtn').style.display = 'none';
-    document.getElementById('restartBtn').style.display = 'none';
-    document.getElementById('previewContainer').innerHTML = '';
-
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    document.getElementById('timer').textContent = '00:00';
-    document.getElementById('level-info').textContent = 'Nivel - | Récord: --';
-    document.getElementById('startScreen').style.display = 'flex';
-  }
-
-  reiniciarJuego() {
-    clearInterval(this.timerInterval);
-    this.isPlaying = false;
-    this.loadImage(); // imagen nueva al azar (start() se llama en el onload)
   }
 
   animateRotation(piece, delta) {
@@ -240,12 +273,11 @@ class PuzzleGame {
         return;
       }
 
-      piece.rotation = end % 360;
-      if (piece.rotation < 0) piece.rotation += 360;
+      piece.rotation = ((end % 360) + 360) % 360;
       this.drawPieces();
       piece.isAnimating = false;
 
-      if (piece.rotation % 360 === 0) {
+      if (piece.rotation === 0) {
         this.canvas.classList.add('correct');
         setTimeout(() => this.canvas.classList.remove('correct'), 500);
       }
@@ -256,25 +288,30 @@ class PuzzleGame {
 
   checkWin() {
     if (!this.isPlaying) return;
-    const allCorrect = this.pieces.every((p) => p.fija || p.rotation % 360 === 0);
+    const allCorrect = this.pieces.every(
+      (p) => !p.isAnimating && (p.fija || p.rotation % 360 === 0)
+    );
     if (!allCorrect) return;
 
     clearInterval(this.timerInterval);
     this.isPlaying = false;
     this.gapActivo = false;
-    this.pieces.forEach((p) => (p.filter = 'none'));
 
-    // Muestra la imagen completa
+    // Se quitan los filtros: imagen original en RGB, sin separación entre piezas
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.drawImage(this.image, 0, 0, this.canvas.width, this.canvas.height);
+    const { sx, sy, sw, sh } = this.getSourceRect();
+    this.ctx.drawImage(
+      this.image,
+      sx, sy, sw, sh,
+      0, 0, this.canvas.width, this.canvas.height
+    );
 
-    // Animación de victoria
     this.canvas.classList.add('win-effect');
     setTimeout(() => this.canvas.classList.remove('win-effect'), 1200);
 
     document.getElementById('successMessage').style.display = 'block';
 
-    // Confeti (requiere la librería canvas-confetti en el HTML)
+    // Confeti 
     if (typeof confetti === 'function') {
       const end = Date.now() + 1500;
       (function frame() {
@@ -284,9 +321,9 @@ class PuzzleGame {
       })();
     }
 
-    // Récord
+    // Récord (por nivel y por cantidad de piezas, incluye penalización de ayudita)
     const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
-    const recordKey = `record_level_${this.level}`;
+    const recordKey = this.recordKey();
     const prevRecord = localStorage.getItem(recordKey);
     if (!prevRecord || elapsed < parseInt(prevRecord)) {
       localStorage.setItem(recordKey, elapsed);
@@ -294,6 +331,10 @@ class PuzzleGame {
       recordMsg.style.display = 'block';
       recordMsg.textContent = `¡Nuevo récord en nivel ${this.level}: ${elapsed} segundos!`;
     }
+  }
+
+  recordKey() {
+    return `record_level_${this.level}_${this.pieceCount}`;
   }
 
   start() {
@@ -307,8 +348,7 @@ class PuzzleGame {
     document.getElementById('defeatMessage').style.display = 'none';
     document.getElementById('recordMessage').style.display = 'none';
 
-    const recordKey = `record_level_${this.level}`;
-    const best = localStorage.getItem(recordKey);
+    const best = localStorage.getItem(this.recordKey());
     const info = document.getElementById('level-info');
     if (info) {
       info.textContent = best
@@ -316,10 +356,7 @@ class PuzzleGame {
         : `Nivel ${this.level} | Récord: --`;
     }
 
-    let totalTime = 120;
-    if (this.level === 2) totalTime = 90;
-    if (this.level >= 3) totalTime = 60;
-
+    const totalTime = timeForLevel(this.level);
     const totalMin = Math.floor(totalTime / 60);
     const totalSec = String(totalTime % 60).padStart(2, '0');
     const timerEl = document.getElementById('timer');
@@ -348,7 +385,6 @@ class PuzzleGame {
   }
 }
 
-// === Inicialización de la interfaz ===
 document.addEventListener('DOMContentLoaded', () => {
   const startGameBtn = document.getElementById('startGameBtn');
   const nextLevelBtn = document.getElementById('nextLevelBtn');
@@ -358,46 +394,61 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuBtn = document.getElementById('menuBtn');
   const restartBtn = document.getElementById('restartBtn');
   const previewContainer = document.getElementById('previewContainer');
+  const canvas = document.getElementById('gameCanvas');
 
-  let selectedGridSize = 4;
+  let selectedPieces = 4; 
   let game = null;
   let level = 1;
+  let lastImageIndex = null;
 
-  // Crea un juego nuevo (destruyendo el anterior)
-  function newGame(gridSize, lvl, imageIndex = null) {
+  function newGame(pieces, lvl, imageIndex) {
     if (game) game.destroy();
-    game = new PuzzleGame(gridSize, lvl);
+    game = new PuzzleGame(pieces, lvl);
+    lastImageIndex = imageIndex;
     game.loadImage(imageIndex);
   }
 
-  // Selector de tamaño
+  function showGameButtons(visible) {
+    const display = visible ? 'block' : 'none';
+    ayuditaBtn.style.display = display;
+    menuBtn.style.display = display;
+    restartBtn.style.display = display;
+  }
+
+  // Vuelve al menú principal desde cualquier lugar
+  function showMenu() {
+    if (game) game.destroy();
+    document.getElementById('successMessage').style.display = 'none';
+    document.getElementById('defeatMessage').style.display = 'none';
+    document.getElementById('recordMessage').style.display = 'none';
+    showGameButtons(false);
+
+    previewContainer.innerHTML = '';
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+    document.getElementById('timer').textContent = '00:00';
+    document.getElementById('level-info').textContent = 'Nivel - | Récord: --';
+    startGameBtn.disabled = false;
+    startScreen.style.display = 'flex';
+  }
+
+  // Selector de cantidad de piezas (4, 6 u 8)
   const sizeButtons = document.querySelectorAll('#pieceButtons button');
   sizeButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
-      selectedGridSize = parseInt(btn.dataset.size);
+      selectedPieces = parseInt(btn.dataset.size);
       sizeButtons.forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
     });
   });
   if (sizeButtons[0]) sizeButtons[0].classList.add('active');
 
-  function showMenu() {
-    startScreen.style.display = 'flex';
-    previewContainer.innerHTML = '';
-    document.getElementById('recordMessage').style.display = 'none';
-    const ctx = document.getElementById('gameCanvas').getContext('2d');
-    ctx.clearRect(0, 0, 500, 500);
-    document.getElementById('timer').textContent = '00:00';
-    document.getElementById('level-info').textContent = 'Nivel - | Récord: --';
-    startGameBtn.style.display = 'block';
-  }
-
+  // Animación previa: se muestran todas las miniaturas y se resalta la elegida
   function mostrarPreview(callback) {
     previewContainer.innerHTML = '';
     previewContainer.style.display = 'flex';
     previewContainer.style.opacity = '1';
 
-    const selectedIndex = Math.floor(Math.random() * TOTAL_IMAGES) + 1;
+    const selectedIndex = pickImageIndex();
 
     for (let i = 1; i <= TOTAL_IMAGES; i++) {
       const img = document.createElement('img');
@@ -407,7 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (i === selectedIndex) {
         setTimeout(() => {
           img.style.transform = 'scale(1.2)';
-          img.style.borderColor = '#00FF00';
+          img.style.borderColor = '#10b981';
         }, 500);
       }
     }
@@ -419,7 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 2000);
   }
 
-  // Botón "Ayudita"
+  // Botón "Necesito ayuda"
   ayuditaBtn.addEventListener('click', () => {
     if (game && !game.ayuditaUsada) {
       game.usarAyudita();
@@ -427,31 +478,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Botones "Menú" y "Reiniciar" (los de la barra de juego)
-  menuBtn.addEventListener('click', () => {
-    if (game) game.volverAlMenu();
-  });
+  // Botones "Menú" y "Reiniciar" de la barra de juego
+  menuBtn.addEventListener('click', showMenu);
 
   restartBtn.addEventListener('click', () => {
-    if (game) game.reiniciarJuego();
+    if (!game) return;
+    newGame(selectedPieces, level, pickImageIndex(lastImageIndex));
   });
 
   // Botón "Comenzar"
   startGameBtn.addEventListener('click', () => {
-    startGameBtn.disabled = true; // evita doble clic durante la preview
+    startGameBtn.disabled = true; 
     level = 1;
 
     mostrarPreview((selectedIndex) => {
-      newGame(selectedGridSize, level, selectedIndex);
+      newGame(selectedPieces, level, selectedIndex);
       startGameBtn.disabled = false;
       startScreen.style.display = 'none';
-      ayuditaBtn.style.display = 'block';
-      menuBtn.style.display = 'block';
-      restartBtn.style.display = 'block';
+      showGameButtons(true);
     });
   });
 
-  // Botón "Siguiente nivel"
+  // Botón "Siguiente" nivel (con otra imagen distinta a la anterior)
   nextLevelBtn.addEventListener('click', () => {
     level++;
     document.getElementById('successMessage').style.display = 'none';
@@ -459,49 +507,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (level > 3) {
       level = 1;
-      if (game) game.destroy();
-      ayuditaBtn.style.display = 'none';
-      menuBtn.style.display = 'none';
-      restartBtn.style.display = 'none';
       showMenu();
       return;
     }
-    newGame(selectedGridSize, level);
+    newGame(selectedPieces, level, pickImageIndex(lastImageIndex));
   });
 
-  // Botón "Reintentar"
+  // Botón "Reintentar" (misma imagen, mismo nivel)
   retryBtn.addEventListener('click', () => {
     document.getElementById('defeatMessage').style.display = 'none';
-    newGame(selectedGridSize, level);
+    newGame(selectedPieces, level, lastImageIndex);
   });
 
   // Botones "Menú" de los mensajes de victoria/derrota
   document.querySelectorAll('.goToMenuBtn').forEach((btn) => {
     btn.addEventListener('click', () => {
-      if (game) game.destroy();
-      document.getElementById('successMessage').style.display = 'none';
-      document.getElementById('defeatMessage').style.display = 'none';
-      ayuditaBtn.style.display = 'none';
-      menuBtn.style.display = 'none';
-      restartBtn.style.display = 'none';
+      level = 1;
       showMenu();
     });
   });
 });
-
-// === Input de comentarios (solo si existen en la página) ===
-const input = document.querySelector('.input-coment');
-const boton = document.querySelector('.btn-comentar');
-const divInput = document.querySelector('.input-con-boton');
-
-if (input && boton && divInput) {
-  input.addEventListener('click', () => {
-    boton.style.display = 'block';
-    divInput.style.height = '100px';
-  });
-  boton.addEventListener('click', () => {
-    boton.style.display = 'none';
-    divInput.style.height = '50px';
-    input.value = '';
-  });
-}

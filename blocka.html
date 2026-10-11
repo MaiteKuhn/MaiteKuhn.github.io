@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAMING</title>
     <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/blocka.css">
-
+    <link rel="stylesheet" href="css/blocka.css">
 </head>
 <body>
      <div class="loader">
@@ -134,24 +133,25 @@
         <!--Blocka-->
         <div class="game-img">
         <div class="game-container">
+
+        <!-- Timer y nivel: fuera del overlay para que se vean durante la partida -->
+        <div class="controls">
+          <div id="timer">00:00</div>
+          <div id="level-info">Nivel - | Récord: --</div>
+        </div>
+
         <!-- Overlay inicial (menú) -->
         <div id="startScreen" class="start-screen">
           <div class="overlay-content">
-
-              <!-- Timer -->
-            <div class="controls">
-            <div id="timer">00:00</div>
-            <div id="level-info">Nivel - | Tu récord: --</div>
-            </div>
 
             <h1>¡Bienvenido a BLOCKA!</h1>
             <p>Selecciona dificultad y haz clic en "Comenzar"</p>
 
             <div id="pieceButtons" class="piece-buttons">
               <span>Piezas:</span>
-              <button data-size="2">4</button>
-              <button data-size="3">6</button>
-              <button data-size="4">8</button>
+              <button data-size="4">4</button>
+              <button data-size="6">6</button>
+              <button data-size="8">8</button>
             </div>
 
 
@@ -451,9 +451,11 @@
                 <img class="logo-footer" src="assets/img/LogoGamingNav 2.png" alt="Logo">
                 <p class="copyright" >© 2026 GAMING - Desarrollado por Maite Kuhn y Josefina Socobehere - Todos los derechos reservados.</p>
             </footer>
-                <script src="js/script.js"></script>
-                <script src="js/blocka.js"></script>
 
+    <!-- Librería de confeti (efecto de victoria) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/blocka.js"></script>
 
-        </body>
-        </html>
+</body>
+</html>

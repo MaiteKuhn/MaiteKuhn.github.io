@@ -1,4 +1,4 @@
-/* Contenedor general del juego*/
+/*Contenedor general del juego*/
 .game-container {
   display: flex;
   flex-direction: column;
@@ -11,12 +11,9 @@
 
 /* Canvas */
 #gameCanvas {
-  display: block;
-  margin: 0 auto;
-  padding: 2px;
-  
+  max-width: 100%;
+  height: auto;
 }
-
 /* Controles del juego */
 .controls {
   display: flex;
@@ -47,11 +44,15 @@
   cursor: pointer;
   transition: background 0.3s ease;
 }
-
-.piece-buttons button:hover {
+.piece-buttons button.active {
+  background: #43299e;
+  outline: 2px solid #fff;
+}
+.piece-buttons button:not(.active):hover {
   transform: scale(1.07);
   background: var(--secondary-hover, #000A90);
 }
+
 
 #timer, #level-info {
   background-color: #222;
@@ -133,17 +134,6 @@
   transition: transform 0.4s ease, border-color 0.4s ease;
 }
 
-.game-actions button #ayuditaBtn {
-  border: none;
-  border-radius: 20px;
-  background-color: #FF9800;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  display: none;
-}
-
 #ayuditaBtn:disabled{
   background-color: #888585;
   cursor: not-allowed;
@@ -175,75 +165,52 @@
   background-color: #8c71d6;
 }
 
-
-.record-message {
+/* Base compartida de los mensajes (centrados sin usar transform) */
+.record-message,
+.success-message,
+.defeat-message {
   display: none;
   position: absolute;
-  top: 45%;
-  left: 25%;
-  font-weight: bold;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: max-content;
+  max-width: 85%;
+  box-sizing: border-box;
   text-align: center;
+  font-weight: bold;
   padding: 12px;
   border-radius: 12px;
+}
+
+.success-message {
+  top: 28%;
+  color: #43299e;
+  background: #10b981;
+  z-index: 20;
+}
+
+.defeat-message {
+  top: 28%;
+  color: #43299e;
+  background: #ef4444;
+  z-index: 20;
+}
+
+.record-message {
+  top: 62%;
   color: #fff;
   background: #8c71d6;
   z-index: 21;
   animation: pulseWin 0.6s ease-in-out 2;
 }
-
-
-/* Mensajes de victoria y derrota */
-.success-message {
-  display: none;
-  position: absolute;
-  top: 30%;
-  left: 20%;
-  margin-top: 12px;
-  font-weight: bold;
-  text-align: center;
-  padding: 12px;
-  border-radius: 12px;
-  color: rgb(0, 77, 0);
-  background: rgba(0, 255, 0, 0.7);
-  z-index: 20;
-}
-
-.defeat-message {
-  display: none;
-  position: absolute;
-  top: 31%;
-  left: 12%;
-  margin-top: 12px;
-  font-weight: bold;
-  text-align: center;
-  padding: 12px;
-  border-radius: 12px;
-  z-index: 20;
-  color: #8c71d6;
-  background: rgba(255, 0, 0, 0.85);
-}
-
 .success-message button, .defeat-message button {
   margin: 6px;
   padding: 6px 12px;
   border: none;
   border-radius: 20px;
   background: #8c71d6;
-  color: #fff;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.success-message button:hover, .defeat-message button:hover {
-  background: var(--secondary-hover, #000A90);
-}
-
-.success-message button, .defeat-message button {
-  margin: 6px;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 20px;
-  background: var(--secondary-color, #000CAD);
   color: #fff;
   cursor: pointer;
   transition: background 0.3s ease;
@@ -275,10 +242,6 @@
   75% { transform: translateX(-8px); }
   100% { transform: translateX(0); }
 }
-.piece.correct {
-  border: 2px solid limegreen;
-  animation: correctPulse 0.5s ease;
-}
 
 @keyframes correctPulse {
   0%, 100% { transform: scale(1); }
@@ -287,9 +250,4 @@
 
 .correct {
   animation: correctPulse 0.5s ease;
-}
-
-@keyframes correctPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
 }
