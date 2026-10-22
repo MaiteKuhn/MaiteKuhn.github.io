@@ -1,5 +1,6 @@
-//  Configuración 
-const FILTERS = ['grayscale', 'brightness', 'invert'];
+//  Configuración, que filtros hay
+
+const FILTERS = ['grayscale', 'brightness', 'invert', 'blur'];
 
 //preguntar si se pone -0.3 (muy oscura) o el 1.3(aumenta el brillo)
 const BRIGHTNESS_FACTOR = 0.3;
@@ -14,10 +15,10 @@ const LAYOUTS = {
   8: { cols: 4, rows: 2 }
 };
 const PIECE_PX = 160;
-
+//tiempo maximo segun el nivel
 const timeForLevel = (level) => (level === 1 ? 120 : level === 2 ? 90 : 60);
 
-// Devuelve una imagen al azar di
+// sortea una img distinta de la anterior
 function pickImageIndex(exclude = null) {
   let i;
   do {
@@ -52,20 +53,25 @@ class PuzzleGame {
     this.onContextMenu = (e) => e.preventDefault();
     this.initEvents();
   }
-
+//apaga el reloj y los eventos para que no se acumulen
   destroy() {
     clearInterval(this.timerInterval);
     this.isPlaying = false;
     this.canvas.removeEventListener('mousedown', this.onMouseDown);
     this.canvas.removeEventListener('contextmenu', this.onContextMenu);
   }
-
+//carga la img y arranca todo cuando esta lista
   loadImage(index) {
     this.imageIndex = index;
     this.image = new Image();
+    //4.carga la img
+    //onload no usa la img, es el aviso del navegador 
     this.image.onload = () => {
+      //4.1 crea y mezzcla
       this.createPieces();
+      //4.2 arranca el reloj
       this.start();
+      //4.3 dibuja
       this.drawPieces();
     };
     this.image.onerror = () => {
@@ -73,7 +79,7 @@ class PuzzleGame {
     };
     this.image.src = imgPath(index);
   }
-
+//recorta la img al centro para que no quede deforme
   getSourceRect() {
     const targetRatio = this.cols / this.rows;
     const imgRatio = this.image.width / this.image.height;
@@ -88,16 +94,16 @@ class PuzzleGame {
       sh
     };
   }
-
+//crea las piezas, les da rotacion y filtro al azar
   createPieces() {
     this.pieces = [];
-
-    // Nivel 1: grises | Nivel 2: un solo filtro (brillo o negativo) para toda la imagen
+    // Nivel 1: grises 
+    // Nivel 2: un solo filtro (brillo o negativo) para toda la imagen
     // Nivel 3: un filtro distinto al azar en cada pieza
     const levelFilter =
       this.level === 2
-        ? ['brightness', 'invert'][Math.floor(Math.random() * 2)]
-        : 'grayscale';
+        ? ['blur', 'brightness'][Math.floor(Math.random() * 2)]
+        : 'blur';
 
     for (let row = 0; row < this.rows; row++) {
       for (let col = 0; col < this.cols; col++) {
@@ -123,7 +129,8 @@ class PuzzleGame {
       p.rotation = [90, 180, 270][Math.floor(Math.random() * 3)];
     }
   }
-
+  //arma la img de cada pieza y le aplica filtro 
+  //recorta la ft
   buildTile(p, size) {
     const tile = document.createElement('canvas');
     tile.width = size;
@@ -135,11 +142,12 @@ class PuzzleGame {
     const ph = sh / this.rows;
 
     tctx.drawImage(
-      this.image,
-      sx + p.col * pw,
-      sy + p.row * ph,
-      pw,
-      ph,
+      this.image, //la ft origina
+      sx + p.col * pw, //donde empieza el recorte, mas cuantas columnas me corr
+      sy + p.row * ph,// lo mismo con las filas 
+      pw, //ancho del pedazo que copio
+      ph, //alto del pedazo que copio
+      //lo pego en el canvas auxiliar ocupandolo entero
       0,
       0,
       size,
@@ -153,7 +161,7 @@ class PuzzleGame {
     }
     return tile;
   }
-
+//dibuja todas las piezas con su rotacion
   drawPieces() {
     const gap = this.gapActivo ? 4 : 0;
     const inner = PIECE_PX - gap;
@@ -176,7 +184,7 @@ class PuzzleGame {
       this.ctx.restore();
     });
   }
-
+//la matematica de los filtros (grises, negativo, brillo)
   applyFilter(imageData, filter) {
     const data = imageData.data;
 
@@ -184,8 +192,8 @@ class PuzzleGame {
       switch (f) {
         case 'grayscale':
           for (let i = 0; i < data.length; i += 4) {
-            const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-            data[i] = data[i + 1] = data[i + 2] = avg;
+            const gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i+2];
+            data[i] = data[i + 1] = data[i + 2] = gray;
           }
           break;
 
@@ -205,6 +213,39 @@ class PuzzleGame {
           }
           break;
 
+        case 'blur':
+        const K = 5; 
+        const width = imageData.width;
+        const height = imageData.height;
+        const destino = this.ctx.createImageData(width, height); 
+        const src = data, dst = destino.data;
+
+        for (let rep=0; rep < 5 ; rep++) {
+          for (let col=0 ; col < height; col++) {
+            for (let fila=0; fila < width; fila++){
+              let r=0, g=0, b=0, vec=0;
+              for (let colVec= -K; colVec <= K ; colVec++) {
+                for (let filaVec=-K; filaVec <= K ; filaVec++ ){
+                  let vecinoCol =  col + colVec, vecinoFila = fila + filaVec;
+                  if (vecinoCol < 0 || vecinoFila < 0 || vecinoCol >= height || vecinoFila >= width) continue;
+                    let vecino = (vecinoFila + vecinoCol * width) *4; 
+                    r+=src[vecino]; g+=src[vecino+1]; b+=src[vecino+2];
+                    vec++; 
+                }
+              }
+              
+              const pixelNuevo = (fila + col * width) * 4 ;
+              dst[pixelNuevo] = r / vec;
+              dst[pixelNuevo + 1] = g / vec;
+              dst[pixelNuevo + 2 ] = b / vec;
+              dst[pixelNuevo + 3] = src[pixelNuevo+3];
+            }
+          }
+        data.set(dst);
+        }
+        break;
+       
+
         default:
           break;
       }
@@ -212,13 +253,14 @@ class PuzzleGame {
 
     return imageData;
   }
-
+//mousedown se dispara al apretar cualquier btn del mouse sobre el canvas
   initEvents() {
     this.canvas.addEventListener('contextmenu', this.onContextMenu);
     this.canvas.addEventListener('mousedown', this.onMouseDown);
   }
-
-  onMouseDown(e) {
+//Se usa mousedown y no click porque click solo se dispara con el botón izquierdo. mousedown distingue los botones.
+//si el juego no esta en curso se ignora el click
+onMouseDown(e) {
     if (!this.isPlaying) return;
 
     const rect = this.canvas.getBoundingClientRect();
@@ -233,22 +275,23 @@ class PuzzleGame {
     if (e.button === 0) this.animateRotation(piece, -90); // izquierdo -> izquierda
     if (e.button === 2) this.animateRotation(piece, 90); // derecho -> derecha
   }
-
+//fija una pieza y suma 5 seg
   usarAyudita() {
+    //si el juego esta en curso y la ayudita no se uso todavia en este nivel
     if (!this.isPlaying || this.ayuditaUsada) return;
-
+//busca la pieza que necesitan ayuda: no estan fijas, no esta girando y no estan ya bien ubicadas.si no hay ninguna no hace nada
     const candidatas = this.pieces.filter(
       (p) => !p.fija && !p.isAnimating && p.rotation % 360 !== 0
     );
     if (candidatas.length === 0) return;
-
+//elige una al azar y la deja:
     const pieza = candidatas[Math.floor(Math.random() * candidatas.length)];
     pieza.rotation = 0;
     pieza.filter = 'none';
     pieza.fija = true;
-
-    // Penalización de 5 segundos
+//suma al tiempo final y 5 menos antes de perder por tiempo
     this.startTime -= 5000;
+    //impide un segundo uso
     this.ayuditaUsada = true;
 
     this.drawPieces();
@@ -286,18 +329,19 @@ class PuzzleGame {
     requestAnimationFrame(animate);
   }
 
+  //decide si ganaste y muestra la imagen sin filtros
   checkWin() {
     if (!this.isPlaying) return;
     const allCorrect = this.pieces.every(
       (p) => !p.isAnimating && (p.fija || p.rotation % 360 === 0)
     );
     if (!allCorrect) return;
-
+//se frena el reloj, se bloquean los clic y se apaga la separacion entre las piezas
     clearInterval(this.timerInterval);
     this.isPlaying = false;
     this.gapActivo = false;
 
-    // Se quitan los filtros: imagen original en RGB, sin separación entre piezas
+//se borra el canvas y se dibuja la ft original completa y original
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     const { sx, sy, sw, sh } = this.getSourceRect();
     this.ctx.drawImage(
@@ -311,7 +355,7 @@ class PuzzleGame {
 
     document.getElementById('successMessage').style.display = 'block';
 
-    // Confeti 
+    // Confeti (solo se ejecuta si la libreria cargo)
     if (typeof confetti === 'function') {
       const end = Date.now() + 1500;
       (function frame() {
@@ -337,6 +381,7 @@ class PuzzleGame {
     return `record_level_${this.level}_${this.pieceCount}`;
   }
 
+  //indica el temporizador y limite de tiempop
   start() {
     this.isPlaying = true;
     this.ayuditaUsada = false;
@@ -400,11 +445,12 @@ document.addEventListener('DOMContentLoaded', () => {
   let game = null;
   let level = 1;
   let lastImageIndex = null;
-
+//2.crea un objeto Puzzle Game( con la cant de piezas y el nivel)
   function newGame(pieces, lvl, imageIndex) {
     if (game) game.destroy();
     game = new PuzzleGame(pieces, lvl);
     lastImageIndex = imageIndex;
+    //3.pide que cargue la img
     game.loadImage(imageIndex);
   }
 
