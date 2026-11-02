@@ -12,7 +12,7 @@ document.querySelectorAll(".boton-ficha").forEach(boton => {
 
 document.getElementById("comenzar").addEventListener("click", () => {
   document.getElementById("menu-inicial").style.display = "none";
-  document.querySelector(".contenedor-juego-peg").style.display = "block";
+  document.querySelector(".contenedor-juego-peg").style.display = "grid";
 
   const canvas = document.getElementById("canvas-juego");
   canvas.width = 400;

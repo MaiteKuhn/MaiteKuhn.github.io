@@ -12,18 +12,21 @@ export class VistaPeg {
       img.src = `assets/img/fichas/${nombre}.png`;
       this.imagenes[nombre] = img;
     }
+    this.fondo = new Image();
+    this.fondo.src = "assets/img/tablero.png";
   }
 
   // Devuelve una promesa que se resuelve cuando todas las imágenes cargaron (o fallaron)
   esperarImagenes() {
-    const promesas = Object.values(this.imagenes).map(img => {
-      if (img.complete) return Promise.resolve();
-      return new Promise(resolve => {
-        img.addEventListener("load", resolve, { once: true });
-        img.addEventListener("error", resolve, { once: true });
+      const todas = [...Object.values(this.imagenes), this.fondo];
+      const promesas = todas.map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise(resolve => {
+          img.addEventListener("load", resolve, { once: true });
+          img.addEventListener("error", resolve, { once: true });
+        });
       });
-    });
-    return Promise.all(promesas);
+      return Promise.all(promesas);
   }
 
   centroCelda(c) {
@@ -42,20 +45,26 @@ export class VistaPeg {
 
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+    if (this.fondo.complete && this.fondo.naturalWidth > 0) {
+      ctx.drawImage(this.fondo, 0, 0, this.canvas.width, this.canvas.height);
+    }
+
     // Casillas y huecos
     for (let y = 0; y < tablero.length; y++) {
       for (let x = 0; x < tablero[y].length; x++) {
         if (tablero[y][x] === -1) continue;
-        ctx.fillStyle = "#291765";
+        //ctx.fillStyle = "#291765";
         ctx.fillRect(x * s + 2, y * s + 2, s - 4, s - 4);
         ctx.strokeStyle = "#43299e";
         ctx.lineWidth = 2;
         ctx.strokeRect(x * s + 2, y * s + 2, s - 4, s - 4);
+        ctx.fillStyle = "rgba(41, 23, 101, 0.55)";   
+        ctx.fillStyle = "rgba(18, 7, 43, 0.65)";
 
         const c = this.centroCelda({ x, y });
         ctx.beginPath();
         ctx.arc(c.x, c.y, s * 0.36, 0, Math.PI * 2);
-        ctx.fillStyle = "#12072b";
+        //ctx.fillStyle = "#12072b";
         ctx.fill();
       }
     }

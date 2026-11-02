@@ -17,7 +17,7 @@
   min-height: 520px;
   padding: 24px;
   text-align: center;
-  background: linear-gradient(160deg, #291765, #43299e);
+  background: linear-gradient(rgba(18, 7, 43, 0.55), rgba(18, 7, 43, 0.55)), url("../assets/img/peg-fondo.jpg") center / cover no-repeat;
 }
 
 .menu-inicial h2 {
@@ -59,24 +59,33 @@
 .contenedor-juego-peg {
   display: none;
   position: relative;
+  box-sizing: border-box;
+  grid-template-rows: 1fr auto 1fr;
+  justify-items: center;       /* centra horizontalmente cada elemento */
   width: 100%;
-  max-width: 500px;
-  padding: 12px;
+  min-height: 600px;
+  padding: 16px;
+  background:
+    linear-gradient(rgba(18, 7, 43, 0.6), rgba(18, 7, 43, 0.6)), url("../assets/img/peg-fondo.jpg") center / cover no-repeat;
 }
 
 #canvas-juego {
+  grid-row: 2;
   display: block;
   width: 100%;
+  max-width: 440px;
   height: auto;
   aspect-ratio: 1 / 1;
-  background-color: #1a0b40;
+  background-color: transparent;
   border: 2px solid #43299e;
   border-radius: 12px;
   cursor: pointer;
 }
 
 #timer {
-  margin: 10px 0;
+  grid-row: 1;
+  align-self: end;
+  margin: 0 0 12px;
   text-align: center;
   font-size: 1.1rem;
   font-weight: bold;
@@ -84,9 +93,12 @@
 }
 
 .botones-juego {
+  grid-row: 3;
+  align-self: start;
   display: flex;
   justify-content: center;
   gap: 16px;
+  margin-top: 12px;
 }
 
 /* ---------- Fin de partida ---------- */
@@ -99,15 +111,16 @@
   align-items: center;
   gap: 20px;
   padding: 20px;
-  background: #291765;
+  background: linear-gradient(rgba(41, 23, 101, 0.88), rgba(41, 23, 101, 0.88)), url("../assets/img/peg-fondo.jpg") center / cover no-repeat;
   border-radius: 12px;
   z-index: 10;
   animation: fadeIn 0.6s ease-in-out;
 }
 
 #mensaje-final {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   text-align: center;
+  white-space: pre-line; 
   color: #fca8ff;
   background: rgba(252, 168, 255, 0.10);
     padding: 20px 30px;
