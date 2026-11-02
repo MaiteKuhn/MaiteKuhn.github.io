@@ -193,9 +193,9 @@ fetch('https://vj.interfaces.jima.com.ar/api/v2') //hace una petición a la URL 
   return tarjeta;
 }
 const imagenes = [
-  { imagen: 'assets/img/pegsolitaire (2).jpg',        link: 'juego-pegsolitaire.html' },
+  { imagen: 'assets/img/pegsolitaire (2).jpg',        link: 'juego.html' },
   { imagen: 'assets/img-blocka/blockaportada.jpg',    link: 'blocka.html' },
-  { imagen: 'assets/img/banner-robox.jpeg',           link: 'juego-robox.html' } // <- link real
+  { imagen: 'assets/img/banner-robox.jpeg',           link: 'juego-robox.html' }
 ];
 
 let i = 0;
