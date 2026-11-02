@@ -1,4 +1,4 @@
-import { ControladorPeg } from "./controller.js";
+import { ControladorPeg } from "./controlador.js";
 let controlador = null;
 let fichaElegida = "ficha1"; // valor por defecto
 
@@ -18,7 +18,7 @@ document.getElementById("comenzar").addEventListener("click", () => {
   canvas.width = 400;
   canvas.height = 400;
 
-  // ✅ Limpiar temporizador anterior si existe
+  // Limpiar temporizador anterior si existe
   if (controlador && controlador.intervalo) {
     clearInterval(controlador.intervalo);
   }
