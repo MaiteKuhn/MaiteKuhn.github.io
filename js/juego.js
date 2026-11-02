@@ -1,28 +1,3 @@
-
-document.addEventListener("DOMContentLoaded", () => {
-  const botonCompartir = document.querySelector(".icon-pie-game-compartir");
-  const menuCompartir = document.getElementById("menu-compartir");
-  const botonCerrar = document.getElementById("cerrar");
-
-  menuCompartir.style.display = "none";
-
-  botonCompartir.addEventListener("click", () => {
-    menuCompartir.style.display = "flex";
-  });
-
-  botonCerrar.addEventListener("click", () => {
-    menuCompartir.style.display = "none";
-  });
-
-  document.addEventListener("click", (event) => {
-    const isClickInsideCompartir = menuCompartir.contains(event.target) || botonCompartir.contains(event.target);
-    if (!isClickInsideCompartir) {
-      menuCompartir.style.display = "none";
-    };
-  });
-
-});
-
 document.addEventListener("DOMContentLoaded", () => {
   const botonControles = document.querySelector(".icon-pie-game-controles");
   const menuControles = document.getElementById("menu-controles");

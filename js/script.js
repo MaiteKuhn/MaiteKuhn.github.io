@@ -4,17 +4,21 @@ const porcentaje = document.querySelector(".porcentaje");
 
 let progreso = 0;
 
-const carga = setInterval(() => { //para saber qué intervalo cancelar
-    progreso++;
-    barra.style.width = progreso + "%"; //la barra se va llenando visualmente.
-    porcentaje.textContent = progreso + "%"; //Actualiza el texto para mostrar el número actual del porc
+if (barra && porcentaje) {
 
-    if (progreso >= 100) {
-        clearInterval(carga);
-    }
+    const carga = setInterval(() => {
+        progreso++;
 
-}, 50);
+        barra.style.width = progreso + "%";
+        porcentaje.textContent = progreso + "%";
 
+        if (progreso >= 100) {
+            clearInterval(carga);
+        }
+
+    }, 50);
+
+}
 //Movimiento carruseles
 const carruseles = document.querySelectorAll(".carrusel");
     carruseles.forEach(carrusel => {
