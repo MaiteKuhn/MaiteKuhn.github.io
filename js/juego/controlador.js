@@ -142,7 +142,7 @@ export class ControladorPeg {
     const cierre = `Movimientos: ${this.movimientos}\nTiempo: ${tiempo}s`;
     const mensaje = restantes === 1
       ? `¡Lo lograste! Quedó una sola llama 🦙\n${cierre}`
-      : `Sin más movimientos. Quedaron ${restantes} llamas.\n${cierre}`;
+      : `Sin más movimientos. Quedaron ${restantes} fichas.\n${cierre}`;
     this.vista.mostrarFin(mensaje);
   }
 
