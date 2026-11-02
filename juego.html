@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAMING</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/juego.css">
 </head>
 <body>
     <div class="loader">
@@ -133,10 +134,52 @@
         <!--juego-->
         <article class="game-portada">
             <div class="game-img">
-                <img src="assets/img/Gemini_Generated_Image_4krvdd4krvdd4krv.jpg" alt="Peg Solitaire">
-            </div>
+      <!-- Menú de inicio -->
+      <div id="menu-inicial" class="menu-inicial">
+        <h1>Peg Solitaire x Stranger Things</h1>
+        <button id="comenzar">Comenzar</button>
+        <h2>Escoge con quien jugar:</h2>
+        <div id="selector-fichas" class="grupo-fichas">
+          <button class="boton-ficha" data-ficha="ficha1">
+            <img src="assets/img/fichas/ficha1.png" alt="Ficha 1" />
+          </button>
+          <button class="boton-ficha" data-ficha="ficha2">
+            <img src="assets/img/fichas/ficha2.png" alt="Ficha 2" />
+          </button>
+          <button class="boton-ficha" data-ficha="ficha3">
+            <img src="assets/img/fichas/ficha3.png" alt="Ficha 3" />
+          </button>
+          <button class="boton-ficha" data-ficha="ficha4">
+            <img src="assets/img/fichas/ficha4.png" alt="Ficha 4" />
+          </button>
+        </div>
+
+      </div>
+  
+      <div class="contenedor-juego-peg">
+        <canvas id="canvas-juego"></canvas>
+  
+        <!-- Overlay de fin de juego -->
+        <div id="overlay">
+          <div id="mensaje-final"></div>
+          <button id="reiniciar">Volver a jugar</button>
+        </div>
+  
+        <!-- Temporizador -->
+        <div id="timer">Tiempo: 0s</div>
+        <!-- Imagen de la ficha -->
+        <img id="ficha-img" src="assets/img/fichas/ficha1.png" style="display:none" />
+
+  
+        <!-- Botones de control durante el juego -->
+        <div class="botones-juego">
+          <button id="reintentar">Reintentar</button>
+          <button id="volver-menu">Volver al menú</button>
+        </div>
+    </div>
+    </div>
             <div class="game-bar">
-                <h2>Peg Solitaire: Avertura en el Norte Argentino</h2>
+                <h2>Peg Solitaire: Aventura en el Norte Argentino</h2>
                 <div class="game-acs">
                     <button class="btn-icon btn-hover-1" title="Jugar"> <img src="assets/img/play.png" alt="Jugar"> </button>            
                     <button class="btn-icon btn-hover-2" title="Favorito"><img src="assets/img/fav.png" alt=""></button>
@@ -144,6 +187,7 @@
                 </div>
             </div>
         </article>
+        
 
     <!--Informacion del juego-->
 <div class = "game-info-grid">
@@ -405,6 +449,7 @@
         <p class="copyright" >© 2026 GAMING - Desarrollado por Maite Kuhn y Josefina Socobehere - Todos los derechos reservados.</p>
     </footer>
         <script src="js/script.js"></script>
-
+    <script src="js/juego.js"></script>
+    <script type="module" src="js/juego/peg.js"></script>
 </body>
 </html>
