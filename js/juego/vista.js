@@ -2,7 +2,18 @@ export class VistaPeg {
   constructor(canvas) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
+   const IMG_W = 1278, IMG_H = 1231;
+   const CELL = 166;
+   const GRID_X = (IMG_W - CELL * 7) / 2;   // = 58
+   const GRID_Y = 0;
+    const escala = canvas.width / IMG_W;
+    canvas.height = Math.round(IMG_H * escala);
+
     this.casillaSize = canvas.width / 7;
+
+    this.casillaSize = CELL * escala;
+    this.margenX = GRID_X * escala;
+    this.margenY = GRID_Y * escala;
 
     // Precarga de las 4 fichas
     this.imagenes = {};
@@ -31,8 +42,8 @@ export class VistaPeg {
 
   centroCelda(c) {
     return {
-      x: c.x * this.casillaSize + this.casillaSize / 2,
-      y: c.y * this.casillaSize + this.casillaSize / 2
+      x: this.margenX + c.x * this.casillaSize + this.casillaSize / 2,
+      y: this.margenY + c.y * this.casillaSize + this.casillaSize / 2
     };
   }
 
@@ -50,37 +61,46 @@ export class VistaPeg {
     }
 
     // Casillas y huecos
-    for (let y = 0; y < tablero.length; y++) {
+     for (let y = 0; y < tablero.length; y++) {
       for (let x = 0; x < tablero[y].length; x++) {
         if (tablero[y][x] === -1) continue;
-        //ctx.fillStyle = "#291765";
-        ctx.fillRect(x * s + 2, y * s + 2, s - 4, s - 4);
+
+        const px = this.margenX + x * s + 2;
+        const py = this.margenY + y * s + 2;
+
+        // Casilla
+        ctx.fillStyle = "rgba(18, 7, 43, 0.65)";
+        ctx.fillRect(px, py, s - 4, s - 4);
+
         ctx.strokeStyle = "#43299e";
         ctx.lineWidth = 2;
-        ctx.strokeRect(x * s + 2, y * s + 2, s - 4, s - 4);
-        ctx.fillStyle = "rgba(41, 23, 101, 0.55)";   
-        ctx.fillStyle = "rgba(18, 7, 43, 0.65)";
+        ctx.strokeRect(px, py, s - 4, s - 4);
 
+        // Hueco
         const c = this.centroCelda({ x, y });
         ctx.beginPath();
         ctx.arc(c.x, c.y, s * 0.36, 0, Math.PI * 2);
-        //ctx.fillStyle = "#12072b";
+        ctx.fillStyle = "rgba(18, 7, 43, 0.65)";
         ctx.fill();
       }
     }
 
+
     // Destinos posibles (latido suave)
     const pulso = 1 + 0.2 * Math.sin(performance.now() / 150);
     for (const h of hints) {
+      const px = this.margenX + h.x * s + 2;
+      const py = this.margenY + h.y * s + 2;
+
       ctx.fillStyle = "rgba(252, 168, 255, 0.15)";
-      ctx.fillRect(h.x * s + 2, h.y * s + 2, s - 4, s - 4);
+      ctx.fillRect(px, py, s - 4, s - 4);
+
       const c = this.centroCelda(h);
       ctx.beginPath();
       ctx.arc(c.x, c.y, (s / 7) * pulso, 0, Math.PI * 2);
       ctx.fillStyle = "#fca8ff";
       ctx.fill();
     }
-
     // Fichas
     for (let y = 0; y < tablero.length; y++) {
       for (let x = 0; x < tablero[y].length; x++) {

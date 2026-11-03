@@ -38,7 +38,10 @@ export class ControladorPeg {
 
   celdaDe(p) {
     const s = this.vista.casillaSize;
-    return { x: Math.floor(p.x / s), y: Math.floor(p.y / s) };
+    return {
+       x: Math.floor((p.x - this.vista.margenX) / s), 
+       y: Math.floor((p.y - this.vista.margenY) / s) 
+      };
   }
 
   // ---------- Eventos ----------

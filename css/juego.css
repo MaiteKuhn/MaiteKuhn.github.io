@@ -81,6 +81,10 @@
   border-radius: 12px;
   cursor: pointer;
 }
+#canvas-juego {
+  aspect-ratio: 1278 / 1231;
+  box-sizing: border-box;
+}
 
 #timer {
   grid-row: 1;
