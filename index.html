@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAMING</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="loader">
+        <div class="loading-bar">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="barra-carga-container">
+            <div class="barra-carga"></div>
+            <span class="porcentaje">0%</span>
+        </div>
+    </div>
+    <div class="superposicion"></div>
+
+    <header class="header">
+    <button class="menu-btn"><img src="assets/img/menu.png" alt="menu"></button>
+    <a href="index.html" class="logo">
+        <img src="assets/img/LogoGamingNav 2.png" alt="logo">
+    </a>
+    <div class="buscador">
+        <button class="btn-buscar">⌕</button>
+        <input type="text" placeholder="Buscar">
+    </div>
+
+    <div class="acciones">
+        <!-- FAVORITOS -->
+        <div class="desplegable-item">
+        <button class="nav-btn"><img src="assets/img/fav.png" alt="Favoritos"></button>
+        <div class="desplegable-menu">
+            <h2>Mis favoritos</h2>
+            <div class="desplegable-contenido">
+            <div class="item-juego">
+                <img src="assets/img/images (10).jpg" alt="Game">
+                <p>Lucky Brainrot Blocks Online</p>
+            </div>
+            <div class="item-juego">
+                <img src="assets/img/images (6).jpg" alt="Game">
+                <p>Peg Solitaire : Aventura en el norte Argentino</p>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- CARRITO -->
+        <div class="desplegable-item">
+        <button class="nav-btn"><img src="assets/img/carrito.png" alt="Carrito"></button>
+        <div class="desplegable-menu">
+            <h2>Carrito</h2>
+            <div class="desplegable-contenido">
+            <div class="item-carrito">
+                <img src="assets/img/images (1).jpg" alt="Game">
+                <span>SkillWarz</span>
+                <b>$10.000</b>
+                <button class="btn-borrar">🗑</button>
+            </div>
+            <div class="item-carrito">
+                <img src="assets/img/images (2).jpg" alt="Game">
+                <span>Knights & Brides</span>
+                <b>$12.400</b>
+                <button class="btn-borrar">🗑</button>
+            </div>
+            </div>
+            <div class="total-bar">
+            <span>Total $32.400</span>
+            <button class="boton-comprar">Comprar</button>
+            </div>
+        </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="desplegable-item">
+        <button class="nav-btn"><img src="assets/img/image-removebg-preview.png" alt="Usuario"></button>
+        <div class="desplegable-menu menu-perfil">
+            <div class="perfil-header">
+            <p class="usuario">@maikuhn09</p>
+            <span class="email">kmaite648@gmail.com</span>
+            </div>
+            <ul>
+            <li><a href="#">Mis juegos</a></li>
+            <li><a href="#">Mis favoritos</a></li>
+            <hr>
+            <li><a href="#">Preferencias de notificaciones</a></li>
+            <li><a href="#">Preferencias de privacidad</a></li>
+            <li><a href="#">Configuración de cuenta</a></li>
+            <li><a href="#">Cerrar sesión</a></li>
+            <br>
+            <li><a href="#">Soporte</a></li>
+            </ul>
+        </div>
+        </div>
+    </div>
+</header>
+    <nav class="menu">
+        <a href="#"> <img src="assets/img/inicio.png" alt=""> Inicio </a>
+        <div class="menu-categorias">
+            <a href="#" class="btn-categorias"> <img src="assets/img/categorias.png" alt=""> Categorias
+            <span>›</span>
+            </a>
+            <div class="submenu">
+                <a class="cat" href="#"> <img src="assets/img/deporte.png" alt="">Deporte</a>
+                <a class="cat" href="#"> <img src="assets/img/aventura.png" alt="">Aventura</a>
+                <a class="cat" href="#"> <img src="assets/img/accion.png" alt="">Acción</a>
+                <a class="cat" href="#"> <img src="assets/img/cocina.png" alt="">Cocina</a>
+                <a class="cat" href="#"> <img src="assets/img/puzzle.png" alt="">Puzzle</a>
+                <a class="cat" href="#"> <img src="assets/img/parejas.png" alt="">En pareja</a>
+            </div>
+        </div>
+        <a href="#"> <img src="assets/img/recientes.png" alt="">Recientes</a>
+        <a href="#"><img src="assets/img/clasificacion.png" alt="">Clasificación</a>
+        <div class="menu-inf"> 
+        <a href="#"> <img src="assets/img/inicio.png" alt="">Contactanos</a>
+        <a href="#"> <img src="assets/img/compartir.png" alt="">Compartir</a>
+        </div>
+    </nav>
+    <main>
+    <section class="banner-principal">
+        <div class="banner-3d">
+            <img id="banner-frente"
+                src="assets/img/pegsolitaire (2).jpg"
+                alt="Juego Destacado"
+                class="banner-fondo banner-frente">
+
+            <img id="banner-atras"
+                src="assets/img-blocka/blockaportada.jpg"
+                alt="Juego Destacado"
+                class="banner-fondo banner-atras">
+        </div>
+
+        <button class="flecha izquierda" id="banner-prev">‹</button>
+<button class="flecha derecha" id="banner-next">›</button>
+        <!-- Contenido flotante -->
+        <div class="banner-contenido">
+            <a href="juego.html" class="boton"><span>Jugar ahora</span></a>
+            
+            <!-- dots -->
+            <div class="banner-punto">
+            <span class="punto activo" data-index="0"></span>
+            <span class="punto" data-index="1"></span>
+            <span class="punto" data-index="2"></span>
+            </div>
+        </div>
+    </section>
+            <section class="carruseles">
+                <div class="carrusel">
+                    <h2> Recomendados segun tus favoritos</h2>
+                     <button class="flecha izquierda" id="banner-prev">‹</button>
+                        <div class="juegos">
+                        <!-- Los juegos de la API se ponen aca -->
+                       </div>
+                    <button class="flecha derecha" id="banner-next">›</button>
+                </div> 
+                
+        <div class="carrusel">
+                        <h2>Deportes</h2>
+                    <button class="flecha izquierda" id="banner-prev">‹</button>
+                        <div class="juegos">
+                        <!-- Los juegos de la API se ponen aca -->
+                       </div>
+                    <button class="flecha derecha" id="banner-next">›</button>
+                </div> 
+        
+<div class="carrusel">     
+                       
+    <h2>En pareja</h2>
+                    <button class="flecha izquierda" id="banner-prev">‹</button>
+                        <div class="juegos" id="juegos-api">
+                        <!-- Los juegos de la API se ponen aca -->
+                       </div>
+                    <button class="flecha derecha" id="banner-next">›</button>
+                </div> 
+
+                  <div class="carrusel">
+                    <h2>Aventura</h2>
+                    <button class="flecha izquierda" id="banner-prev">‹</button>
+                        <div class="juegos" id="juegos-api">
+                        <!-- Los juegos de la API se ponen aca -->
+                       </div>
+                    <button class="flecha derecha" id="banner-next">›</button>
+                </div> 
+
+        <div class="carrusel">                    
+            <h2>Cocina</h2>
+                    <button class="flecha izquierda">‹</button>
+                        <div class="juegos" id="juegos-api">
+                        <!-- Los juegos de la API se ponen aca -->
+                       </div>
+                    <button class="flecha derecha">›</button>
+                </div> 
+
+                 <div class="carrusel">
+                    <h2>Puzzle</h2>
+                    <button class="flecha izquierda">‹</button>
+                        <div class="juegos" id="juegos-api">
+                        <!-- Los juegos de la API se ponen aca -->
+                       </div>
+                    <button class="flecha derecha">›</button>
+                </div> 
+
+                <div class="carrusel">
+                    <h2>Accion</h2>
+                    <button class="flecha izquierda">‹</button>
+                        <div class="juegos" id="juegos-api">
+                        <!-- Los juegos de la API se ponen aca -->
+                       </div>
+                    <button class="flecha derecha">›</button>
+                </div> 
+            </section>
+    </main>
+    <footer class="footer">
+        <div class="footer-columnas">
+            <div class="footer-columna">
+                <h3>Compañia</h3>
+                <a href="#">Acerca de</a>
+                <a href="#">Inicio</a>
+                <a href="#">Noticias</a>
+                <a href="#">Prensa</a>
+                <a href="#">Media kit</a>
+                <a href="#">Blog</a>
+                <a href="#">Afiliados</a>
+                <a href="#">Sitio para niños</a>
+                <a href="#">Trabaja con nosotros</a>
+            </div>
+
+            <div class="footer-columna">
+                <h3>Recursos</h3>
+                <a href="#">Consultas sobre el reglamento</a>
+                <a href="#">Reglas de la comunidad</a>
+                <a href="#">Politica de contenido</a>
+                <a href="#">Soporte</a>
+                <a href="#">Preguntas frecuentes</a>
+                <a href="#">Centro de ayuda</a>
+                <a href="#">Guias y tutoriales</a>
+                <a href="#">Foros de usuario</a>
+                <a href="#">Reportar un problema</a>
+            </div>
+
+            <div class="footer-columna">
+                <h3>Legal</h3>
+                <a href="#">Licencias</a>
+                <a href="#">Términos y condiciones</a>
+                <a href="#">Politica de privacidad</a>
+                <a href="#">Cookies y preferencias</a>
+                <a href="#">Propiedad intelectual</a>
+                <a href="#">Derechos del consumidor</a>
+                <a href="#">Reembolsos y devoluciones</a>
+            </div>
+
+            <div class="footer-columna">
+                <h3>Navegación</h3>
+                <a href="#">Inicio</a>
+                <a href="#">Mi perfil</a>
+                <a href="#">Favoritos</a>
+                <a href="#">Juegos más populares</a>
+                <a href="#">Promociones de la semana</a>
+            </div>
+
+            <div class="footer-columna">
+                <h3>Categorias</h3>
+                <a href="#">Deporte</a>
+                <a href="#">Acción</a>
+                <a href="#">Aventura</a>
+                <a href="#">Cocina</a>
+                <a href="#">Puzzle</a>
+                <a href="#">En parejas</a>
+            </div>
+
+            <div class="footer-columna">
+                <h3>Comunidad</h3>
+                <a href="#">Comentarios</a>
+                <a href="#">Inicio</a>
+                <a href="#">Noticias</a>
+                <a href="#">Prensa</a>
+                <a href="#">Media kit</a>
+                <a href="#">Aprende a jugar</a>
+                <a href="#">Blog de comunidad</a>
+                <a href="#">Tabla de posiciones</a>
+                <a href="#">Comentarios de la página</a>
+            </div>
+
+            <div class="footer-columna">
+                <div class="Columna-pago">
+                    <h3>Medios de pago</h3>
+                    <img src="assets/img/visa.png" alt="Visa">
+                    <img src="assets/img/mercado-pago.png" alt="Mercado Pago">
+                    <img src="assets/img/paypal.png" alt="Paypal">
+                    <img src="assets/img/bitcoin.png" alt="Bitcoins">
+                </div>
+
+                <div class="Columna-contacto">
+                    <h3>Contactanos</h3>
+                    <img src="assets/img/facebook.png" alt="Facebook">
+                    <img src="assets/img/whatsapp.png" alt="WhatsApp">
+                    <img src="assets/img/instagram.png" alt="Instagram">
+                    <img src="assets/img/youtube.png" alt="YouTube">
+                </div>
+
+                <div class="newsletter">
+                    <p>Suscribite a nuestros newsletters, obtené todas las novedades y un 5% off para tu primera compra!</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="maikuhn@live.com" required>
+                        <button type="submit" class="btn">Enviar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <img class="logo-footer" src="assets/img/LogoGamingNav 2.png" alt="Logo">
+        <p class="copyright" >© 2026 GAMING - Desarrollado por Maite Kuhn y Josefina Socobehere - Todos los derechos reservados.</p>
+    </footer>
+    <script src="js/script.js"></script>
+</body>
+</html>
