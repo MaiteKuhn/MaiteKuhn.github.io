@@ -1,0 +1,1967 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: arial, regular;
+    background-color: #24145c;
+    color: white;
+}
+h1, h2, h3 {
+    font-family: overpass, monospace;
+    color: #fca8ff; 
+}
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #24145c;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+    align-items: center;
+    z-index: 9999;
+    animation: ocultar-loader 0.6s ease 5s forwards;
+}
+.loading-bar {
+   display: flex;
+   gap: 10px;
+}
+.loading-bar > div {
+    width: 15px;
+    height: 15px;
+    background-color: #fca8ff;
+    border-radius: 50%;
+    animation: bounce 0.6s infinite alternate;
+}
+.loading-bar > div:nth-child(1) {
+    animation-delay: 0s;
+}
+.loading-bar > div:nth-child(2) {
+    animation-delay: 0.15s;
+}
+.loading-bar > div:nth-child(3) {
+    animation-delay: 0.30s;
+}
+.loading-bar > div:nth-child(4) {
+    animation-delay: 0.45s;
+}
+.barra-carga-container {
+    width: 600px;
+    height: 30px;
+    background-color: #43299e;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.barra-carga {
+    width: 0%;
+    height: 100%;
+    background-color: #fca8ff;
+    border-radius: 10px;
+}
+
+.porcentaje {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+    font-family: 'Overpass', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+
+    z-index: 2;
+}
+.loader.oculto {
+    opacity: 0;
+    pointer-events: none;
+}
+/*Header*/
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #291765;
+  padding: 10px 20px;
+}
+
+
+
+/* Buscador */
+.buscador {
+  height: 40px;
+  background-color: #43299e;
+  border-radius: 7px;
+}
+
+.buscador input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0 15px;
+  color: #ffffff;
+  font-size: 15px;
+  
+}
+
+.buscador input::placeholder {
+  color: #f0a1ff;
+  font-weight: 600;
+}
+
+.buscador button {
+  background: none;
+  border: none;
+  color: #f0a1ff;
+  font-size: 24px;
+  padding: 0 15px;
+  cursor: pointer;
+}
+
+/* Acciones (Íconos superior derecha) */
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.desplegable-item {
+  position: relative;
+}
+
+.nav-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-btn img {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+/* desplegable Menus */
+.desplegable-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 280px;
+  background-color: #211059;
+  border-radius: 12px;
+  padding: 16px;
+  color: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+}
+
+.desplegable-item:hover .desplegable-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.desplegable-menu h2 {
+  color: #ff88ff;
+  font-family: monospace;
+  font-size: 1.3rem;
+  margin: 0 0 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 6px;
+}
+
+.item-juego,
+.item-carrito {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+}
+
+.item-juego img,
+.item-carrito img {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+.btn-borrar {
+  color: #ffffff;
+  background-color: transparent;
+}
+
+
+.perfil-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.perfil-header .usuario {
+  font-weight: bold;
+  margin: 0;
+}
+
+.perfil-header .email {
+  font-size: 0.75rem;
+  color: #bbb;
+}
+
+.desplegable-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.desplegable-menu ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  display: block;
+  padding: 5px 0;
+  font-size: 0.88rem;
+  transition: color 0.2s ease;
+}
+
+.desplegable-menu ul li a:hover {
+  color: #ff88ff;
+}
+
+/* Menú Hamburguesa Lateral */
+.menu-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.menu-btn img {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
+.menu {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 220px;
+  padding: 20px;
+  background-color: #291765;
+  border-radius: 0 0 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: 100;
+  box-shadow: 4px 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.menu.menu-abierto {
+  transform: translateX(0);
+}
+
+.registro-exitoso {
+  display: none; 
+}
+
+.login-box.registro-correcto{
+  background-color: #10b981;
+  animation: mover 2s ease-in-out infinite; 
+}
+
+.login-box.registro-correcto .registro-exitoso{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; 
+}
+
+@keyframes mover {
+  0% {
+    transform:  scale(1.5,1.5); 
+  }
+  50% {
+    transform: scale(1.2,1.2);  
+  }
+  100% {
+    transform: scale(1.5,1.5);  
+  }
+}
+
+.login-box.registro-correcto .form-reg{
+display: none;
+}
+
+.login-box.registro-correcto h1{
+display: none;
+}
+
+.menu a,
+.btn-categorias {
+  color: #ffffff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: system-ui, sans-serif;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.menu a img,
+.btn-categorias img {
+  width: 20px;
+  height: 20px;
+}
+
+.menu a:hover,
+.btn-categorias:hover {
+  color: #f3a1ff;
+}
+
+.submenu {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 30px;
+  padding-top: 8px;
+}
+
+.submenu.submenu-abierto {
+  display: flex;
+}
+
+.submenu a.cat {
+  color: #9d8bd8;
+  font-size: 0.88rem;
+}
+
+.submenu a.cat:hover {
+  color: #f0a1ff;
+}
+
+.menu-inf {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+/*Logo*/
+.logo {
+display: flex;
+}
+.logo img {
+  width: auto;
+  display: block;
+}
+/*Barra buscador*/
+.buscador {
+    display: flex;
+    align-items: center;
+
+    width: 45%;
+    height: 45px;
+
+    background-color: #43299e;
+    border-radius: 7px;
+}
+
+.buscador input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0 20px;
+    color: white;
+    font-size: 16px;
+}
+
+.buscador input::placeholder {
+    color: #f0a1ff;
+    font-weight: bold;
+}
+
+.buscador button {
+    background: none;
+    border: none;
+    color: #f0a1ff;
+    font-size: 32px;
+    padding: 0 15px;
+    cursor: pointer;
+}
+
+
+/*Iconos*/
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.acciones button {
+  border: none;
+  cursor: pointer;
+}
+.acciones button img {
+  width: 24px;
+  height: 24px;
+}
+.btn-jugar-ahora {
+  align-self: flex-end;
+  background-color: #9d8bd8;
+  color: #ffffff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+/*pagina peg*/
+.game-page-container {
+  display: grid;
+  grid-template-columns: 1fr 320px; /* Columna principal adaptable + Sidebar fija */
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.breadcrumb {
+    font-size: 0.9rem;
+    color: #a288d4;}
+.breadcrumb a {
+  color: #a288d4;
+  text-decoration: none;
+}
+.breadcrumb span {
+  color: #d946ef;
+  font-weight: 600;
+}
+/*marco del juego*/
+.game-portada {
+  border-radius: 12px;
+  overflow: hidden;
+  width: 1080px;
+}
+.game-img img{
+    width: 1080px;
+    height: 480px;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+}
+.game-bar {
+    width: 1080px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background-color: #4c1d95;
+}
+.game-acs{
+display: flex;
+gap: 10px;
+}
+.btn-icon {
+ background-color: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.game-info-grid {
+  display: grid;
+  width: 1080px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+/*animacion como jugar*/
+/* Contenedor exterior */
+.info-block {
+  border: 4px solid #2d1766;
+  border-radius: 12px;
+  padding: 16px;
+  display: inline-block;
+  background-color: #12072b;
+}
+.info-block h3 {
+  color: #fca8ff;
+  margin: 0 0 16px 0;
+  font-size: 1.2rem;
+  text-align: left;
+  border-bottom: 1px solid #321973;
+  padding-bottom: 6px;
+}
+
+
+/* Tarjeta principal */
+.tarjeta-controles {
+  background-color: #1a0b40;
+  border: 1px solid #321973;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  color: #ffffff;
+}
+
+
+
+/* Alineación de íconos */
+.bloque-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.mouse-contenedor {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70%;
+}
+.icono-mouse{
+  width: 45px;
+  height: auto;
+  display: block;
+}
+
+/* Animaciones simples con Transition en Hover */
+.icono-flechas-v{
+  position: absolute;
+  font-size: 1.5rem;
+  left: 32px;
+  color:#ff88ff;
+  animation: moverVertical 1.2s ease-in-out infinite alternate;
+}
+@keyframes moverVertical {
+  0% {
+    transform: translateY(4px);  /* Posición abajo */
+  }
+  100% {
+    transform: translateY(-4px); /* Posición arriba */
+  }
+}
+
+.icono-flechas-h{
+  font-size: 1.5rem;
+  color:#ff88ff;
+  display: block;
+  margin-top: 12px;
+animation: moverHorizontal 1.2s ease-in-out infinite alternate;
+}
+@keyframes moverHorizontal {
+  0% {
+    transform: translateX(-5px); /* Posición izquierda */
+  }
+  100% {
+    transform: translateX(5px);  /* Posición derecha */
+  }
+}
+
+.btn-mouse-click {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  transition: transform 0.15s ease; /* Transición al interactuar */
+}
+
+.btn-mouse-click img {
+  width: 45px;
+  height: auto;
+  display: block;
+}
+
+.btn-mouse-click:hover {
+  transform: scale(1.1);
+}
+
+.btn-mouse-click:active {
+  transform: scale(0.9);
+}
+
+.etiqueta {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 6px 0 0 0;
+  color: #ffffff;
+}
+
+
+
+/* Botón de Click */
+.btn-mouse-click {
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.15s ease;
+}
+
+.btn-mouse-click:hover {
+  transform: scale(1.15);
+}
+
+.btn-mouse-click:active {
+  transform: scale(0.85);
+}
+
+.etiqueta {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 6px 0 6px 0;
+  color: #ffffff;
+}
+
+/*galeria de imagenes*/
+.gallery-section {
+  width: 1080px;
+  border-radius: 8px;
+}
+
+.gallery-section h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+.carousel-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.carousel-container img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #2D1766;
+  opacity: 0.85;
+  transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+/*hover de galeria*/
+.carousel-container img:hover {
+  opacity: 1;
+  transform: scale(1.03);
+  border-color: #d946ef;
+}
+/*seccion comentarios*/
+.seccion-comentarios { 
+  background-color: #2D1766;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.seccion-comentarios h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+/* Caja del formulario (Input de comentario) */
+.comentario-input-box {
+  background-color: #43299E;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comentario-input-box textarea {
+  width: 100%;
+  height: 70px;
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.85rem;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.comentario-input-box textarea:focus {
+  outline: none;
+}
+
+.comentario-input-box textarea::placeholder {
+  color: #9B8AD5;
+}
+
+/* Barra de herramientas y botón publicar */
+.comentario-tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+}
+
+.toolbar-icons {
+  display: flex;
+  gap: 8px;
+}
+
+.toolbar-icons button {
+  background: transparent;
+  border: none;
+  color: #9B8AD5;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.toolbar-icons button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.btn-submit {
+  align-self: flex-end;
+  background-color: #2D1766;
+  color: #ffffff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Lista de Comentarios Publicados */
+.comentario-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comentario-item {
+  background-color:#1B103F;
+  border: 1px solid #2D1766;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  background-color: #43299E;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.comentario-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.comentario-header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.usuario {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.fecha {
+  font-size: 0.75rem;
+  color: #ffffff;
+}
+
+.comentario-texto {
+  color: #ffffff;
+  margin: 2px 0 6px 0;
+  line-height: 1.3;
+}
+
+/* Acciones del comentario */
+.comentario-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn-action, 
+.btn-responder {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+
+.juegos-recomendados {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.controls-detail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.img-controles {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+.carrusel {
+  position: relative;
+  margin-bottom: 20px;
+}
+.carrusel h2 {
+  margin-left: 40px;
+
+}
+
+.carruseles .juegos {
+    display: flex;
+    margin-left: 60px;
+    margin-right: 60px;
+    gap: 20px;
+    overflow: hidden;
+    margin-left: 70px;
+    margin-right: 70px;
+
+}
+
+.juego {
+  flex: 0 0 250px;
+}
+
+.juego img {
+    width: 100%;
+    display: block;
+}
+.footer { 
+    padding: 40px; 
+} 
+.footer-columnas { 
+    display: flex; 
+    justify-content: space-between; 
+    gap: 30px; 
+} 
+.footer-columna h3 { 
+    margin-bottom: 15px; 
+} 
+.footer-columna a { 
+    margin-bottom: 10px; 
+    text-decoration: none; 
+    color: #ffffff;
+} 
+.columna-pago, .columna-contacto , .footer-columna { 
+    display: flex; 
+    flex-direction: column; 
+} 
+.columna-contacto { 
+    margin-top: 30px; 
+} 
+.columna-pago img, .columna-contacto img { 
+    width: 40px; 
+    height: auto; 
+    margin-bottom: 10px;
+ } 
+ /* Estilos para el bloque de Newsletter */
+.newsletter {
+    margin-top: 25px;
+    max-width: 280px; /* Ajusta según el ancho de la columna */
+}
+
+.newsletter p {
+    font-size: 13px;
+    color: #d1d1d1;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+/* Contenedor del input y botón */
+.newsletter-form {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ffffff; /* Línea blanca inferior */
+    padding-bottom: 5px;
+    gap: 10px;
+}
+
+/* Campo de correo */
+.newsletter-form input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-size: 13px;
+  flex: 1; /* Ocupa el espacio disponible a la izquierda */
+}
+.newsletter-form input::placeholder {
+  color: #a090c0; /* Color suave para el placeholder */
+}
+.copyright { 
+  text-align: center;
+  margin-top: 40px; 
+}
+.logo-footer {
+    display: block;
+    margin: 20px auto 0 auto;
+}
+.login {
+    min-height: 100vh;
+    background-image: url("../assets/img/fondo-form.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.login-box {
+    width: 400px;
+    padding: 40px;
+    background-color: #291765;
+    border-radius: 15px;
+    text-align: center;
+    margin: 50px auto 50px;
+}
+.login-box form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.login-box input {
+    height: 45px;
+    padding: 0 15px;
+    border: none;
+    border-radius: 7px;
+    background-color: #43299e;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+/*transicion login correcto*/
+.login-box {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  animation: entradaSuave 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.login-box:has(.boton:active){
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  
+}
+/*.login-box .boton:active {
+  background-color: #10b981;
+  color: #ffffff;
+  transform: scale(1.02);
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}*/
+@keyframes entradaSuave {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+;
+.login-box {
+  animation: entradaSuave 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+/* --- ESTILOS BASE DE LOS INPUTS --- */
+.login-box input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #43299e;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-box input:user-invalid {
+  border-color: #ef4444; 
+  animation: vibracionError 0.3s ease;
+}
+
+.login-box input:required:valid:not(:placeholder-shown) {
+  border-color: #10b981; 
+}
+
+@keyframes vibracionError {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+
+/*Cards*/
+.juego {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  width: 240px;
+  height: 140px;
+  color: #ffffff;
+  box-shadow: 0 16px 26px rgba(28, 10, 57, 0.4);
+  flex-shrink: 0;
+  margin-top: 15px;
+  margin-bottom: 15px;
+
+}
+.juego img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.info-card {
+ position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; 
+  padding: 10px 12px;
+  background: linear-gradient(180deg, transparent 25%, #43299e 70%);
+  box-sizing: border-box;
+  
+}
+.info-texto {
+ display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 130px;
+}
+.info-texto p {
+ color: #ffffff; /* Asegura que el texto del título y descripción sea blanco */;
+}
+.descripcion-hover {
+  color: #d1d1d1; /* Un tono un poco más claro para la descripción */
+}
+.likes {
+  font-size: 11px;
+  color: #ffffff;
+}
+
+
+/* CARDS EN OFERTA*/
+/* Insignia de oferta (arriba a la izquierda) */
+.Insignia-oferta {
+  position: absolute;
+  background-color: #ff8c00; /* Naranja oferta */
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 6px 8px;
+  border-radius: 6px;
+  z-index: 2;
+}
+
+/* Ajustes de texto para la versión con precio */
+.info-precio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+/* Botón Base Carrito */
+/* Botón Carrito */
+.btn-carrito {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  font: bold 10px sans-serif;
+  color: #2e0854;
+  background: #FCA8FF;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  box-shadow: 0 3px 8px #fca8ff66;
+  transition: background .3s ease, color .3s ease;
+}
+
+.btn-carrito:hover {
+  background: #f886fc;
+  transform: translateY(-1px);
+}
+
+/* Transición ultra nítida */
+.texto-carrito, .contenido-agregado {
+  transition: transform .3s ease, opacity .2s ease;
+}
+
+.contenido-agregado {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.icono-carrito { 
+  width: 14px; 
+  height: 14px; 
+  fill: currentColor; }
+
+/* Estado Activo (Sin desenfoque) */
+.btn-carrito.activo { 
+  background: #e58910; 
+  color: #fff; }
+
+.btn-carrito.activo .texto-carrito {
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+.btn-carrito.activo .contenido-agregado {
+  opacity: 1;
+  transform: scale(1.5) translateY(0);
+}
+.precio-actual {
+  color: #ffaa00;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.precio-viejo {
+  color: #b3a0d6;
+  font-size: 9px;
+  text-decoration: line-through;
+}
+/*HOVER DE LAS CARD*/
+/*transicion para que el efecto sea fluido al entrar y salir*/
+.juego {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.juego img {
+  transition: transform 0.3s ease;
+}
+
+/*tajeta sube ligeramente y gana un sombra*/
+.juego:hover {
+  transform: translateY(-6px) skew(3deg, 0);
+  box-shadow: 0 20px 30px rgba(67, 41, 158, 0.5);
+}
+.juego:hover img {
+  transform: scale(1.08);
+}
+.descripcion-hover {
+  display: -webkit-box;
+ -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  overflow: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease;
+  font-size: 0.85rem;
+  color: #ccc;
+  margin: 0;
+}
+.juego:hover .descripcion-hover {
+  max-height: 3rem; 
+  opacity: 1;
+  transform: translateY(0);
+  margin-top: 6px;
+}
+/*BANNER*//* BANNER PRINCIPAL (100% Ancho y más Alto) */
+.banner-principal {
+  position: relative;
+  width: 100vw;                
+  left: 50%;                    
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  height: 480px;               
+  overflow: hidden;
+  border-radius: 0 0 24px 24px; 
+  perspective: 1200px;
+}
+
+.banner-3d {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    perspective: 1200px;
+}
+
+.banner-fondo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.banner-frente,
+.banner-atras {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.banner-frente {
+    transform: rotateY(0deg);
+}
+
+.banner-atras {
+    transform: rotateY(180deg);
+}
+.flecha {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(67, 41, 158, 0.75);
+  color: #9B8AD5;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  height: 140px;
+  border: none;
+  font-size: 28px;
+  padding: 20px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 10;
+  backdrop-filter: blur(4px);   
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.flecha:hover {
+  background-color: #5c38d6;
+  transform: translateY(-50%) scale(1.08);
+}
+.flecha.izquierda { 
+  left: 10px; 
+}
+.flecha.derecha   { 
+  right: 10px; 
+}
+
+.banner-contenido {
+  position: absolute;
+  bottom: 30px;                 
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  z-index: 10;
+}
+
+.boton {
+  background-color: #8c71d6;
+  color: #43299e;
+  border: none;
+  padding: 12px 32px;          
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+/* Contenedor principal de la barra de total */
+.total-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0 0 0;
+  margin-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Texto del Total */
+.total-bar span {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+/* Botón Comprar */
+.boton-comprar {
+  background-color: #a288d4;
+  color: #1a0b40;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+/* Efectos al pasar el cursor y hacer clic */
+.boton-comprar:hover {
+  background-color: #f0a1ff;
+}
+
+.boton-comprar:active {
+  transform: scale(0.95);
+}
+/*boton jugar */
+.btn-card {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #fff;
+  background: #8c71d6;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(140, 113, 214, 0.3);
+  transition: all 0.4s ease;
+}
+
+.btn-card:hover {
+  background: #7952e4;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(140, 113, 214, 0.45);
+}
+
+/* Textos y Animación */
+.texto-jugar, .contenido-play {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+}
+
+.contenido-play {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  transform: scale(0.3) translateY(15px);
+}
+
+.icono-play { width: 18px; height: 18px; fill: currentColor; }
+
+/* Estado Activo (Clic) */
+.btn-card.activo { background: #10b981; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4); }
+.btn-card.activo .texto-jugar { opacity: 0; transform: translateY(-20px); }
+.btn-card.activo .contenido-play { opacity: 1; transform: scale(1) translateY(0); }
+/* punto / Puntos del slider */
+.banner-punto {
+  display: flex;
+  gap: 10px;
+}
+
+.punto {
+  width: 12px;
+  height: 12px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.punto.activo {
+  background-color: #FCA8FF;
+  transform: scale(1.3);
+  box-shadow: 0 0 10px #FCA8FF;
+}
+/*card de la pagina juegos*/
+.juegos-recomendados .juegos {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.juegos-recomendados .juego {
+  width: 100%;        
+  height: 140px;       
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* En caso de que la tarjeta tenga un precio (tarjetas de oferta/pago) */
+.juegos-recomendados .info-precio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.juegos-recomendados .precio-actual {
+  font-size: 11px;
+  font-weight: bold;
+  color: #ffcc00; 
+}
+
+.juegos-recomendados .precio-viejo {
+  font-size: 9px;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+
+.juego.rebotando {
+  animation: rebote-cards 0.9s ease;
+}
+
+/*Animacion hover*/
+.btn-jugar,
+.boton {
+    position: relative;
+    overflow: hidden;
+    border: none;
+    transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+.btn-jugar::before,
+.boton::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 3px solid #FCA8FF;
+    border-radius: inherit;
+    clip-path: inset(0 100% 0 0);
+}
+
+.btn-jugar:hover,
+.boton:hover {
+    transform: scale(1.08);
+    background-color: #8c71d6;
+    color: #FCA8FF;
+}
+
+.btn-jugar:hover::before,
+.boton:hover::before {
+    animation: recorrer-borde 3s linear forwards;
+}
+
+.btn-jugar span,
+.boton span {
+    display: inline-block;
+}
+
+.btn-jugar:hover span,
+.boton:hover span {
+    animation: mover-texto 1.0s ease;
+}
+
+/*Girar el banner*/
+.banner-3d.girar-derecha .banner-frente {
+    animation: frente-derecha 0.8s ease-in-out forwards;
+}
+
+.banner-3d.girar-derecha .banner-atras {
+    animation: atras-derecha 0.8s ease-in-out forwards;
+}
+
+.banner-3d.girar-izquierda .banner-frente {
+    animation: frente-izquierda 0.8s ease-in-out forwards;
+}
+
+.banner-3d.girar-izquierda .banner-atras {
+    animation: atras-izquierda 0.8s ease-in-out forwards;
+}
+
+/*Girar el banner*/
+@keyframes frente-derecha {
+    from {
+        transform: rotateY(0deg);
+    }
+
+    to {
+        transform: rotateY(-180deg);
+    }
+}
+
+@keyframes atras-derecha {
+    from {
+        transform: rotateY(180deg);
+    }
+
+    to {
+        transform: rotateY(0deg);
+    }
+}
+
+
+@keyframes frente-izquierda {
+    from {
+        transform: rotateY(0deg);
+    }
+
+    to {
+        transform: rotateY(180deg);
+    }
+}
+
+@keyframes atras-izquierda {
+    from {
+        transform: rotateY(-180deg);
+    }
+
+    to {
+        transform: rotateY(0deg);
+    }
+}
+
+/*Mover texto del boton*/
+@keyframes mover-texto {
+     0% {
+        transform: scaleX(1);
+    }
+
+    35% {
+        transform: scaleX(1.25);
+    }
+
+    60% {
+        transform: scaleX(0.9);
+    }
+
+    80% {
+        transform: scaleX(1.1);
+    }
+
+    100% {
+        transform: scaleX(1);
+    }
+}
+
+/*Recorrer borde del boton*/
+@keyframes recorrer-borde {
+    0% {
+        clip-path: inset(0 100% 0 0);
+    }
+    25% {
+        clip-path: inset(0 0 100% 0);
+    }
+    50% {
+        clip-path: inset(0 0 0 100%);
+    }
+    75% {
+        clip-path: inset(100% 0 0 0);
+    }
+    100% {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+/*Animacion de rebote para las cards*/
+@keyframes rebote-cards {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+
+  30% {
+    transform: translateY(-12px) scale(1.03);
+  }
+
+  55% {
+    transform: translateY(5px) scale(0.98);
+  }
+
+  75% {
+    transform: translateY(-5px) scale(1.01);
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+/*Loader*/
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0) scale(1.6, 0.5);
+  }
+  15% { 
+    transform: translateY(-8px) scale(0.85, 1.2); 
+  }
+  50% { 
+    transform: translateY(-24px) scale(1, 1); 
+  }
+  85% { 
+    transform: translateY(-8px) scale(0.85, 1.2); 
+  }
+}
+
+@keyframes cargar {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes ocultar-loader {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+/*HOME MOBILE*/
+@media (max-width: 768px) {
+   .header {
+    padding: 10px 15px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  .logo img {
+    max-height: 25px;
+  }
+  /* Buscador desplegable compacto */
+  .buscador {
+   position: relative;
+   justify-content: flex-end;
+   margin: 0 10px;
+   width: 45px;
+  }
+  .buscador input {
+    position: absolute;
+    right: 0;
+    width: 0px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+  .buscador:hover input,
+   .buscador input:focus {
+    width: 160px;
+    opacity: 1;
+    background-color: #43299E;
+    padding: 6px 32px 6px 10px;
+    pointer-events: auto;
+  }
+  .menu-btn {
+    position: relative;
+    z-index: 1200;
+  }
+  /* Acciones: Ocultar Favoritos (1º) y Carrito (2º) */
+  .acciones .desplegable-item:not(:last-child) {
+     display: none;
+    }
+  /* desplegable Menus en Mobile */
+  .desplegable-menu {
+     position: fixed;
+     top: 60px;
+     left: 10px;
+     right: 10px;
+     width: auto;
+     max-height: 80vh;
+     overflow-y: auto;
+    }
+  /* Mostrar desplegable activo al hacer tap en el botón */
+  .desplegable-item.active .desplegable-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  /* Menú Hamburguesa Off-Canvas */
+  .menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    padding: 20px 15px;
+    z-index: 1100;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .menu.active, .menu.menu-abierto {
+    transform: translateX(0);
+  }
+  /* Submenú Categorías */
+  .submenu.submenu-abierto {
+    display: flex;
+  }
+  /* Fondo oscuro (superposicion) */
+  .superposicion {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1050;
+   }
+  .superposicion.active { 
+    display: block; 
+  }
+
+
+  /*Banner*/
+  .banner-principal {
+    width: 100%;
+    max-width: 100%;
+    left: 0;
+    right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 20px;
+    height: 300px; /* Altura ideal para smartphones */
+    border-radius: 0 0 18px 18px;
+  }
+
+  /* Aceleración por Hardware para la animación 3D */
+  .banner-3d, .banner-fondo {
+    will-change: transform;
+    transform-style: preserve-3d;
+  }
+
+  /* Flechas compactas de fácil acceso táctil */
+  .flecha {
+    height: 44px;
+    width: 44px;
+    padding: 0;
+    font-size: 22px;
+    border-radius: 50%; /* Botones circulares flotantes */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(67, 41, 158, 0.85);
+    margin: 0;
+  }
+
+  .flecha.izquierda { left: 10px; }
+  .flecha.derecha   { right: 10px; }
+
+  /* Desactivar hover en móviles para evitar estados pegados */
+  .flecha:hover {
+    transform: translateY(-50%);
+  }
+
+  /* Contenido flotante y Botón "Jugar ahora" */
+  .banner-contenido {
+    bottom: 16px;
+    gap: 12px;
+    width: 90%;
+  }
+
+  .boton {
+    padding: 10px 24px;
+    font-size: 15px;
+    border-radius: 10px;
+    width: auto;
+    text-align: center;
+  }
+
+  /* Indicadores / punto */
+  .banner-punto {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .punto {
+    width: 8px;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+
+  .punto.activo {
+    background-color: #8c71d6;
+    transform: scale(1.3);
+  }
+
+  /*CARRUSEL Y CARDS RESPONSIVE*/
+  .carrusel{
+    margin-bottom: 20px;
+  }
+  .carrusel h2 {
+    font-size: 20px;
+    margin-left: 20px;
+  }
+  .carrusel.banner-3d.girar-derecha {
+    margin-top: 15px;
+    margin-left: 50px; 
+    font-size: 20px;
+  }
+  .carrusel .juegos {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 5px 5px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  
+  /*Oculta elementos de desktop en mobile*/
+  .carrusel .flecha,
+  .info-card {
+    display: none !important;
+  }
+  .juego {
+    flex: 0 0 calc((100% - 20px) / 3);
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    padding-bottom: 5px;
+  }
+  .icon-container {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    aspect-ratio: 1 / 1;
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: #1a1a2e;
+  }
+ 
+  .Insignia-oferta{
+    display: none;
+  }
+  .Insignia-pago {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 30px;
+    height: 30px;
+    background: #ffffff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  }
+  .Insignia-pago svg {
+    width: 16px;
+    height: 16px;
+    fill: #f886fc;
+  }
+
+  .titulo-mobile {
+    color: #ffffff;
+    font-size: 13px;
+    padding-left: 6px;
+    text-align: left;
+    margin: 0;
+    line-height: 1.2;
+  }
+  .carrusel .juegos::-webkit-scrollbar {
+  height: 6px;
+}
+
+.carrusel .juegos::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.carrusel .juegos::-webkit-scrollbar-thumb {
+  background: #f886fc;
+  border-radius: 10px;
+}
+
+/*FOOTER*/
+  .footer-columnas {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .footer-columna {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+  }
+  .footer-columna h3 {
+    margin-bottom: 10px;
+  }
+  .footer-columna a {
+        display: block;
+        margin-bottom: 8px;
+  }
+  .footer-columna summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+  }
+  .columna-contenido {
+    padding-top: 10px;
+    padding-left: 5px;
+  }
+  .columna-extra {
+    border-bottom: none;
+    margin-top: 15px;
+  }
+  .newsletter {
+    max-width: 100%;
+  }
+  
+  .logo-footer {
+        width: 150px;
+  }
+
+  .copyright {
+        text-align: center;
+        font-size: 12px;
+  }
+}
