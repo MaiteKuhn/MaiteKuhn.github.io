@@ -129,13 +129,27 @@
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, .85);
+    background: rgba(18, 7, 43, 0.92);
     color: white;
-    padding: 30px;
+    padding: 35px 45px;
     text-align: center;
     z-index: 100;
     border-radius: 10px;
+    box-shadow: 0 0 25px rgba(252, 168, 255, 0.4);
+    min-width: 300px;
 }
+
+#cartel-fin h2 {
+    font-size: 30px;
+    margin-bottom: 15px;
+    color: #ffd166;
+}
+
+#cartel-fin p {
+    font-size: 18px;
+    line-height: 1.5;
+}
+
 #runner-juego { max-width: 100%; overflow-x: auto; }
 
 #menu-inicio-runner {

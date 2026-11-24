@@ -52,7 +52,7 @@ const DURACION_EFECTO         = 3;     // segundos
 
 // Meta del juego
 const VIDAS_INICIALES = 3;
-const PUNTOS_PARA_GANAR = 40;
+const PUNTOS_PARA_GANAR = 20;
 
 // Modo debug: dibuja la caja de colisión de la llama (amarilla)
 const DEBUG = false;
@@ -401,8 +401,10 @@ function terminar(gano) {
   jugando = false;               // esto corta el loop
   if (!gano) setEstado("explotando");
 
-  tituloFin.textContent = gano ? "¡Ganaste!" : "¡Perdiste!";
-  textoFinal.textContent = "Puntaje: " + puntos;
+  tituloFin.textContent = gano ? "¡Ganaste!" : "¡La llama chocó, quedaste sin vidas!";
+  textoFinal.textContent = gano
+    ? "¡Felicitaciones! Llegaste a la meta. Puntaje: " + puntos
+    : "¡No te rindas! Conseguiste " + puntos + " puntos. ¡Volvé a intentarlo!";
   cartelFin.style.display = "block";
 }
 // 14. EVENTOS Y PRECARGA
