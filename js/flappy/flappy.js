@@ -23,11 +23,11 @@ const ALTO_PERSONAJE  = 80;
 const Y_INICIAL       = 200;
 
 // Hitbox de la llama: píxeles que se le restan a cada lado de la imagen.
-const HITBOX = { izq: 12, der: 12, arriba: 12, abajo: 12 };
+const HITBOX = { izq: 25, der: 25, arriba: 22, abajo: 22 };
 
 // Cactus
 const ANCHO_TUBERIA      = 80;
-const MARGEN_TUBERIA     = 18;   // se resta a cada lado: la imagen tiene aire transparente
+const MARGEN_TUBERIA     = 28;   // se resta a cada lado: la imagen tiene aire transparente
 const HUECO_INICIAL      = 220;  // alto del hueco de la primera tubería
 const HUECO_MIN          = 130;  // el hueco nunca baja de este valor
 const REDUCCION          = 8;    // cuánto se achica el hueco por cada tubería nueva
