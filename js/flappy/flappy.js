@@ -45,6 +45,7 @@ const PROB_CARTA       = 0.6;  // 60% carta, 40% cóndor
 const VEL_EXTRA_CONDOR = 60;   // el cóndor vuela hacia la llama más rápido que el mundo
 const PUNTOS_TUBERIA   = 1;    // puntos por cada cactus superado
 const PUNTOS_CARTA     = 5;    // puntos por cada carta
+const PUNTOS_PARA_CONDOR = 10;
 
 // Efecto del cóndor: NO termina el juego. Acelera el mundo unos segundos.
 const FACTOR_VELOCIDAD_CONDOR = 1.4;   // el mundo va 1,4 veces más rápido
@@ -155,8 +156,7 @@ function crearTuberia() {
   escenario.appendChild(elArriba);
   escenario.appendChild(elAbajo);
 
-  tuberia.push({ x: ANCHO_ESCENARIO, yHueco, hueco, yAbajo, elArriba, elAbajo, contada: false });
-
+tuberia.push({ x: ANCHO_ESCENARIO, yHueco, hueco, yAbajo, elArriba, elAbajo, contada: false, golpeada: false });
   // El hueco se achica con cada tubería, hasta un mínimo (req. 5b)
   hueco = Math.max(HUECO_MIN, hueco - REDUCCION);
 }
@@ -164,7 +164,11 @@ function crearTuberia() {
 // 7. CARTAS Y CÓNDORES (elementos animados con spritesheet)
 // Crea una carta (suma puntos) o un cóndor (acelera el mundo), centrado en xCentro.
 function crearItem(xCentro) {
-  const tipo = Math.random() < PROB_CARTA ? "carta" : "condor";
+  let tipo;
+  
+  if( Math.random() < PROB_CARTA) tipo ="carta";
+  else if (puntos >= PUNTOS_PARA_CONDOR) tipo= "condor";
+  else return 
   const { w, h } = TAM[tipo];
   const yItem = aleatorio(MARGEN_VERTICAL, ALTO_ESCENARIO - h - MARGEN_VERTICAL);
 
@@ -222,17 +226,20 @@ function sumarPuntos(cantidad) {
 function MostrarVidas(){
   elVidas.textContent = "♥".repeat(vidas) + "♡".repeat(VIDAS_INICIALES - vidas);
 }
-
+function perderVida(){
+  vidas --;
+  MostrarVidas();
+  if(vidas<=0) terminar(false);
+  else setEstado("golpeada");
+}
 // 10. LÓGICA DE CADA FRAME
 // dt = segundos que pasaron desde el frame anterior.
 // Multiplicar todo por dt hace que la velocidad sea la misma en cualquier monitor.
 
 function actualizar(dt) {
-
   // --- Efecto del cóndor: cuenta regresiva ---
   if (tiempoEfecto > 0) tiempoEfecto = Math.max(0, tiempoEfecto - dt);
   const vel = velocidadMundo();   // todo lo que se mueve en X usa esta misma velocidad
-
   // --- Física de la llama ---
   // La gravedad cambia la VELOCIDAD, y la velocidad cambia la POSICIÓN.
   llama.velY += GRAVEDAD * dt;
@@ -241,7 +248,7 @@ function actualizar(dt) {
   if (llama.y < 0) { llama.y = 0; llama.velY = 0; }                 // techo: se frena
   if (llama.y > ALTO_ESCENARIO - ALTO_PERSONAJE) {                  // piso: pierde
     llama.y = ALTO_ESCENARIO - ALTO_PERSONAJE;
-    terminar(false);
+    llama.velY = 0;
   }
 
   // --- Parallax: cada capa avanza una fracción de la velocidad del mundo ---
@@ -269,12 +276,15 @@ function actualizar(dt) {
     const t = tuberia[i];
     t.x -= vel * dt;
 
-    if (colisionaTuberia(t)) terminar(false);
+    if (!t.golpeada && colisionaTuberia(t)){
+      t.golpeada = true;
+      perderVida();
+    }
 
     // Suma 1 punto cuando la llama pasó completamente la tubería
     if (!t.contada && t.x + ANCHO_TUBERIA < X_PERSONAJE) {
       t.contada = true;
-      sumarPuntos(PUNTOS_TUBERIA);
+      if(!t.golpeada) sumarPuntos(PUNTOS_TUBERIA);
     }
 
     // Se borra del DOM y del arreglo al salir por la izquierda
@@ -295,11 +305,9 @@ function actualizar(dt) {
       if (it.tipo === "carta") {
         sumarPuntos(PUNTOS_CARTA);           // la carta suma puntos
       } else {
-        vidas--;
-        MostrarVidas();
+    
         tiempoEfecto = DURACION_EFECTO;      // el cóndor acelera el mundo, pero NO termina el juego
-        if(vidas<=0) terminar(false);
-        else setEstado("golpeada");
+       perderVida();
       }
       quitarItem(i);
     } else if (it.x + it.w < 0) {
@@ -308,9 +316,7 @@ function actualizar(dt) {
   }
 }
 
-// ---------------------------------------------------------------------
 // 11. DIBUJO
-// ---------------------------------------------------------------------
 // actualizar() cambia los DATOS; dibujar() los muestra en pantalla.
 // Todo se mueve con transform: translate (no con top/left).
 
