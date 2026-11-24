@@ -1,7 +1,9 @@
 (() => {
-// 1. CONFIGURACIÓN
 
-// Escenario (tienen que coincidir con el CSS de #escenario)
+// 1. CONFIGURACIÓN
+const RUTA_IMG = "assets/img-flappy/";
+const IMAGENES = ["capa1.png", "capa2.png", "capa3.png", "capa4.png",
+                  "llama.png", "cactus.png", "cartas.png", "condor.png"];
 const ANCHO_ESCENARIO = 900;
 const ALTO_ESCENARIO  = 500;
 
@@ -9,73 +11,98 @@ const ALTO_ESCENARIO  = 500;
 const GRAVEDAD = 1800;   // px/s²: cuánto aumenta la velocidad de caída por segundo
 const IMPULSO  = -500;   // px/s: velocidad al saltar (negativo = hacia arriba)
 
+// Velocidad del mundo: es la ÚNICA fuente de velocidad.
+// Cactus, ítems y las 4 capas del parallax se mueven a partir de este valor.
 const VELOCIDAD_MUNDO = 180;   // px/s
+const DT_MAX = 0.05;           // tope de dt (s): evita saltos enormes al volver a la pestaña
 
 // Llama (tienen que coincidir con el CSS de #personaje)
 const X_PERSONAJE     = 150;
 const ANCHO_PERSONAJE = 100;
 const ALTO_PERSONAJE  = 80;
-const MARGEN          = 12;    // achica la caja de colisión para que el choque se sienta justo
+const Y_INICIAL       = 200;
+
+// Hitbox de la llama: píxeles que se le restan a cada lado de la imagen.
+const HITBOX = { izq: 12, der: 12, arriba: 12, abajo: 12 };
 
 // Cactus
 const ANCHO_TUBERIA      = 80;
+const MARGEN_TUBERIA     = 18;   // se resta a cada lado: la imagen tiene aire transparente
 const HUECO_INICIAL      = 220;  // alto del hueco de la primera tubería
 const HUECO_MIN          = 130;  // el hueco nunca baja de este valor
 const REDUCCION          = 8;    // cuánto se achica el hueco por cada tubería nueva
 const SEPARACION_INICIAL = 400;  // distancia hasta la primera tubería
 const SEPARACION_MIN     = 300;  // distancia mínima entre tuberías (después es al azar)
 const SEPARACION_MAX     = 500;  // distancia máxima entre tuberías
-const MARGEN_VERTICAL    = 40;   // el hueco nunca queda pegado al techo o al piso
+const MARGEN_VERTICAL    = 40;   // el hueco y los ítems nunca quedan pegados al techo o al piso
 
 // Cartas y cóndores (tamaño en pantalla: tienen que coincidir con el CSS)
 const TAM = {
   carta:  { w: 50,  h: 60 },
   condor: { w: 100, h: 99 },
 };
-const PROB_CARTA       = 0.6;  
-const VEL_EXTRA_CONDOR = 60;   
-const PUNTOS_TUBERIA   = 1;    
-const PUNTOS_CARTA     = 5;    
+const PROB_CARTA       = 0.6;  // 60% carta, 40% cóndor
+const VEL_EXTRA_CONDOR = 60;   // el cóndor vuela hacia la llama más rápido que el mundo
+const PUNTOS_TUBERIA   = 1;    // puntos por cada cactus superado
+const PUNTOS_CARTA     = 5;    // puntos por cada carta
 
-// Reglas del juego
-const VIDAS_INICIALES  = 3;
-const PUNTOS_PARA_GANAR = 40;  // meta: al llegar a este puntaje se gana
+// Efecto del cóndor: NO termina el juego. Acelera el mundo unos segundos.
+const FACTOR_VELOCIDAD_CONDOR = 1.4;   // el mundo va 1,4 veces más rápido
+const DURACION_EFECTO         = 3;     // segundos
+
+// Meta del juego
+const VIDAS_INICIALES = 3;
+const PUNTOS_PARA_GANAR = 40;
+
+// Modo debug: dibuja la caja de colisión de la llama (amarilla)
+const DEBUG = false;
 
 // 2. ELEMENTOS DEL DOM
-const escenario  = document.getElementById("escenario");
-const personaje  = document.getElementById("personaje");
-const elPuntaje  = document.getElementById("puntaje");
-const elVidas    = document.getElementById("vidas");
-const cartelFin  = document.getElementById("cartel-fin");
-const tituloFin  = cartelFin.querySelector("h2");
-const textoFinal = document.getElementById("texto-final");
-const menuInicio = document.getElementById("menu-inicio-runner");
+const escenario   = document.getElementById("escenario");
+const personaje   = document.getElementById("personaje");      // contenedor que se mueve con transform
+const sprite      = document.getElementById("llama-sprite");   // dibujo de la llama: acá van las animaciones
+const elPuntaje   = document.getElementById("puntaje");
+const elVidas = document.getElementById("vidas");
+const elEfecto    = document.getElementById("efecto");
+const cartelFin   = document.getElementById("cartel-fin");
+const tituloFin   = cartelFin.querySelector("h2");
+const textoFinal  = document.getElementById("texto-final");
+const menuInicio  = document.getElementById("menu-inicio-runner");
+const btnComenzar = document.getElementById("btn-comenzar");
 
-// Parallax: 4 capas. "factor" es qué fracción de VELOCIDAD_MUNDO se mueve cada una.
-// La capa 1 es la más lejana (más lenta) y la 4 la más cercana (a la velocidad del mundo).
-// "offset" guarda cuánto avanzó cada capa.
+// Parallax: 4 capas. "factor" es qué fracción de la velocidad del mundo se mueve cada una.
+// La capa 1 es la más lejana (más lenta) y la 4 (el suelo) va igual que los cactus.
+// "offset" guarda cuánto avanzó y "tile" es el ancho real de la imagen (se calcula al precargar).
 const capas = [
-  { el: document.querySelector(".capa1"), factor: 0.1, offset: 0 },
-  { el: document.querySelector(".capa2"), factor: 0.3, offset: 0 },
-  { el: document.querySelector(".capa3"), factor: 0.6, offset: 0 },
-  { el: document.querySelector(".capa4"), factor: 1.0, offset: 0 },
+  { el: document.querySelector(".capa1"), factor: 0.1, offset: 0, tile: ANCHO_ESCENARIO },
+  { el: document.querySelector(".capa2"), factor: 0.3, offset: 0, tile: ANCHO_ESCENARIO },
+  { el: document.querySelector(".capa3"), factor: 0.6, offset: 0, tile: ANCHO_ESCENARIO },
+  { el: document.querySelector(".capa4"), factor: 1.0, offset: 0, tile: ANCHO_ESCENARIO },
 ];
 
-// 3. ESTADO DEL JUEGO
-let jugando = false;           
-let ultimoTiempo = 0;          
+// Caja de debug de la llama
+const cajaDebug = document.createElement("div");
+cajaDebug.style.cssText = "position:absolute; left:0; top:0; z-index:60; pointer-events:none; border:2px solid yellow; box-sizing:border-box;";
+if (DEBUG) {
+  escenario.appendChild(cajaDebug);
+  escenario.classList.add("debug");
+}
 
-let y = 200;                   // posición vertical de la llama
-let velY = 0;                  // velocidad vertical de la llama (px/s)
+// 3. ESTADO DEL JUEGO (los datos viven acá; el DOM solo los muestra)
+let jugando = false;           // el loop solo corre si es true
+let ultimoTiempo = 0;          // tiempo del frame anterior (para calcular dt)
+
+const llama = { y: Y_INICIAL, velY: 0 };   // posición y velocidad vertical (px, px/s)
 
 let puntos = 0;
+let tiempoEfecto = 0;          // segundos que le quedan al efecto del cóndor
 let vidas = VIDAS_INICIALES;
-
-let tuberia = [];              // cactus que hay en pantalla
-let items = [];                // cartas y cóndores que hay en pantalla
+let tuberia = [];              // cactus en pantalla
+let items = [];                // cartas y cóndores en pantalla
 let hueco = HUECO_INICIAL;     // alto del hueco de la próxima tubería
 let distanciaDesdeUltima = 0;  // distancia recorrida desde la última tubería
 let separacionActual = SEPARACION_INICIAL;
+let ultimoTextoEfecto = "";
 
 // 4. UTILIDADES
 
@@ -84,58 +111,58 @@ function aleatorio(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-
-// 5. LA LLAMA
-
-// Cambia la animación CSS de la llama: "volando", "aleteando", "explotando" o "golpeada".
-// Cada clase tiene su @keyframes en flappy.css.
-function setEstado(clase) {
-  personaje.classList.remove("volando", "aleteando", "explotando", "golpeada");
-  void personaje.offsetWidth;   // fuerza al navegador a reiniciar la animación (si no, no se repite)
-  personaje.classList.add(clase);
+// Velocidad actual del mundo (sube mientras dura el efecto del cóndor)
+function velocidadMundo() {
+  return VELOCIDAD_MUNDO * (tiempoEfecto > 0 ? FACTOR_VELOCIDAD_CONDOR : 1);
 }
 
-// Cuando termina la animación de impulso o de golpe, la llama vuelve a "volando"
-personaje.addEventListener("animationend", (e) => {
+// 5. LA LLAMA
+// Cambia la animación CSS de la llama: "volando", "aleteando", "explotando" o "golpeada".
+function setEstado(clase) {
+  sprite.classList.remove("volando", "aleteando", "explotando", "golpeada");
+  void sprite.offsetWidth;   // fuerza al navegador a reiniciar la animación (si no, no se repite)
+  sprite.classList.add(clase);
+}
+
+// Cuando termina la animación de impulso o de golpe, vuelve a "volando"
+sprite.addEventListener("animationend", (e) => {
   if (e.animationName === "aletear" || e.animationName === "golpe") setEstado("volando");
 });
 
 // Impulso: pisa la velocidad (no la suma), así todos los saltos son iguales
 function saltar() {
   if (!jugando) return;
-  velY = IMPULSO;
+  llama.velY = IMPULSO;
   setEstado("aleteando");
 }
 
 // 6. CACTUS (TUBERÍAS)
-
 // Crea una tubería: son DOS divs (cactus de arriba y de abajo) con un hueco en el medio.
+// Solo se fija el alto acá; la posición la pone dibujar() con transform.
 function crearTuberia() {
   // Altura del hueco al azar -> las tuberías no están alineadas (req. 5c)
   const yHueco = aleatorio(MARGEN_VERTICAL, ALTO_ESCENARIO - hueco - MARGEN_VERTICAL);
+  const yAbajo = yHueco + hueco;
 
   const elArriba = document.createElement("div");
-  elArriba.className = "tuberia arriba";
-  elArriba.style.top = "0px";
+  elArriba.className = "tuberia";
   elArriba.style.height = yHueco + "px";
 
   const elAbajo = document.createElement("div");
   elAbajo.className = "tuberia";
-  elAbajo.style.top = (yHueco + hueco) + "px";
-  elAbajo.style.height = (ALTO_ESCENARIO - yHueco - hueco) + "px";
+  elAbajo.style.height = (ALTO_ESCENARIO - yAbajo) + "px";
 
   escenario.appendChild(elArriba);
   escenario.appendChild(elAbajo);
 
-  tuberia.push({ x: ANCHO_ESCENARIO, yHueco, hueco, elArriba, elAbajo, contada: false });
+  tuberia.push({ x: ANCHO_ESCENARIO, yHueco, hueco, yAbajo, elArriba, elAbajo, contada: false });
 
   // El hueco se achica con cada tubería, hasta un mínimo (req. 5b)
   hueco = Math.max(HUECO_MIN, hueco - REDUCCION);
 }
 
 // 7. CARTAS Y CÓNDORES (elementos animados con spritesheet)
-
-// Crea una carta (suma puntos) o un cóndor (resta una vida), centrado en xCentro.
+// Crea una carta (suma puntos) o un cóndor (acelera el mundo), centrado en xCentro.
 function crearItem(xCentro) {
   const tipo = Math.random() < PROB_CARTA ? "carta" : "condor";
   const { w, h } = TAM[tipo];
@@ -148,6 +175,7 @@ function crearItem(xCentro) {
   items.push({ tipo, x: xCentro - w / 2, y: yItem, w, h, el });
 }
 
+// Se borra del arreglo Y del DOM
 function quitarItem(i) {
   items[i].el.remove();
   items.splice(i, 1);
@@ -155,39 +183,35 @@ function quitarItem(i) {
 
 // 8. COLISIONES (rectángulos, "AABB")
 // Hay choque si los rectángulos se superponen en X y en Y a la vez.
-// La caja de la llama se achica con MARGEN para que el choque sea justo.
-
 function cajaLlama() {
   return {
-    izq:    X_PERSONAJE + MARGEN,
-    der:    X_PERSONAJE + ANCHO_PERSONAJE - MARGEN,
-    arriba: y + MARGEN,
-    abajo:  y + ALTO_PERSONAJE - MARGEN,
+    izq:    X_PERSONAJE + HITBOX.izq,
+    der:    X_PERSONAJE + ANCHO_PERSONAJE - HITBOX.der,
+    arriba: llama.y + HITBOX.arriba,
+    abajo:  llama.y + ALTO_PERSONAJE - HITBOX.abajo,
   };
 }
-
 // Cactus: choca si coincide en X con la tubería y NO está completamente dentro del hueco
 function colisionaTuberia(t) {
   const c = cajaLlama();
-  const coincideEnX = c.der > t.x && c.izq < t.x + ANCHO_TUBERIA;
-  const estaEnElHueco = c.arriba > t.yHueco && c.abajo < t.yHueco + t.hueco;
+  const izqT = t.x + MARGEN_TUBERIA;
+  const derT = t.x + ANCHO_TUBERIA - MARGEN_TUBERIA;
+  const coincideEnX = c.der > izqT && c.izq < derT;
+  const estaEnElHueco = c.arriba > t.yHueco && c.abajo < t.yAbajo;
   return coincideEnX && !estaEnElHueco;
 }
 
 // Carta o cóndor: choca si los dos rectángulos se superponen
 function chocaConItem(it) {
   const c = cajaLlama();
-  return c.der > it.x && c.izq < it.x + it.w && c.abajo > it.y && c.arriba < it.y + it.h;
+  const m = it.tipo === "condor" ? 15 : 5;   // margen por lado
+  return c.der > it.x + m && c.izq < it.x + it.w - m &&
+         c.abajo > it.y + m && c.arriba < it.y + it.h - m;
 }
-
-// 9. PUNTAJE Y VIDAS
+// 9. PUNTAJE Y EFECTO DEL CÓNDOR
 
 function mostrarPuntaje() {
   elPuntaje.textContent = "Puntaje: " + puntos + " / " + PUNTOS_PARA_GANAR;
-}
-
-function mostrarVidas() {
-  elVidas.textContent = "♥ ".repeat(vidas);
 }
 
 function sumarPuntos(cantidad) {
@@ -195,34 +219,40 @@ function sumarPuntos(cantidad) {
   mostrarPuntaje();
   if (puntos >= PUNTOS_PARA_GANAR) terminar(true);   // llegó a la meta: gana
 }
+function MostrarVidas(){
+  elVidas.textContent = "♥".repeat(vidas) + "♡".repeat(VIDAS_INICIALES - vidas);
+}
 
 // 10. LÓGICA DE CADA FRAME
-
 // dt = segundos que pasaron desde el frame anterior.
 // Multiplicar todo por dt hace que la velocidad sea la misma en cualquier monitor.
 
 function actualizar(dt) {
 
+  // --- Efecto del cóndor: cuenta regresiva ---
+  if (tiempoEfecto > 0) tiempoEfecto = Math.max(0, tiempoEfecto - dt);
+  const vel = velocidadMundo();   // todo lo que se mueve en X usa esta misma velocidad
+
   // --- Física de la llama ---
   // La gravedad cambia la VELOCIDAD, y la velocidad cambia la POSICIÓN.
-  velY += GRAVEDAD * dt;
-  y += velY * dt;
+  llama.velY += GRAVEDAD * dt;
+  llama.y += llama.velY * dt;
 
-  if (y < 0) { y = 0; velY = 0; }                       // techo: se frena
-  if (y > ALTO_ESCENARIO - ALTO_PERSONAJE) {            // piso: pierde
-    y = ALTO_ESCENARIO - ALTO_PERSONAJE;
+  if (llama.y < 0) { llama.y = 0; llama.velY = 0; }                 // techo: se frena
+  if (llama.y > ALTO_ESCENARIO - ALTO_PERSONAJE) {                  // piso: pierde
+    llama.y = ALTO_ESCENARIO - ALTO_PERSONAJE;
     terminar(false);
   }
 
   // --- Parallax: cada capa avanza una fracción de la velocidad del mundo ---
   for (const capa of capas) {
-    capa.offset += VELOCIDAD_MUNDO * capa.factor * dt;
+    capa.offset += vel * capa.factor * dt;
   }
 
   // --- Generar tuberías: cuando se recorrió la distancia, aparece una nueva ---
   // Se genera por DISTANCIA (no por cantidad de frames), y la separación
   // cambia al azar cada vez (req. 5a).
-  distanciaDesdeUltima += VELOCIDAD_MUNDO * dt;
+  distanciaDesdeUltima += vel * dt;
   if (distanciaDesdeUltima >= separacionActual) {
     crearTuberia();
     distanciaDesdeUltima = 0;
@@ -237,7 +267,7 @@ function actualizar(dt) {
   // Se recorre de atrás para adelante para poder borrar sin saltear elementos.
   for (let i = tuberia.length - 1; i >= 0; i--) {
     const t = tuberia[i];
-    t.x -= VELOCIDAD_MUNDO * dt;
+    t.x -= vel * dt;
 
     if (colisionaTuberia(t)) terminar(false);
 
@@ -247,7 +277,7 @@ function actualizar(dt) {
       sumarPuntos(PUNTOS_TUBERIA);
     }
 
-    // Se borra al salir por la izquierda (si no, se acumularían sin parar)
+    // Se borra del DOM y del arreglo al salir por la izquierda
     if (t.x + ANCHO_TUBERIA < 0) {
       t.elArriba.remove();
       t.elAbajo.remove();
@@ -259,54 +289,77 @@ function actualizar(dt) {
   for (let i = items.length - 1; i >= 0; i--) {
     const it = items[i];
     const extra = it.tipo === "condor" ? VEL_EXTRA_CONDOR : 0;
-    it.x -= (VELOCIDAD_MUNDO + extra) * dt;
+    it.x -= (vel + extra) * dt;
 
     if (chocaConItem(it)) {
       if (it.tipo === "carta") {
-        sumarPuntos(PUNTOS_CARTA);              // la carta suma puntos
+        sumarPuntos(PUNTOS_CARTA);           // la carta suma puntos
       } else {
-        vidas--;                                // el cóndor resta una vida...
-        mostrarVidas();
-        if (vidas <= 0) terminar(false);        // ...y solo termina si se quedó sin vidas
-        else if (jugando) setEstado("golpeada");
+        vidas--;
+        MostrarVidas();
+        tiempoEfecto = DURACION_EFECTO;      // el cóndor acelera el mundo, pero NO termina el juego
+        if(vidas<=0) terminar(false);
+        else setEstado("golpeada");
       }
       quitarItem(i);
     } else if (it.x + it.w < 0) {
-      quitarItem(i);
+      quitarItem(i);                         // salió de pantalla: se borra del DOM y del arreglo
     }
   }
 }
 
+// ---------------------------------------------------------------------
 // 11. DIBUJO
+// ---------------------------------------------------------------------
 // actualizar() cambia los DATOS; dibujar() los muestra en pantalla.
+// Todo se mueve con transform: translate (no con top/left).
 
 function dibujar() {
-  personaje.style.top = y + "px";
+  personaje.style.transform = `translate(${X_PERSONAJE}px, ${llama.y}px)`;
 
+  // Parallax: el "% tile" hace que la imagen se repita sin cortes (loop infinito)
   for (const capa of capas) {
-    capa.el.style.backgroundPositionX = -capa.offset + "px";   // el "-" mueve el fondo a la izquierda
+    capa.el.style.transform = `translateX(${-(capa.offset % capa.tile)}px)`;
   }
+
   for (const t of tuberia) {
-    t.elArriba.style.left = t.x + "px";
-    t.elAbajo.style.left = t.x + "px";
+    t.elArriba.style.transform = `translate(${t.x}px, 0px) scaleY(-1)`;   // el de arriba es el mismo dibujo dado vuelta
+    t.elAbajo.style.transform  = `translate(${t.x}px, ${t.yAbajo}px)`;
   }
+
   for (const it of items) {
-    it.el.style.left = it.x + "px";
-    it.el.style.top = it.y + "px";
+    const volteo = it.tipo === "condor" ? " scaleX(-1)" : "";            // el cóndor mira a la izquierda
+    it.el.style.transform = `translate(${it.x}px, ${it.y}px)${volteo}`;
+  }
+
+  // Cartel del efecto (solo se toca el DOM cuando el texto cambia)
+  const texto = tiempoEfecto > 0
+    ? "⚡ ¡Cóndor! Más rápido " + tiempoEfecto.toFixed(1) + " s"
+    : "";
+  if (texto !== ultimoTextoEfecto) {
+    elEfecto.textContent = texto;
+    ultimoTextoEfecto = texto;
+  }
+
+  if (DEBUG) {
+    const c = cajaLlama();
+    cajaDebug.style.transform = `translate(${c.izq}px, ${c.arriba}px)`;
+    cajaDebug.style.width  = (c.der - c.izq) + "px";
+    cajaDebug.style.height = (c.abajo - c.arriba) + "px";
   }
 }
 
-// 12. GAME LOOP
+// 12. GAME LOOP (el único del juego)
 // requestAnimationFrame llama a loop() justo antes de cada redibujado de pantalla
 // y le pasa el tiempo actual.
 
 function loop(tiempo) {
-  if (!jugando) return;                                                   // si terminó, se corta el loop
-  const dt = Math.max(0, Math.min((tiempo - ultimoTiempo) / 1000, 0.05)); // máximo 0,05 s para evitar saltos grandes
+  if (!jugando) return;                                                    // si terminó, se corta el loop
+  const dt = Math.max(0, Math.min((tiempo - ultimoTiempo) / 1000, DT_MAX)); // tope de dt
   ultimoTiempo = tiempo;
   actualizar(dt);
   dibujar();
-  requestAnimationFrame(loop);                                            // pide el siguiente frame
+  requestAnimationFrame(loop);                                             // pide el siguiente frame
 }
 
 // 13. INICIO, FIN Y REINICIO
@@ -320,19 +373,22 @@ function reiniciar() {
   tuberia = [];
   for (let i = items.length - 1; i >= 0; i--) quitarItem(i);
 
-  y = 200;
-  velY = 0;
+  llama.y = Y_INICIAL;
+  llama.velY = 0;
   hueco = HUECO_INICIAL;
   distanciaDesdeUltima = 0;
   separacionActual = SEPARACION_INICIAL;
 
   puntos = 0;
   vidas = VIDAS_INICIALES;
+  tiempoEfecto = 0;
   mostrarPuntaje();
-  mostrarVidas();
+  MostrarVidas();
+
 
   cartelFin.style.display = "none";
   setEstado("volando");
+  dibujar();
 
   jugando = true;
   ultimoTiempo = performance.now();
@@ -349,30 +405,55 @@ function terminar(gano) {
   textoFinal.textContent = "Puntaje: " + puntos;
   cartelFin.style.display = "block";
 }
-
-
-// 14. EVENTOS
-
-// Barra espaciadora = impulso. Solo bloquea la tecla mientras se juega,
-// así se puede escribir espacios en los comentarios y en el buscador.
+// 14. EVENTOS Y PRECARGA
+// Barra espaciadora = impulso. Una sola vez por pulsación (e.repeat ignora la tecla mantenida).
+// Solo bloquea la tecla mientras se juega, así se puede escribir en los comentarios y el buscador.
 document.addEventListener("keydown", (e) => {
   if (e.code === "Space" && jugando) {
     e.preventDefault();
-    if (!e.repeat) saltar();     // ignora la repetición al dejar la tecla apretada
+    if (!e.repeat) saltar();
   }
 });
 
-// Click dentro del escenario = impulso
+// Click dentro del escenario = impulso (mousedown ocurre una sola vez por click)
 escenario.addEventListener("mousedown", saltar);
 
-document.getElementById("btn-comenzar").addEventListener("click", () => {
+btnComenzar.addEventListener("click", () => {
   menuInicio.style.display = "none";
   reiniciar();
 });
 document.getElementById("btn-reintentar").addEventListener("click", reiniciar);
 
-// Estado inicial de la pantalla antes de empezar
+// Precarga: espera a que todas las imágenes estén cargadas antes de dejar empezar,
+// así los spritesheets no aparecen "a medias".
+function precargarImagenes(nombres) {
+  return Promise.all(nombres.map((nombre) => new Promise((resolve) => {
+    const img = new Image();
+    img.onload  = () => resolve({ nombre, img });
+    img.onerror = () => { console.warn("No se pudo cargar " + nombre); resolve({ nombre, img: null }); };
+    img.src = RUTA_IMG + nombre;
+  })));
+}
+
+// Pantalla inicial
 mostrarPuntaje();
-mostrarVidas();
+MostrarVidas();
+dibujar();
+
+btnComenzar.disabled = true;
+btnComenzar.textContent = "Cargando...";
+
+precargarImagenes(IMAGENES).then((resultados) => {
+  // Con el tamaño real de cada capa, se arma el ancho para repetirla sin cortes
+  for (const { nombre, img } of resultados) {
+    const m = /^capa(\d)\.png$/.exec(nombre);
+    if (!m || !img) continue;
+    const capa = capas[Number(m[1]) - 1];
+    capa.tile = img.naturalWidth * ALTO_ESCENARIO / img.naturalHeight;   // ancho de la imagen ya escalada al alto del escenario
+    capa.el.style.width = (ANCHO_ESCENARIO + capa.tile) + "px";
+  }
+  btnComenzar.disabled = false;
+  btnComenzar.textContent = "Comenzar";
+});
 
 })();
