@@ -1,4 +1,5 @@
 (() => {
+
 // 1. CONFIGURACIÓN
 const RUTA_IMG = "assets/img-flappy/";
 const IMAGENES = ["capa1.png", "capa2.png", "capa3.png", "capa4.png",
@@ -36,7 +37,7 @@ const TAM = {
   carta:  { w: 50,  h: 60 },
   condor: { w: 75, h: 74 },
 };
-const PROB_CARTA       = 0.5;  // 60% carta, 40% cóndor
+const PROB_CARTA       = 0.5;   
 const VEL_EXTRA_CONDOR = 60;   // el cóndor vuela hacia la llama más rápido que el mundo
 const PUNTOS_TUBERIA   = 1;    // puntos por cada cactus superado
 const PUNTOS_CARTA     = 5;    // puntos por cada carta
@@ -49,12 +50,13 @@ const VIDAS_INICIALES = 3;
 const PUNTOS_PARA_GANAR = 20;
 // Modo debug: dibuja la caja de colisión de la llama (amarilla)
 const DEBUG = false;
+
 // 2. ELEMENTOS DEL DOM
 const escenario   = document.getElementById("escenario");
 const personaje   = document.getElementById("personaje");      // contenedor que se mueve con transform
 const sprite      = document.getElementById("llama-sprite");   // dibujo de la llama: acá van las animaciones
 const elPuntaje   = document.getElementById("puntaje");
-const elVidas = document.getElementById("vidas");
+const elVidas     = document.getElementById("vidas");
 const elEfecto    = document.getElementById("efecto");
 const cartelFin   = document.getElementById("cartel-fin");
 const tituloFin   = cartelFin.querySelector("h2");
@@ -77,6 +79,7 @@ if (DEBUG) {
   escenario.appendChild(cajaDebug);
   escenario.classList.add("debug");
 }
+
 // 3. ESTADO DEL JUEGO (los datos viven acá; el DOM solo los muestra)
 let jugando = false;           // el loop solo corre si es true
 let ultimoTiempo = 0;          // tiempo del frame anterior (para calcular dt)
@@ -92,7 +95,9 @@ let hueco = HUECO_INICIAL;     // alto del hueco de la próxima tubería
 let distanciaDesdeUltima = 0;  // distancia recorrida desde la última tubería
 let separacionActual = SEPARACION_INICIAL;
 let ultimoTextoEfecto = "";
+
 // 4. UTILIDADES
+
 // Número entero al azar entre min (incluido) y max (excluido)
 function aleatorio(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -102,6 +107,7 @@ function aleatorio(min, max) {
 function velocidadMundo() {
   return VELOCIDAD_MUNDO * (tiempoEfecto > 0 ? FACTOR_VELOCIDAD_CONDOR : 1);
 }
+
 // 5. LA LLAMA
 // Cambia la animación CSS de la llama: "volando", "aleteando", "explotando" o "golpeada".
 function setEstado(clase) {
@@ -118,9 +124,14 @@ sprite.addEventListener("animationend", (e) => {
 // Impulso: pisa la velocidad (no la suma), así todos los saltos son iguales
 function saltar() {
   if (!jugando) return;
+  if (!empezo) {
+    empezo = true;
+    sprite.classList.add("corriendo");
+  }
   llama.velY = IMPULSO;
   setEstado("aleteando");
 }
+
 // 6. CACTUS (TUBERÍAS)
 // Crea una tubería: son DOS divs (cactus de arriba y de abajo) con un hueco en el medio.
 // Solo se fija el alto acá; la posición la pone dibujar() con transform.
@@ -143,6 +154,7 @@ tuberia.push({ x: ANCHO_ESCENARIO, yHueco, hueco, yAbajo, elArriba, elAbajo, con
   // El hueco se achica con cada tubería, hasta un mínimo (req. 5b)
   hueco = Math.max(HUECO_MIN, hueco - REDUCCION);
 }
+
 // 7. CARTAS Y CÓNDORES (elementos animados con spritesheet)
 // Crea una carta (suma puntos) o un cóndor (acelera el mundo), centrado en xCentro.
 function crearItem(xCentro) {
@@ -162,6 +174,7 @@ function quitarItem(i) {
   items[i].el.remove();
   items.splice(i, 1);
 }
+
 // 8. COLISIONES (rectángulos, "AABB")
 // Hay choque si los rectángulos se superponen en X y en Y a la vez.
 function cajaLlama() {
@@ -189,6 +202,7 @@ function chocaConItem(it) {
          c.abajo > it.y + m && c.arriba < it.y + it.h - m;
 }
 // 9. PUNTAJE Y EFECTO DEL CÓNDOR
+
 function mostrarPuntaje() {
   elPuntaje.textContent = "Puntaje: " + puntos + " / " + PUNTOS_PARA_GANAR;
 }
@@ -203,13 +217,23 @@ function MostrarVidas(){
 function perderVida(){
   vidas --;
   MostrarVidas();
-  if(vidas<=0) terminar(false);
-  else setEstado("golpeada");
+  if(vidas<=0) { 
+    terminar(false);
+  } else {
+    personaje.classList.remove("golpeada");
+    void personaje.offsetWidth;   // fuerza el reinicio
+    personaje.classList.add("golpeada");
+  }
 }
-// 10. LÓGICA DE CADA FRAME
+
+personaje.addEventListener("animationend", (e) => {
+  if (e.animationName === "golpe") personaje.classList.remove("golpeada");
+});
+
 // dt = segundos que pasaron desde el frame anterior.
 // Multiplicar todo por dt hace que la velocidad sea la misma en cualquier monitor.
 function actualizar(dt) {
+  if (!empezo) return;
   // --- Efecto del cóndor: cuenta regresiva ---
   if (tiempoEfecto > 0) tiempoEfecto = Math.max(0, tiempoEfecto - dt);
   const vel = velocidadMundo();   // todo lo que se mueve en X usa esta misma velocidad
@@ -277,6 +301,7 @@ function actualizar(dt) {
     }
   }
 }
+
 // 11. DIBUJO
 // actualizar() cambia los DATOS; dibujar() los muestra en pantalla.
 // Todo se mueve con transform: translate (no con top/left).
@@ -313,6 +338,7 @@ function dibujar() {
     cajaDebug.style.height = (c.abajo - c.arriba) + "px";
   }
 }
+
 // 12. GAME LOOP (el único del juego)
 // requestAnimationFrame llama a loop() justo antes de cada redibujado de pantalla
 // y le pasa el tiempo actual.
@@ -325,9 +351,13 @@ function loop(tiempo) {
   dibujar();
   requestAnimationFrame(loop);                                             // pide el siguiente frame
 }
+
 // 13. INICIO, FIN Y REINICIO
+
 // Deja todo en el estado inicial y arranca el loop (se usa para "Comenzar" y "Jugar de nuevo")
 function reiniciar() {
+  empezo = false;
+ sprite.classList.remove("corriendo");
   for (const t of tuberia) {
     t.elArriba.remove();
     t.elAbajo.remove();
@@ -358,7 +388,8 @@ function reiniciar() {
 // Fin de partida: gano = true si llegó a la meta, false si perdió
 function terminar(gano) {
   if (!jugando) return;          // evita que se llame dos veces en el mismo frame
-  jugando = false;               // esto corta el loop
+  jugando = false;    
+  sprite.classList.remove("corriendo");           // esto corta el loop
   if (!gano) setEstado("explotando");
   tituloFin.textContent = gano ? "¡Ganaste!" : "¡La llama chocó, quedaste sin vidas!";
   textoFinal.textContent = gano
@@ -366,7 +397,7 @@ function terminar(gano) {
     : "¡No te rindas! Conseguiste " + puntos + " puntos. ¡Volvé a intentarlo!";
   cartelFin.style.display = "block";
 }
-// 14. EVENTOS Y PRECARGA
+
 // Barra espaciadora = impulso. Una sola vez por pulsación (e.repeat ignora la tecla mantenida).
 // Solo bloquea la tecla mientras se juega, así se puede escribir en los comentarios y el buscador.
 document.addEventListener("keydown", (e) => {
