@@ -1,6 +1,5 @@
 (() => {
 
-// 1. CONFIGURACIÓN
 const RUTA_IMG = "assets/img-flappy/";
 const IMAGENES = ["capa1.png", "capa2.png", "capa3.png", "capa4.png",
                   "llama.png", "cactus.png", "cartas.png", "condor.png"];
@@ -53,7 +52,6 @@ const DEMORA_CARTEL = 700;
 // Modo debug: dibuja la caja de colisión de la llama (amarilla)
 const DEBUG = false;
 
-// 2. ELEMENTOS DEL DOM
 const escenario   = document.getElementById("escenario");
 const personaje   = document.getElementById("personaje");      // contenedor que se mueve con transform
 const sprite      = document.getElementById("llama-sprite");   // dibujo de la llama: acá van las animaciones
@@ -82,7 +80,6 @@ if (DEBUG) {
   escenario.classList.add("debug");
 }
 
-// 3. ESTADO DEL JUEGO (los datos viven acá; el DOM solo los muestra)
 let jugando = false;           // el loop solo corre si es true
 let empezo = false;            // false = la llama espera quieta el primer impulso
 let ultimoTiempo = 0;          // tiempo del frame anterior (para calcular dt)
@@ -99,7 +96,6 @@ let distanciaDesdeUltima = 0;  // distancia recorrida desde la última tubería
 let separacionActual = SEPARACION_INICIAL;
 let ultimoTextoEfecto = "";
 
-// 4. UTILIDADES
 
 // Número entero al azar entre min (incluido) y max (excluido)
 function aleatorio(min, max) {
@@ -111,7 +107,6 @@ function velocidadMundo() {
   return VELOCIDAD_MUNDO * (tiempoEfecto > 0 ? FACTOR_VELOCIDAD_CONDOR : 1);
 }
 
-// 5. LA LLAMA
 // Cambia la animación CSS de la llama: "volando", "aleteando" o "explotando".
 // (La clase "corriendo" NO se toca acá: indica que la partida ya empezó.)
 function setEstado(clase) {
@@ -136,7 +131,6 @@ function saltar() {
   setEstado("aleteando");
 }
 
-// 6. CACTUS (TUBERÍAS)
 // Crea una tubería: son DOS divs (cactus de arriba y de abajo) con un hueco en el medio.
 // Solo se fija el alto acá; la posición la pone dibujar() con transform.
 function crearTuberia() {
@@ -159,7 +153,6 @@ function crearTuberia() {
   hueco = Math.max(HUECO_MIN, hueco - REDUCCION);
 }
 
-// 7. CARTAS Y CÓNDORES (elementos animados con spritesheet)
 // Crea una carta (suma puntos) o un cóndor (acelera el mundo), centrado en xCentro.
 function crearItem(xCentro) {
   let tipo;
@@ -179,7 +172,6 @@ function quitarItem(i) {
   items.splice(i, 1);
 }
 
-// 8. COLISIONES (rectángulos, "AABB")
 // Hay choque si los rectángulos se superponen en X y en Y a la vez.
 function cajaLlama() {
   return {
@@ -206,7 +198,6 @@ function chocaConItem(it) {
          c.abajo > it.y + m && c.arriba < it.y + it.h - m;
 }
 
-// 9. PUNTAJE, VIDAS Y EFECTO DEL CÓNDOR
 function mostrarPuntaje() {
   elPuntaje.textContent = "Puntaje: " + puntos + " / " + PUNTOS_PARA_GANAR;
 }
@@ -234,7 +225,6 @@ personaje.addEventListener("animationend", (e) => {
   if (e.animationName === "golpe") personaje.classList.remove("golpeada");
 });
 
-// 10. LÓGICA DE CADA FRAME
 // dt = segundos que pasaron desde el frame anterior.
 // Multiplicar todo por dt hace que la velocidad sea la misma en cualquier monitor.
 function actualizar(dt) {
@@ -313,7 +303,6 @@ function actualizar(dt) {
   }
 }
 
-// 11. DIBUJO
 // actualizar() cambia los DATOS; dibujar() los muestra en pantalla.
 // Todo se mueve con transform: translate (no con top/left).
 function dibujar() {
@@ -351,7 +340,6 @@ function dibujar() {
   }
 }
 
-// 12. GAME LOOP (el único del juego)
 // requestAnimationFrame llama a loop() justo antes de cada redibujado de pantalla
 // y le pasa el tiempo actual.
 function loop(tiempo) {
@@ -362,8 +350,6 @@ function loop(tiempo) {
   dibujar();
   requestAnimationFrame(loop);                                             // pide el siguiente frame
 }
-
-// 13. INICIO, FIN Y REINICIO
 
 // Deja todo en el estado inicial y arranca el loop (se usa para "Comenzar" y "Jugar de nuevo")
 function reiniciar() {
