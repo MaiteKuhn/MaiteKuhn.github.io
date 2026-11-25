@@ -30,9 +30,21 @@
 #llama-sprite {
     width: 100%;
     height: 100%;
-    background: url("../assets/img-flappy/llama.png") center / contain no-repeat;
+    position: relative;
+  }
+#llama-sprite {
+  content:  "";
+  position: absolute;
+  inset: 0;
+  background: url(../assets/img-flappy/llama.png) 0 0 / 400px 80px no-repeat;
+  animation: correrLlama 0.4s steps(4) infinite;
 }
 
+@keyframes correrLlama {
+  from {background-position: 0 0; }
+  to {background-position: -400px 0;}
+}
+#llama-sprite.explotando::before {animation-play-state: paused;}
 /* Animaciones por estado: el JS solo cambia la clase */
 .volando    { animation: volar 0.8s ease-in-out infinite; }
 .aleteando  { animation: aletear 0.3s ease-in-out 1; }
@@ -90,14 +102,14 @@
     to   { background-position: -200px 0; }
 }
 .condor {
-    width: 100px; height: 99px;
+    width: 75px; height: 74px;
     background-image: url("../assets/img-flappy/condor.png");
-    background-size: 400px 99px;                 /* 4 cuadros x 100 px */
+    background-size: 300px 74px;                 /* 4 cuadros x 100 px */
     animation: aletearCondor 0.6s steps(4) infinite;
 }
 @keyframes aletearCondor {
     from { background-position: 0 0; }
-    to   { background-position: -400px 0; }
+    to   { background-position: -300px 0; }
 }
 
 /* ---------- Textos y carteles ---------- */

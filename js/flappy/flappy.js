@@ -39,13 +39,13 @@ const MARGEN_VERTICAL    = 40;   // el hueco y los ítems nunca quedan pegados a
 // Cartas y cóndores (tamaño en pantalla: tienen que coincidir con el CSS)
 const TAM = {
   carta:  { w: 50,  h: 60 },
-  condor: { w: 100, h: 99 },
+  condor: { w: 75, h: 74 },
 };
-const PROB_CARTA       = 0.6;  // 60% carta, 40% cóndor
+const PROB_CARTA       = 0.5;  // 60% carta, 40% cóndor
 const VEL_EXTRA_CONDOR = 60;   // el cóndor vuela hacia la llama más rápido que el mundo
 const PUNTOS_TUBERIA   = 1;    // puntos por cada cactus superado
 const PUNTOS_CARTA     = 5;    // puntos por cada carta
-const PUNTOS_PARA_CONDOR = 10;
+const PUNTOS_PARA_CONDOR = 5;
 
 // Efecto del cóndor: NO termina el juego. Acelera el mundo unos segundos.
 const FACTOR_VELOCIDAD_CONDOR = 1.4;   // el mundo va 1,4 veces más rápido
@@ -208,7 +208,7 @@ function colisionaTuberia(t) {
 // Carta o cóndor: choca si los dos rectángulos se superponen
 function chocaConItem(it) {
   const c = cajaLlama();
-  const m = it.tipo === "condor" ? 15 : 5;   // margen por lado
+  const m = it.tipo === "condor" ? 10 : 5;   // margen por lado
   return c.der > it.x + m && c.izq < it.x + it.w - m &&
          c.abajo > it.y + m && c.arriba < it.y + it.h - m;
 }
@@ -305,8 +305,7 @@ function actualizar(dt) {
       if (it.tipo === "carta") {
         sumarPuntos(PUNTOS_CARTA);           // la carta suma puntos
       } else {
-    
-        tiempoEfecto = DURACION_EFECTO;      // el cóndor acelera el mundo, pero NO termina el juego
+       tiempoEfecto = DURACION_EFECTO;      // el cóndor acelera el mundo, pero NO termina el juego
        perderVida();
       }
       quitarItem(i);
