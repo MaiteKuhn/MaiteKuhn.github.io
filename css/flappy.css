@@ -103,6 +103,7 @@
 /* ---------- Textos y carteles ---------- */
 #puntaje {
     position: absolute;
+    font-family: 'Overpass Mono', monospace;
     top: 10px; left: 15px;
     font-size: 28px;
     color: white;
